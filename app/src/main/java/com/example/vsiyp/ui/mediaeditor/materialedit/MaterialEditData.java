@@ -1,0 +1,78 @@
+package com.example.vsiyp.ui.mediaeditor.materialedit;
+
+import com.huawei.hms.videoeditor.sdk.asset.HVEVisibleAsset;
+import com.huawei.hms.videoeditor.sdk.bean.HVEPosition2D;
+
+import java.util.List;
+
+public class MaterialEditData {
+
+    private HVEVisibleAsset mAsset;
+
+    private MaterialType mMaterialType;
+
+    private List<HVEPosition2D> mFaceBoxList;
+
+    private List<HVEPosition2D> mSegmentationList;
+
+    public MaterialEditData(HVEVisibleAsset asset, MaterialType materialType) {
+        this.mAsset = asset;
+        this.mMaterialType = materialType;
+    }
+
+    public MaterialEditData(HVEVisibleAsset asset, MaterialType materialType, List<HVEPosition2D> faceBoxList) {
+        mAsset = asset;
+        mMaterialType = materialType;
+        mFaceBoxList = faceBoxList;
+    }
+
+    public HVEVisibleAsset getAsset() {
+        return mAsset;
+    }
+
+    public void setAsset(HVEVisibleAsset asset) {
+        this.mAsset = asset;
+    }
+
+    public MaterialType getMaterialType() {
+        return mMaterialType;
+    }
+
+    public void setMaterialType(MaterialType materialType) {
+        this.mMaterialType = materialType;
+    }
+
+    public List<HVEPosition2D> getFaceBoxList() {
+        return mFaceBoxList;
+    }
+
+    public void setFaceBoxList(List<HVEPosition2D> faceBoxList) {
+        mFaceBoxList = faceBoxList;
+    }
+
+    public List<HVEPosition2D> getSegmentationList() {
+        return mSegmentationList;
+    }
+
+    public void setSegmentationList(List<HVEPosition2D> segmentationList) {
+        this.mSegmentationList = segmentationList;
+    }
+
+    @Override
+    public String toString() {
+        return "MaterialEditData{" + "mAsset=" + mAsset + ", mMaterialType=" + mMaterialType + ", mFaceBoxList="
+                + mFaceBoxList + '}';
+    }
+
+    public enum MaterialType {
+        MAIN_LANE,
+        PIP_LANE,
+        STICKER,
+        WORD,
+        WORD_TAIL,
+        FACE,
+        PERSON,
+        SEGMENTATION,
+    }
+}
+
