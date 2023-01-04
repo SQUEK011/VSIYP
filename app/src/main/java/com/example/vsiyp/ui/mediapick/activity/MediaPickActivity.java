@@ -286,7 +286,7 @@ public class MediaPickActivity extends BaseActivity {
         mActionType = safeIntent.getIntExtra(ACTION_TYPE, ACTION_ADD_MEDIA_TYPE);
         mCheckDuration = safeIntent.getLongExtra(DURATION, 0);
         mShowMediaType = safeIntent.getIntExtra(SHOW_MEDIA_TYPE, 2);
-        mMediaFolderViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) factory).get(MediaFolderViewModel.class);
+        mMediaFolderViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(MediaFolderViewModel.class);
         mMediaPickManager = MediaPickManager.getInstance();
         mMediaPickManager.clear();
         mSelectList = new ArrayList<>();

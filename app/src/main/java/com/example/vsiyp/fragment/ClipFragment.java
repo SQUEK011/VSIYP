@@ -1,11 +1,21 @@
 package com.example.vsiyp.fragment;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.CLIPS_VIEW_TYPE;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_HISTORY;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,7 +26,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -44,8 +56,13 @@ import com.huawei.hms.videoeditor.sdk.HVEProjectManager;
 import com.huawei.hms.videoeditor.sdk.bean.HVEWordStyle;
 import com.huawei.secure.android.common.intent.SafeIntent;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ClipFragment extends BaseFragment {
     private TextView homeSelectNum;
@@ -80,6 +97,14 @@ public class ClipFragment extends BaseFragment {
 
     private boolean isFromHome = false;
 
+    //Variables for Camera Usage
+    private Uri videoUri;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
+    String imageFilePath;
+
     @Override
     protected void initViewModelObserve() {
 
@@ -108,12 +133,12 @@ public class ClipFragment extends BaseFragment {
             isFromHome = activity.getIntent().getBooleanExtra("fromHome", false);
             back.setVisibility(isFromHome ? View.VISIBLE : View.GONE);
         }
-        mTextEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(TextEditViewModel.class);
+        mTextEditViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(TextEditViewModel.class);
     }
 
     @Override
     protected void initObject() {
-        mainViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) mFactory).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) mFactory).get(MainViewModel.class);
         mDraftList = new ArrayList<>();
         mRecyclerView.setHasFixedSize(true);
         DefaultItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -221,10 +246,6 @@ public class ClipFragment extends BaseFragment {
             this.mActivity.overridePendingTransition(R.anim.slide_bottom_in, R.anim.slide_silent);
         }));
 
-        mAddCameraCardView.setOnClickListener(new OnClickRepeatedListener(v -> {
-            ToastWrapper.makeText(this.mActivity, "Feature Not Available.");
-        }));
-
         mHomeRecordAdapter.setOnItemClickListener(new HomeRecordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -266,7 +287,23 @@ public class ClipFragment extends BaseFragment {
             }
 
         });
+
+        mAddCameraCardView.setOnClickListener(new OnClickRepeatedListener(v -> {
+            Log.d("ClipFragment", "Camera Selected");
+            //create new Intent
+            Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+            videoUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);  // create a file to save the video
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);  // set the image file name
+
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // start the Video Capture Intent
+            startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+        }));
     }
+
+
 
     @Override
     protected int setViewLayoutEvent() {
@@ -282,6 +319,34 @@ public class ClipFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Image captured and saved to fileUri specified in the Intent
+                Toast.makeText(this.context, "Image saved to:\n" +
+                        data.getData(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                // User cancelled the image capture
+            } else {
+                // Image capture failed, advise user
+            }
+        }
+
+        if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Video captured and saved to fileUri specified in the Intent
+                Toast.makeText(this.context, "Video saved to:\n" +
+                        data.getData(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                // User cancelled the video capture
+                Toast.makeText(this.context, "Video Capture Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                // Video capture failed, advise user
+            }
+        }
     }
 
     private void showActionPopWindow(View view, HVEProject item, int pos) {
@@ -321,14 +386,9 @@ public class ClipFragment extends BaseFragment {
                     SharedPreferencesUtils.getInstance()
                             .putCopyDraftTimes(context, mDraftList.get(pos).getProjectId(), copyTimes);
                     refresh();
-                    Toast
-                            .makeText(context, context.getString(R.string.home_select_delete_copy_success),
-                                    Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(context, context.getString(R.string.home_select_delete_copy_success), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast
-                            .makeText(context, context.getString(R.string.home_select_delete_copy_fail), Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(context, context.getString(R.string.home_select_delete_copy_fail), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -433,4 +493,45 @@ public class ClipFragment extends BaseFragment {
         lp.alpha = bgAlpha; // 0.0-1.0
         mActivity.getWindow().setAttributes(lp);
     }
+
+    /** Create a file Uri for saving an image or video */
+    private Uri getOutputMediaFileUri(int type){
+        return FileProvider.getUriForFile(this.context,this.context.getApplicationContext().getPackageName() + ".provider", getOutputMediaFile(type));
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(int type){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "VSIYP");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("VSIYP", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE){
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_"+ timeStamp + ".jpg");
+        } else if(type == MEDIA_TYPE_VIDEO) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "VID_"+ timeStamp + ".mp4");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+
 }
