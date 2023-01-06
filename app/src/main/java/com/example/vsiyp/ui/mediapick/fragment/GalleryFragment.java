@@ -117,7 +117,7 @@ public class GalleryFragment extends BaseFragment {
         List<MediaData> mImportedList = intent.getParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT);
         long mCheckDuration = intent.getLongExtra(DURATION, 0);
         int actionType = intent.getIntExtra(MediaPickActivity.ACTION_TYPE, 0);
-        folderViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MediaFolderViewModel.class);
+        folderViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(MediaFolderViewModel.class);
         fragmentList = new ArrayList<>(2);
 
         PickVideoFragment mVideoFragment = new PickVideoFragment();

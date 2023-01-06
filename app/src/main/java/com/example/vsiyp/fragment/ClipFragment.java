@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.CLIPS_VIEW_TYPE;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_HISTORY;
+import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_NORMAL;
 
 import android.Manifest;
 import android.app.Activity;
@@ -35,9 +36,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vsiyp.HomeActivity;
 import com.example.vsiyp.HomeRecordAdapter;
 import com.example.vsiyp.R;
 import com.example.vsiyp.ui.common.BaseFragment;
+import com.example.vsiyp.ui.common.bean.Constant;
+import com.example.vsiyp.ui.common.bean.MediaData;
 import com.example.vsiyp.ui.common.listener.OnClickRepeatedListener;
 import com.example.vsiyp.ui.common.utils.SharedPreferencesUtils;
 import com.example.vsiyp.ui.common.utils.SizeUtils;
@@ -101,6 +105,7 @@ public class ClipFragment extends BaseFragment {
     private Uri videoUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+    public static final int VIEW_CAMERA = 2;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
     String imageFilePath;
@@ -292,8 +297,11 @@ public class ClipFragment extends BaseFragment {
             Log.d("ClipFragment", "Camera Selected");
             //create new Intent
             Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-
-            videoUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);  // create a file to save the video
+            //if (intent.resolveActivity(getContext().getPackageManager())==null) return;
+            //File videoFile = null;
+            videoUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+            //if (videoFile == null) return;
+            //videoUri = FileProvider.getUriForFile(getContext(),"com.example.vsiyp.fileprovider",videoFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);  // set the image file name
 
             intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
@@ -328,6 +336,8 @@ public class ClipFragment extends BaseFragment {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this.context, "Image saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
+                Intent returnIntent = new Intent(this.mActivity, HomeActivity.class);
+                startActivity(returnIntent);
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
@@ -340,6 +350,19 @@ public class ClipFragment extends BaseFragment {
                 // Video captured and saved to fileUri specified in the Intent
                 Toast.makeText(this.context, "Video saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
+                Log.d("Video Saved to:", data.getDataString());
+                Intent returnIntent = new Intent(this.context, VideoClipsActivity.class);
+                ArrayList<MediaData> mSelectList = new ArrayList<>();
+                MediaData mediaDataFromCam = new MediaData();
+                mediaDataFromCam.setUri(data.getData());
+                String outputUri = data.getData().toString();
+                mSelectList.add(mediaDataFromCam);
+                returnIntent.putParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT, mSelectList);
+                returnIntent.putExtra(CLIPS_VIEW_TYPE, VIEW_CAMERA);
+                returnIntent.putExtra("videoFileUri",outputUri);
+                returnIntent.putExtra(VideoClipsActivity.EXTRA_FROM_SELF_MODE, true);
+                startActivity(returnIntent);
+
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the video capture
                 Toast.makeText(this.context, "Video Capture Cancelled", Toast.LENGTH_LONG).show();
@@ -496,7 +519,7 @@ public class ClipFragment extends BaseFragment {
 
     /** Create a file Uri for saving an image or video */
     private Uri getOutputMediaFileUri(int type){
-        return FileProvider.getUriForFile(this.context,this.context.getApplicationContext().getPackageName() + ".provider", getOutputMediaFile(type));
+        return FileProvider.getUriForFile(this.context,"com.example.vsiyp.fileprovider", getOutputMediaFile(type));
     }
 
     /** Create a File for saving an image or video */

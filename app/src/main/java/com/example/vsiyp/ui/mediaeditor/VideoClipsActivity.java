@@ -158,6 +158,8 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
 
     public static final int VIEW_NORMAL = 1;
 
+    public static final int VIEW_CAMERA = 2;
+
     public static final int VIEW_HISTORY = 3;
 
     public static final String CLIPS_VIEW_TYPE = "clipsViewType";
@@ -418,6 +420,7 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
             mProjectId = safeIntent.getStringExtra(PROJECT_ID);
         }
         ArrayList<MediaData> list = safeIntent.getParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT);
+        String outputUri = safeIntent.getStringExtra("videoFileUri");
 
         Constant.IntentFrom.INTENT_WHERE_FROM =
                 ("highlight".equals(safeIntent.getStringExtra(SOURCE)) ? INTENT_FROM_IMAGE_LIB : 0);
@@ -487,6 +490,11 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                 break;
             case VIEW_HISTORY:
                 break;
+            case VIEW_CAMERA:
+                EditorManager.getInstance().getTimeLine().appendVideoLane();
+                HVEVideoAsset hveVideoAsset = EditorManager.getInstance()
+                        .getMainLane()
+                        .appendVideoAsset(outputUri);
             default:
                 break;
 
