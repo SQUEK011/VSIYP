@@ -65,16 +65,16 @@ class MainActivity : BaseActivity() {
         MediaApplication.getInstance().setApiKey("DAEDAPIVpsDTzvZB856dCzx04h9YnVxNJnm27mm+NIFiDVwnItB2RkU/KPyzbeO+KpIzPNF4AX9a4ghyzh1vFzfhUAIhJCs1Q/NYJg==")
         val uuid = UUID.randomUUID()
         MediaApplication.getInstance().setLicenseId(uuid.toString())
-        val tabItemImage = intArrayOf(R.drawable.home_tab_clip_selector, R.drawable.home_tab_draft_selector)
-        val tabItemText = arrayOf(getString(R.string.first_menu_cut), getString(R.string.home_tab1))
-        val templateFragment = TemplateHomeFragment()
+        //val tabItemImage = intArrayOf(R.drawable.home_tab_clip_selector, R.drawable.home_tab_draft_selector)
+        //val tabItemText = arrayOf(getString(R.string.first_menu_cut), getString(R.string.home_tab1))
+        /*val templateFragment = TemplateHomeFragment()
         val bundle = Bundle()
         val safeIntent = SafeIntent(intent)
         val source = safeIntent.getStringExtra(SOURCE)
         bundle.putString(TemplateHomeFragment.SOURCE_KEY, source)
-        templateFragment.arguments = bundle
+        templateFragment.arguments = bundle*/
         mFragments.add(ClipFragment())
-        mFragments.add(templateFragment)
+        //mFragments.add(templateFragment)
         val mAdapter: FragmentPagerAdapter = object : FragmentPagerAdapter(mFragmentManager!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getItem(position: Int): Fragment {
                 return mFragments[position]
@@ -102,10 +102,10 @@ class MainActivity : BaseActivity() {
         viewPager!!.adapter = mAdapter
         viewPager!!.offscreenPageLimit = 4
         viewPager!!.currentItem = initIndex
-        tabLayout!!.setupWithViewPager(viewPager)
+        /*tabLayout!!.setupWithViewPager(viewPager)
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
         tabLayout!!.tabMode = TabLayout.MODE_FIXED
-        for (i in mFragments.indices) {
+        /*for (i in mFragments.indices) {
             val view = LayoutInflater.from(this)
                 .inflate(R.layout.activity_main_tab_item, null, false)
             val imageMainTabItem = view.findViewById<ImageView>(R.id.image_main_tab_item)
@@ -116,10 +116,10 @@ class MainActivity : BaseActivity() {
             if (tab != null) {
                 tab.customView = view
             }
-        }
+        }*/
         val tab = tabLayout!!.getTabAt(initIndex)
         tab?.select()
-        tabLayout!!.visibility = View.VISIBLE
+        tabLayout!!.visibility = View.VISIBLE*/
     }
 
     override fun onPause() {
@@ -128,10 +128,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initEvent() {}
-    override fun onBackPressed() {
-        super.onBackPressed()
-        initIndex = 0
-    }
 
     private fun verifyStoragePermissions(activity: MainActivity) {
         val requestCode = 1

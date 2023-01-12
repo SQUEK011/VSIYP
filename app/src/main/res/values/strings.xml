@@ -824,4 +824,5 @@
     </plurals>
     <string name="quarter_high_definition" priority="LT">2K</string>
     <string name="ultra_high_definition" priority="LT">4K</string>
+    <string name="version">Version</string>
 </resources>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/home_color_FF181818">
 
-    <ImageView
+    <!--ImageView
         android:id="@+id/iv_back"
         android:layout_width="@dimen/dp_24"
         android:layout_height="@dimen/dp_24"
@@ -17,9 +17,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
-        tools:ignore="ContentDescription,MissingConstraints" />
+        tools:ignore="ContentDescription,MissingConstraints" /-->
 
-    <TextView
+    <!--TextView
         android:id="@+id/home_select_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,26 +34,38 @@
         app:drawableStartCompat="@drawable/ic_cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage" /-->
 
     <com.example.vsiyp.ui.common.view.EditorTextView
         android:id="@+id/home_notice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_24"
-        android:layout_marginTop="@dimen/dp_23"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="@dimen/dp_24"
         android:fontFamily="HarmonyHeiTi"
         android:gravity="start|center_vertical"
         android:maxWidth="312dp"
         android:maxLines="2"
-        android:text="@string/first_menu_cut"
+        android:text="@string/app_name"
         android:textColor="#FFFFFFFF"
         android:textSize="@dimen/dp_30"
         app:layout_constraintBottom_toTopOf="@+id/card_upload"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_select_num"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpUsage" />
+
+    <ImageView
+        android:id="@+id/setting"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/home_setting_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:id="@+id/card_upload"

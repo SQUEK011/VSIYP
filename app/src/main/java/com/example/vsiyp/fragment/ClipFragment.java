@@ -11,11 +11,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -36,9 +38,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vsiyp.HomeActivity;
+//import com.example.vsiyp.HomeActivity;
 import com.example.vsiyp.HomeRecordAdapter;
+import com.example.vsiyp.MainActivity;
 import com.example.vsiyp.R;
+import com.example.vsiyp.SettingActivity;
 import com.example.vsiyp.ui.common.BaseFragment;
 import com.example.vsiyp.ui.common.bean.Constant;
 import com.example.vsiyp.ui.common.bean.MediaData;
@@ -51,10 +55,12 @@ import com.example.vsiyp.ui.common.view.decoration.RecyclerViewDivider;
 import com.example.vsiyp.ui.mediaeditor.VideoClipsActivity;
 import com.example.vsiyp.ui.mediaeditor.texts.viewmodel.TextEditViewModel;
 import com.example.vsiyp.ui.mediapick.activity.MediaPickActivity;
+import com.example.vsiyp.utils.SmartLog;
 import com.example.vsiyp.view.ClipDeleteDialog;
 import com.example.vsiyp.view.ClipRenameDialog;
 import com.example.vsiyp.view.HomeClipPopWindow;
 import com.example.vsiyp.viewmodel.MainViewModel;
+import com.huawei.hms.videoeditor.ai.p.M;
 import com.huawei.hms.videoeditor.sdk.HVEProject;
 import com.huawei.hms.videoeditor.sdk.HVEProjectManager;
 import com.huawei.hms.videoeditor.sdk.bean.HVEWordStyle;
@@ -69,7 +75,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class ClipFragment extends BaseFragment {
-    private TextView homeSelectNum;
+    private static final String TAG = "ClipFragment";
+    //private TextView homeSelectNum;
 
     private EditorTextView mDraftClip;
 
@@ -97,7 +104,9 @@ public class ClipFragment extends BaseFragment {
 
     private TextEditViewModel mTextEditViewModel;
 
-    private ImageView back;
+    //private ImageView back;
+
+    private ImageView mSettings;
 
     private boolean isFromHome = false;
 
@@ -122,7 +131,7 @@ public class ClipFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        homeSelectNum = view.findViewById(R.id.home_select_num);
+        //homeSelectNum = view.findViewById(R.id.home_select_num);
         mDraftClip = view.findViewById(R.id.home_draft_clip);
         mRecyclerView = view.findViewById(R.id.content_list);
         mAddCardView = view.findViewById(R.id.card_upload);
@@ -130,13 +139,14 @@ public class ClipFragment extends BaseFragment {
         homeSelectDelete = view.findViewById(R.id.home_select_delete);
         homeSelectAll = view.findViewById(R.id.home_select_all);
         homeDraftNoText = view.findViewById(R.id.home_draft_no_text);
-        homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, 0, 0));
-        back = view.findViewById(R.id.iv_back);
+        //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, 0, 0));
+        //back = view.findViewById(R.id.iv_back);
         mAddCameraCardView = view.findViewById(R.id.card_upload_2);
+        mSettings = view.findViewById(R.id.setting);
         Activity activity = getActivity();
         if (activity != null) {
             isFromHome = activity.getIntent().getBooleanExtra("fromHome", false);
-            back.setVisibility(isFromHome ? View.VISIBLE : View.GONE);
+            //back.setVisibility(isFromHome ? View.VISIBLE : View.GONE);
         }
         mTextEditViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(TextEditViewModel.class);
     }
@@ -187,7 +197,7 @@ public class ClipFragment extends BaseFragment {
 
     @Override
     protected void initEvent() {
-        back.setOnClickListener(new View.OnClickListener() {
+        /*back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Activity activity = getActivity();
@@ -195,14 +205,18 @@ public class ClipFragment extends BaseFragment {
                     activity.onBackPressed();
                 }
             }
-        });
+        });*/
+        mSettings.setOnClickListener(new OnClickRepeatedListener((v -> {
+            this.startActivity(new Intent(this.mActivity, SettingActivity.class));
+        })));
+
         mDraftClip.setOnClickListener(new OnClickRepeatedListener(v -> {
             mDraftClip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             mDraftClip.setTextColor(context.getColor(R.color.white));
             initData();
         }));
 
-        homeSelectNum.setOnClickListener(new OnClickRepeatedListener(v -> {
+        /*homeSelectNum.setOnClickListener(new OnClickRepeatedListener(v -> {
             if (mHomeRecordAdapter.getIsEditStatus()) {
                 hideEditStatus();
                 homeSelectAll.setSelected(false);
@@ -211,7 +225,7 @@ public class ClipFragment extends BaseFragment {
                 showEditStatus();
             }
 
-        }));
+        }));*/
 
         homeSelectDelete.setOnClickListener(new OnClickRepeatedListener(v -> {
             if (homeSelectDelete.isSelected()) {
@@ -229,15 +243,13 @@ public class ClipFragment extends BaseFragment {
                 homeSelectAll.setSelected(false);
                 homeSelectDelete.setSelected(false);
                 mHomeRecordAdapter.setSelectList(new ArrayList<>());
-                homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3,
-                        new ArrayList<>().size(), new ArrayList<>().size()));
+                //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3,new ArrayList<>().size(), new ArrayList<>().size()));
             } else {
                 homeSelectAll.setText(R.string.home_select_all_deselect);
                 homeSelectAll.setSelected(true);
                 homeSelectDelete.setSelected(true);
                 mHomeRecordAdapter.setSelectList(mDraftList);
-                homeSelectNum.setText(
-                        getResources().getQuantityString(R.plurals.home_select_num3, mDraftList.size(), mDraftList.size()));
+                //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, mDraftList.size(), mDraftList.size()));
 
             }
             mHomeRecordAdapter.notifyDataSetChanged();
@@ -282,8 +294,7 @@ public class ClipFragment extends BaseFragment {
                 }
                 homeSelectDelete.setSelected(selectList.size() != 0);
                 mHomeRecordAdapter.notifyItemChanged(position);
-                homeSelectNum.setText(
-                        getResources().getQuantityString(R.plurals.home_select_num3, selectList.size(), selectList.size()));
+                //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, selectList.size(), selectList.size()));
             }
 
             @Override
@@ -336,8 +347,8 @@ public class ClipFragment extends BaseFragment {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this.context, "Image saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
-                Intent returnIntent = new Intent(this.mActivity, HomeActivity.class);
-                startActivity(returnIntent);
+                //Intent returnIntent = new Intent(this.mActivity, HomeActivity.class);
+                //startActivity(returnIntent);
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
@@ -351,12 +362,17 @@ public class ClipFragment extends BaseFragment {
                 Toast.makeText(this.context, "Video saved to:\n" +
                         data.getData(), Toast.LENGTH_LONG).show();
                 Log.d("Video Saved to:", data.getDataString());
+
                 Intent returnIntent = new Intent(this.context, VideoClipsActivity.class);
                 ArrayList<MediaData> mSelectList = new ArrayList<>();
                 MediaData mediaDataFromCam = new MediaData();
                 mediaDataFromCam.setUri(data.getData());
-                String outputUri = data.getData().toString();
+
                 mSelectList.add(mediaDataFromCam);
+
+                File videoFilePath = new File(videoUri.getPath());
+                String outputUri = videoFilePath.getPath();
+
                 returnIntent.putParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT, mSelectList);
                 returnIntent.putExtra(CLIPS_VIEW_TYPE, VIEW_CAMERA);
                 returnIntent.putExtra("videoFileUri",outputUri);
@@ -493,11 +509,10 @@ public class ClipFragment extends BaseFragment {
         homeSelectAll.setSelected(false);
         homeSelectDelete.setSelected(false);
         mHomeRecordAdapter.setSelectList(new ArrayList<>());
-        homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, new ArrayList<>().size(),
-                new ArrayList<>().size()));
-        homeSelectNum.setVisibility(View.INVISIBLE);
+        //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, new ArrayList<>().size(),new ArrayList<>().size()));
+        //homeSelectNum.setVisibility(View.INVISIBLE);
         homeSelectLayout.setVisibility(View.INVISIBLE);
-        back.setVisibility(isFromHome ? View.VISIBLE : View.GONE);
+        //back.setVisibility(isFromHome ? View.VISIBLE : View.GONE);
         mHomeRecordAdapter.setIsEditStatus(false);
     }
 
@@ -505,9 +520,9 @@ public class ClipFragment extends BaseFragment {
         homeSelectAll.setText(R.string.home_select_all);
         homeSelectAll.setSelected(false);
         homeSelectDelete.setSelected(false);
-        homeSelectNum.setVisibility(View.VISIBLE);
+        //homeSelectNum.setVisibility(View.VISIBLE);
         homeSelectLayout.setVisibility(View.VISIBLE);
-        back.setVisibility(View.GONE);
+        //back.setVisibility(View.GONE);
         mHomeRecordAdapter.setIsEditStatus(true);
     }
 
@@ -556,5 +571,76 @@ public class ClipFragment extends BaseFragment {
         return mediaFile;
     }
 
+    private MediaData getVideoMediaData(Uri fileUri) {
+        List<MediaData> mediaDataList = new ArrayList<>();
+        MediaData returnData = new MediaData();
 
+        //1. Find the captured video from the uri
+        final String[] videoProjection =
+                {MediaStore.Video.Media.DATA, MediaStore.Video.Media.DURATION, MediaStore.Video.Media.DATE_MODIFIED
+                        , MediaStore.Video.Media.HEIGHT, MediaStore.Video.Media.MIME_TYPE, MediaStore.Video.Media.DISPLAY_NAME
+                        , MediaStore.Video.Media.SIZE, MediaStore.Video.Media.WIDTH};
+
+        try {
+            Cursor cursor = this.getActivity().getApplication().getContentResolver()
+                    .query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoProjection, null, null,
+                            MediaStore.Video.Media.DATE_MODIFIED + " DESC ");
+            if (cursor != null) {
+                cursor.moveToFirst();
+                try {
+                    String videoPath = cursor.getString(cursor.getColumnIndexOrThrow(videoProjection[0]));
+                    long videoDuration = cursor.getInt(cursor.getColumnIndexOrThrow(videoProjection[1]));
+                    long videoAddTime = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[2]));
+                    int videoHeight = cursor.getInt(cursor.getColumnIndexOrThrow(videoProjection[3]));
+                    long mimeType = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[4]));
+                    long displayName = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[5]));
+                    long videoSize = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[6]));
+                    long videoWidth = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[7]));
+
+                    if (videoDuration < 500) {
+                        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)) {
+                            if (!TextUtils.isEmpty(videoPath)) {
+                                File file = new File(videoPath);
+                                if (!file.exists() || file.length() <= 0) {
+                                    MediaData tempStore = new MediaData();
+                                    tempStore.setAddTime(videoAddTime);
+                                    tempStore.setDuration(videoDuration);
+                                    tempStore.setHeight(videoHeight);
+                                    tempStore.setMimeType(String.valueOf(mimeType));
+                                    tempStore.setName(String.valueOf(displayName));
+                                    tempStore.setPath(file.getPath());
+                                    tempStore.setSize(videoSize);
+                                    tempStore.setUri(fileUri);
+                                    tempStore.setWidth((int) videoWidth);
+                                }
+                            }
+                        }
+                    }
+
+                } catch (SecurityException e) {
+                    SmartLog.e(TAG, e.getMessage());
+                }
+            }
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }catch (SecurityException e){
+            SmartLog.e(TAG, e.getMessage());
+        }
+        //2. Store Data into the temp MediaData Variable
+        for (MediaData data: mediaDataList){
+            returnData.setAddTime(data.getAddTime());
+            returnData.setDuration(data.getDuration());
+            returnData.setHeight(data.getHeight());
+            returnData.setMimeType(data.getMimeType());
+            returnData.setName(data.getName());
+            returnData.setPath(data.getPath());
+            returnData.setSize(data.getSize());
+            returnData.setUri(data.getUri());
+            returnData.setWidth(data.getWidth());
+        }
+
+        //3. Return the MediaData Item
+        return returnData;
+    }
 }

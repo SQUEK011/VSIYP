@@ -495,6 +495,9 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                 HVEVideoAsset hveVideoAsset = EditorManager.getInstance()
                         .getMainLane()
                         .appendVideoAsset(outputUri);
+                if (!isFromSelf) {
+                    defaultSelect(hveVideoAsset);
+                }
             default:
                 break;
 
@@ -1930,7 +1933,7 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
     }
 
     private void saveToast() {
-        int tvToastId = Resources.getSystem().getIdentifier("message", "id", "android");
+        int tvToastId = Resources.getSystem().getIdentifier("message", "id", getPackageName());
         Toast toast = Toast.makeText(this, getString(R.string.save_toast), Toast.LENGTH_SHORT);
         View view = toast.getView();
         if (view != null) {

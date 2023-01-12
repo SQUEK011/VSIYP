@@ -56,6 +56,7 @@ public class ToastWrapper {
 
     static {
         AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            @SuppressLint("SoonBlockedPrivateApi")
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public Object run() {
