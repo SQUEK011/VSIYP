@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
-        android:fontFamily="HWtext 55ST"
+
         android:gravity="center_vertical|start"
         android:singleLine="true"
         android:text="@string/music_hot"

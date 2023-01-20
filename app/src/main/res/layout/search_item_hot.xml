@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="文字"
-        android:fontFamily="HWtext 55ST"
+
         android:textColor="@color/title_tv"
         android:textSize="@dimen/sp_14"
         android:layout_marginStart="@dimen/dp_4"

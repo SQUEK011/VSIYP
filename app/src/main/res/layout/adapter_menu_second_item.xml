@@ -29,7 +29,7 @@
         android:layout_marginEnd="@dimen/dp_2"
         android:layout_marginBottom="@dimen/dp_2"
         android:ellipsize="end"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:maxWidth="@dimen/dp_52"
         android:maxLines="2"

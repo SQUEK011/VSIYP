@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/has_choice_bg"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="end|center_vertical"
         android:text="@string/media_imported"
         android:paddingStart="@dimen/dp_4"
@@ -57,7 +57,7 @@
             android:layout_height="@dimen/dp_18"
             android:layout_margin="@dimen/dp_5"
             android:background="@drawable/media_bg_recycle_item_index_btn_selector"
-            android:fontFamily="Huawei Sans"
+
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
@@ -72,7 +72,7 @@
         android:layout_marginStart="@dimen/dp_4"
         android:layout_marginBottom="@dimen/dp_4"
         android:background="@drawable/has_choice_bg"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:paddingStart="@dimen/dp_4"
         android:paddingTop="@dimen/dp_2"

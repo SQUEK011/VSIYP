@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
-        android:fontFamily="Helvetica"
+
         android:gravity="center"
         android:orientation="horizontal"
         android:text="@string/export_success"
@@ -92,7 +92,7 @@
         android:layout_marginBottom="@dimen/dp_24"
         android:background="@drawable/background_card_selector"
         android:ellipsize="end"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:maxLines="1"
         android:paddingStart="@dimen/dp_8"
@@ -112,7 +112,7 @@
         android:layout_marginBottom="@dimen/dp_24"
         android:background="@drawable/background_card_share_selector"
         android:ellipsize="end"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:maxLines="1"
         android:paddingStart="@dimen/dp_8"

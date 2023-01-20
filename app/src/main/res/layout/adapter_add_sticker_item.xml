@@ -57,7 +57,7 @@
         android:layout_height="@dimen/dp_14"
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_4"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:textColor="@color/color_text_first_level"
         android:textSize="@dimen/sp_10"

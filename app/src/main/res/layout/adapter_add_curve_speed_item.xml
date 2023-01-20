@@ -52,7 +52,7 @@
             android:gravity="center"
             android:textSize="@dimen/dp_10"
             android:textColor="#E6FFFFFF"
-            android:fontFamily="PingFangSC"/>
+            />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/dp_4"
         android:layout_marginTop="@dimen/dp_5"
-        android:fontFamily="Helvetica"
+
         android:gravity="center"
         android:textColor="#DBFFFFFF"
         android:textSize="@dimen/dp_10"

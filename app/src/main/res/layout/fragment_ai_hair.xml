@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_5"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="start|center_vertical"
         android:lineSpacingExtra="17dp"
         android:text="@string/strength"
@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_8"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center"
             android:text="@string/result_illegal"
             android:textColor="#99FFFFFF"

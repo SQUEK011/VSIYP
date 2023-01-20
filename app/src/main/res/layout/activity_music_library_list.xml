@@ -22,7 +22,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="HWtext 55ST"
+
         android:gravity="start"
         android:singleLine="true"
         android:textColor="#DBFFFFFF"

@@ -52,7 +52,7 @@
                 android:id="@+id/title_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fontFamily="Helvetica"
+
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/select_media_recent_projects"
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_28"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/material_library"
@@ -157,7 +157,7 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_1"
             android:ellipsize="end"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="top|center_horizontal"
             android:maxWidth="@dimen/dp_54"
             android:maxLines="2"
@@ -222,7 +222,7 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_1"
             android:ellipsize="end"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="top|center_horizontal"
             android:maxWidth="@dimen/dp_54"
             android:maxLines="2"
@@ -349,7 +349,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:fontFamily="Helvetica"
+
             android:singleLine="true"
             android:text="@string/exclusive_filter_button_create"
             android:textAllCaps="true"

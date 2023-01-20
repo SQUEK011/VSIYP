@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="@dimen/dp_4"
-        android:fontFamily="Helvetica"
+
         android:text="@string/cut_second_menu_opaqueness"
         android:textColor="@color/color_text_second_level"
         android:textSize="12sp"

@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_4"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center_vertical"
             android:text="@string/reversal"
             android:textColor="@drawable/shape_mask_reverse_selector"
@@ -87,7 +87,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/error_image"
             android:layout_marginTop="@dimen/dp_8"
-            android:fontFamily="Helvetica"
+
             android:gravity="start"
             android:text="@string/result_illegal"
             android:textColor="#99FFFFFF"

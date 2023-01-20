@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
-        android:fontFamily="HWtext 55ST"
+
         android:singleLine="true"
         android:text="@string/add_music"
         android:textColor="@color/white"
@@ -67,7 +67,7 @@
             android:layout_marginStart="@dimen/dp_32"
             android:layout_marginEnd="@dimen/dp_32"
             android:background="@null"
-            android:fontFamily="HYQiHei-FES"
+
             android:gravity="center_vertical|start"
             android:singleLine="true"
             android:textColorHint="@color/color_fff_20"
@@ -90,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_16"
-        android:fontFamily="Huawei Sans"
+
         android:gravity="center"
         android:text="@string/export_return"
         android:textColor="@color/white"

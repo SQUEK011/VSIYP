@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:fontFamily="Helvetica"
+
         android:singleLine="true"
         android:text="@string/cut_second_menu_crop"
         android:textColor="@color/white"
@@ -63,7 +63,7 @@
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginEnd="@dimen/dp_16"
         android:layout_marginBottom="59dp"
-        android:fontFamily="Helvetica"
+
         android:gravity="center"
         android:text="@string/cover_image_edit_desc"
         android:textColor="@color/title_tv"

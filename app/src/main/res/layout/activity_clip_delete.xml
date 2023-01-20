@@ -27,7 +27,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_24"
             android:textColor="@color/translucent_white_90"
-            android:fontFamily="HarmonyHeiTi"
+
             android:text="@string/home_select_delete_video"
             android:textSize="@dimen/dp_16"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginEnd="@dimen/dp_16"
                 android:background="@drawable/home_rename_bt_bg_selector"
-                android:fontFamily="HarmonyHeiTi"
+
                 android:gravity="center"
                 android:text="@string/video_edit_export_cancel"
                 android:textColor="@color/color_text_focus"
@@ -74,7 +74,7 @@
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginStart="@dimen/dp_16"
                 android:background="@drawable/home_rename_bt_bg_selector"
-                android:fontFamily="HarmonyHeiTi"
+
                 android:gravity="center"
                 android:text="@string/cut_second_menu_delete"
                 android:textColor="@color/color_text_focus"

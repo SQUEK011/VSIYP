@@ -34,7 +34,7 @@
             android:id="@+id/title_gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/select_media_recent_projects"
@@ -64,7 +64,7 @@
             android:layout_height="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_18"
             android:layout_marginEnd="@dimen/dp_24"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center"
             android:lineSpacingExtra="@dimen/dp_21"
             android:minWidth="@dimen/dp_32"
@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_18"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center"
             android:lineSpacingExtra="@dimen/dp_21"
             android:minWidth="@dimen/dp_32"
@@ -137,7 +137,7 @@
             android:minHeight="@dimen/dp_22"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:fontFamily="HarmonyHeiTi"
+
             android:singleLine="true"
             android:textColor="@color/color_fff_90"
             android:textSize="@dimen/sp_16"
@@ -196,7 +196,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_6"
-            android:fontFamily="HarmonyHeiTi"
+
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
             android:visibility="gone"
@@ -209,7 +209,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_6"
-            android:fontFamily="HarmonyHeiTi"
+
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
 
@@ -220,7 +220,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/dp_2"
             android:layout_marginTop="@dimen/dp_6"
-            android:fontFamily="HarmonyHeiTi"
+
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
             android:layout_toEndOf="@+id/tv_total_material" />
@@ -245,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:drawablePadding="@dimen/dp_9"
-                android:fontFamily="HarmonyHeiTi"
+
                 android:textAllCaps="true"
                 android:gravity="center"
                 android:singleLine="true"

@@ -26,7 +26,7 @@
         android:layout_marginBottom="@dimen/dp_4"
         android:breakStrategy="simple"
         android:ellipsize="end"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="top|center_horizontal"
         android:hyphenationFrequency="full"
         android:maxWidth="@dimen/dp_52"

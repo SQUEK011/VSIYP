@@ -22,7 +22,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/picture"

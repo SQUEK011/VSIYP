@@ -38,7 +38,7 @@
             android:id="@+id/tv_use_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center_vertical"
             android:maxLines="1"
             android:singleLine="true"
@@ -51,7 +51,7 @@
             android:id="@+id/tv_part"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center_vertical"
             android:maxLines="1"
             android:singleLine="true"
@@ -65,7 +65,7 @@
             android:id="@+id/tv_use"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center_vertical"
             android:maxLines="1"
             android:singleLine="true"
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
-        android:fontFamily="HarmonyHeiTi"
+
         android:maxLines="1"
         android:textColor="#E6FFFFFF"
         android:textSize="@dimen/sp_14"
@@ -103,7 +103,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="start|center_vertical"
         android:maxLines="1"
         android:textColor="@color/color_text_second_level"

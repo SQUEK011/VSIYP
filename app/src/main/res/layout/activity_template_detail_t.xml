@@ -45,7 +45,7 @@
         android:layout_marginEnd="@dimen/dp_18"
         android:layout_marginBottom="@dimen/dp_11"
         android:ellipsize="end"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="start"
         android:maxLines="3"
         android:textColor="@color/color_fff_90"
@@ -96,7 +96,7 @@
         android:layout_marginBottom="@dimen/dp_16"
         android:background="@drawable/unuse_module_btn_bg"
         android:enabled="false"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:text="@string/use_module"
         android:textColor="@color/white"

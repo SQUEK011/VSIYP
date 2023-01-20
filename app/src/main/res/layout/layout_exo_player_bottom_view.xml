@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="@dimen/dp_1"
                 android:ellipsize="end"
-                android:fontFamily="HarmonyHeiTi"
+
                 android:gravity="start"
                 android:maxLines="3"
                 android:textColor="@color/color_fff_90"
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_4"
-                    android:fontFamily="HarmonyHeiTi"
+
                     android:gravity="center_vertical"
                     android:singleLine="true"
                     android:textColor="@color/color_text_second_level"

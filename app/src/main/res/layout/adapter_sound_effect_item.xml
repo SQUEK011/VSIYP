@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:fontFamily="HWtext 55ST"
+
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
-            android:fontFamily="HWtext 55ST"
+
             android:textColor="#66FFFFFF"
             android:textSize="@dimen/dp_10"
             tools:ignore="SpUsage"
@@ -102,7 +102,7 @@
             android:id="@+id/music_use_tv"
             android:layout_width="@dimen/dp_48"
             android:layout_height="@dimen/dp_24"
-            android:fontFamily="HWtext 55ST"
+
             android:background="@drawable/background_card_selector"
             android:gravity="center"
             android:visibility="gone"
@@ -140,7 +140,7 @@
                 android:id="@+id/progress_value_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="HWtext 55S"
+
                 android:gravity="center"
                 android:textColor="#FFFFFF99"
                 android:textSize="@dimen/sp_10"

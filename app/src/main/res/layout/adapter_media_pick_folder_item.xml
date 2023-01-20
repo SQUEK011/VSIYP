@@ -21,7 +21,7 @@
         android:id="@+id/tv_folder_name"
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
-        android:fontFamily="Helvetica"
+
         android:gravity="start"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_media"
@@ -38,7 +38,7 @@
         android:id="@+id/tv_media_count"
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
-        android:fontFamily="Helvetica"
+
         android:gravity="start"
         app:layout_constraintTop_toBottomOf="@+id/tv_folder_name"
         app:layout_constraintStart_toEndOf="@+id/iv_media"

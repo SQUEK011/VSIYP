@@ -66,7 +66,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/iv_no_path_select"
         app:layout_constraintStart_toStartOf="@+id/iv_no_path_select"
         app:layout_constraintEnd_toEndOf="@+id/iv_no_path_select"
-        android:fontFamily="Roboto"
+
         android:gravity="center"
         android:textColor="@color/color_70"
         android:textSize="@dimen/sp_12"

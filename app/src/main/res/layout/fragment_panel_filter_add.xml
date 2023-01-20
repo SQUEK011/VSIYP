@@ -53,7 +53,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/error_image"
             android:layout_marginTop="@dimen/dp_8"
-            android:fontFamily="Helvetica"
+
             android:gravity="start"
             android:text="@string/result_illegal"
             android:textColor="#99FFFFFF"

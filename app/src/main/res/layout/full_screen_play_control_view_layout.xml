@@ -36,7 +36,7 @@
         android:layout_marginStart="@dimen/dp_16"
         app:layout_constraintTop_toBottomOf="@+id/seek_bar"
         app:layout_constraintStart_toEndOf="@+id/iv_bottom_play_pause"
-        android:fontFamily="Helvetica"
+
         android:gravity="center"
         android:text="@string/running_time_init"
         android:textColor="@color/color_text_first_level"
@@ -49,7 +49,7 @@
         android:layout_marginEnd="@dimen/dp_16"
         app:layout_constraintTop_toBottomOf="@+id/seek_bar"
         app:layout_constraintEnd_toStartOf="@+id/iv_bottom_full_screen"
-        android:fontFamily="Helvetica"
+
         android:gravity="center"
         android:text="@string/running_time_init"
         android:textColor="@color/color_text_first_level"

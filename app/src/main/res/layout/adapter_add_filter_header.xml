@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp_5"
-        android:fontFamily="HarmonyHeiTi"
+
         android:text="@string/none"
         android:textColor="@color/color_fff_86"
         android:textSize="@dimen/sp_10" />

@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/dp_8"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:text="@string/result_empty"
         android:textColor="@color/translucent_white_60"
@@ -69,7 +69,7 @@
             android:layout_below="@+id/error_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_8"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="start"
             android:text="@string/result_illegal"
             android:textColor="#99FFFFFF"

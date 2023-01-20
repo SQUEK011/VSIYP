@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_5"
-        android:fontFamily="PingFangSC"
+
         android:text="@string/none"
         android:textColor="@color/translucent_white_10"
         android:textSize="@dimen/sp_10"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_5"
-        android:fontFamily="PingFangSC"
+
         android:text="@string/exclusive_filter_create"
         android:textColor="@color/translucent_white_10"
         android:textSize="@dimen/sp_10"

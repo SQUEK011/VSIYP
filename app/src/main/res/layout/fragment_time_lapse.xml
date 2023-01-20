@@ -28,7 +28,7 @@
             android:text="@string/time_lapse_sky"
             android:textColor="@drawable/icon_apply_all_text_selector"
             android:textSize="@dimen/dp_14"
-            android:fontFamily="HarmonyHeiTi"
+
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@+id/view_sky"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -68,7 +68,7 @@
             android:text="@string/time_lapse_river"
             android:textColor="@drawable/icon_apply_all_text_selector"
             android:textSize="@dimen/dp_14"
-            android:fontFamily="HarmonyHeiTi"
+
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@+id/view_river"
             app:layout_constraintEnd_toEndOf="parent"
@@ -147,7 +147,7 @@
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/translucent_white_14"
                     android:text="@string/time_lapse_flow_speed"
-                    android:fontFamily="HarmonyHeiTi"
+
                     tools:ignore="SpUsage" />
 
                 <RadioGroup
@@ -173,7 +173,7 @@
                         android:id="@+id/tv_speed_slow_sky"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="HarmonyHeiTi"
+
                         android:textColor="@color/translucent_white_14"
                         android:textSize="@dimen/dp_12"
                         android:gravity="center"
@@ -197,7 +197,7 @@
                         android:id="@+id/tv_speed_standard_sky"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="HarmonyHeiTi"
+
                         android:textColor="@color/translucent_white_14"
                         android:textSize="@dimen/dp_12"
                         android:gravity="center"
@@ -221,7 +221,7 @@
                         android:id="@+id/tv_speed_fast_sky"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="HarmonyHeiTi"
+
                         android:textColor="@color/translucent_white_14"
                         android:textSize="@dimen/dp_12"
                         android:gravity="center"
@@ -284,7 +284,7 @@
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/translucent_white_14"
                     android:text="@string/time_lapse_flow_speed"
-                    android:fontFamily="HarmonyHeiTi"
+
                     tools:ignore="SpUsage" />
 
                 <RadioGroup
@@ -310,7 +310,7 @@
                         android:id="@+id/tv_speed_slow_river"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="HarmonyHeiTi"
+
                         android:textColor="@color/translucent_white_14"
                         android:textSize="@dimen/dp_12"
                         android:gravity="center"
@@ -334,7 +334,7 @@
                         android:id="@+id/tv_speed_standard_river"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="HarmonyHeiTi"
+
                         android:textColor="@color/translucent_white_14"
                         android:textSize="@dimen/dp_12"
                         android:gravity="center"
@@ -358,7 +358,7 @@
                         android:id="@+id/tv_speed_fast_river"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="HarmonyHeiTi"
+
                         android:textColor="@color/translucent_white_14"
                         android:textSize="@dimen/dp_12"
                         android:gravity="center"
@@ -388,7 +388,7 @@
         android:paddingTop="@dimen/dp_6"
         android:paddingBottom="@dimen/dp_5"
         android:background="@drawable/use_module_btn_bg"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:text="@string/time_lapse_start"
         android:textColor="@color/white"

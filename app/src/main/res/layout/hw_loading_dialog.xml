@@ -21,7 +21,7 @@
         android:textColor="@color/color_ffd8d8d8"
         android:maxLines="1"
         android:ellipsize="end"
-        android:fontFamily="HarmonyHeiTi"
+
         android:gravity="center"
         android:lineSpacingExtra="12dp"
         android:layout_marginStart="@dimen/dp_4"

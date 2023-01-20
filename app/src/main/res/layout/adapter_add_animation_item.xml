@@ -64,7 +64,7 @@
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="HWtext 55ST"
+
         android:textColor="#DBFFFFFF"
         android:textSize="@dimen/sp_10"
         app:layout_constraintTop_toBottomOf="@+id/item_image_view"

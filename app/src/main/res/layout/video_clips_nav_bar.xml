@@ -30,7 +30,7 @@
             android:layout_marginEnd="@dimen/dp_16"
             android:background="@drawable/bg_export_selector"
             android:ellipsize="end"
-            android:fontFamily="HWtext 65ST"
+
             android:gravity="center"
             android:maxWidth="122dp"
             android:maxLines="1"

@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:fontFamily="HWtext 65ST"
+
             android:text="提示"
             android:textColor="@color/clip_color_E6000000"
             android:textSize="@dimen/sp_16_home"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:fontFamily="HWtext 65ST"
+
             android:text="@string/home_select_delete_video"
             android:textColor="@color/clip_color_E6000000"
             android:textSize="@dimen/sp_16_home"

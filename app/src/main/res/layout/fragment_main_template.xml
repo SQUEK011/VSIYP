@@ -35,7 +35,7 @@
             android:id="@+id/tv_title_template"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="HarmonyHeiTi"
+
             android:singleLine="true"
             android:gravity="center_horizontal"
             android:text="@string/main_template_template_text"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
-            android:fontFamily="HarmonyHeiTi"
+
             android:gravity="center_horizontal"
             android:text="@string/main_template_guide_text"
             android:textColor="@color/color_text_second_level"

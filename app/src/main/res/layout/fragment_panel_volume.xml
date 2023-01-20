@@ -25,7 +25,7 @@
             android:text="0"
             android:textSize="@dimen/dp_14"
             android:textColor="@color/color_text_second_level"
-            android:fontFamily="HWtext 55ST"
+
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginBottom="@dimen/dp_3"
@@ -36,7 +36,7 @@
             android:id="@+id/sb_items_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="HWtext 55ST"
+
             android:textColor="@color/white"
             android:textSize="@dimen/dp_14"
             app:layout_constraintEnd_toEndOf="@+id/sb_items"
@@ -74,7 +74,7 @@
             android:text="200"
             android:textSize="@dimen/dp_14"
             android:textColor="@color/color_text_second_level"
-            android:fontFamily="HWtext 55ST"
+
             app:layout_constraintStart_toEndOf="@id/sb_items"
             android:layout_marginStart="@dimen/dp_9"
             app:layout_constraintBottom_toBottomOf="@id/sb_items"
