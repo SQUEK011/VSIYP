@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 //import com.example.vsiyp.HomeActivity;
+import com.example.vsiyp.CameraActivity;
 import com.example.vsiyp.HomeRecordAdapter;
 import com.example.vsiyp.MainActivity;
 import com.example.vsiyp.R;
@@ -307,18 +308,8 @@ public class ClipFragment extends BaseFragment {
         mAddCameraCardView.setOnClickListener(new OnClickRepeatedListener(v -> {
             Log.d("ClipFragment", "Camera Selected");
             //create new Intent
-            Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-            //if (intent.resolveActivity(getContext().getPackageManager())==null) return;
-            //File videoFile = null;
-            videoUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
-            //if (videoFile == null) return;
-            //videoUri = FileProvider.getUriForFile(getContext(),"com.example.vsiyp.fileprovider",videoFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);  // set the image file name
-
-            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            // start the Video Capture Intent
-            startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+            Intent intent = new Intent(mActivity,CameraActivity.class);
+            startActivity(intent);
         }));
     }
 
@@ -340,7 +331,7 @@ public class ClipFragment extends BaseFragment {
         super.onPause();
     }
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -386,7 +377,7 @@ public class ClipFragment extends BaseFragment {
                 // Video capture failed, advise user
             }
         }
-    }
+    }*/
 
     private void showActionPopWindow(View view, HVEProject item, int pos) {
         int width;

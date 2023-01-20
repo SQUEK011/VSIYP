@@ -420,11 +420,13 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
             mProjectId = safeIntent.getStringExtra(PROJECT_ID);
         }
         ArrayList<MediaData> list = safeIntent.getParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT);
-        String outputUri = safeIntent.getStringExtra("videoFileUri");
+
 
         Constant.IntentFrom.INTENT_WHERE_FROM =
                 ("highlight".equals(safeIntent.getStringExtra(SOURCE)) ? INTENT_FROM_IMAGE_LIB : 0);
         String editorUuid = safeIntent.getStringExtra(EDITOR_UUID);
+
+        String outputUri = safeIntent.getStringExtra("videoFileUri"); //Recorded Video File Path
 
         if (!TextUtils.isEmpty(editorUuid)) {
             mEditor = HuaweiVideoEditor.getInstance(editorUuid);

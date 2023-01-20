@@ -52,6 +52,9 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".CameraActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingActivity"
             android:configChanges="uiMode"
             android:exported="false"
