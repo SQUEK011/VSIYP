@@ -706,6 +706,7 @@ public class EditPreviewViewModel extends AndroidViewModel {
             return null;
         }
         HVEAudioAsset asset = audioLane.appendAudioAsset(path, startTime);
+        SmartLog.d(TAG, "audioAsset Appened");
         if (asset != null) {
             setSelectedUUID(asset.getUuid());
             if (asset.getEndTime() > endTime) {

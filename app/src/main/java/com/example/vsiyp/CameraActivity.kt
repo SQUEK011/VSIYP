@@ -4,17 +4,23 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.vsiyp.ui.common.BaseActivity
+import com.example.vsiyp.ui.mediaeditor.VideoClipsActivity
+import com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.CLIPS_VIEW_TYPE
 
 class CameraActivity : AppCompatActivity() {
     private val VIDEO_CAPTURE = 101
+    private val VIEW_CAMERA = 2
+    private val TAG = "CameraActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +54,20 @@ class CameraActivity : AppCompatActivity() {
         startActivityForResult(intent, VIDEO_CAPTURE)
     }
 
+   private fun getRealPathFromURI(uri: Uri) : String {
+       var path = ""
+       if (contentResolver != null){
+           val cursor: Cursor? = contentResolver.query(uri, null, null, null, null)
+           if (cursor != null){
+               cursor.moveToFirst()
+               val idx: Int = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA)
+               path = cursor.getString(idx)
+               cursor.close()
+           }
+       }
+       return path
+   }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val videoUri = data?.data
@@ -56,16 +76,30 @@ class CameraActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(this, "Video saved to:\n"
                         + videoUri, Toast.LENGTH_LONG).show()
+                val editIntent = Intent(this, VideoClipsActivity::class.java)
+
+                val filePath = videoUri?.let { getRealPathFromURI(it) }
+                Log.d(TAG,filePath.toString())
+                editIntent.putExtra("videoPath",filePath)
+                editIntent.putExtra(CLIPS_VIEW_TYPE, VIEW_CAMERA)
+                startActivity(editIntent)
+                finish()
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(this, "Video recording cancelled.",
                     Toast.LENGTH_LONG).show()
+                val returnIntent = Intent(this, MainActivity::class.java)
+                startActivity(returnIntent)
+                finish()
 
             } else {
                 Toast.makeText(this, "Failed to record video",
                     Toast.LENGTH_LONG).show()
-            }
+                val returnIntent = Intent(this, MainActivity::class.java)
+                startActivity(returnIntent)
+                finish()
 
+            }
         }
     }
 

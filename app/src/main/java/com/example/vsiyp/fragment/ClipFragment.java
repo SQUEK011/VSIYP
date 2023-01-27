@@ -568,9 +568,7 @@ public class ClipFragment extends BaseFragment {
 
         //1. Find the captured video from the uri
         final String[] videoProjection =
-                {MediaStore.Video.Media.DATA, MediaStore.Video.Media.DURATION, MediaStore.Video.Media.DATE_MODIFIED
-                        , MediaStore.Video.Media.HEIGHT, MediaStore.Video.Media.MIME_TYPE, MediaStore.Video.Media.DISPLAY_NAME
-                        , MediaStore.Video.Media.SIZE, MediaStore.Video.Media.WIDTH};
+                {MediaStore.Video.Media.DATA, MediaStore.Video.Media.DURATION, MediaStore.Video.Media.DATE_MODIFIED};
 
         try {
             Cursor cursor = this.getActivity().getApplication().getContentResolver()
