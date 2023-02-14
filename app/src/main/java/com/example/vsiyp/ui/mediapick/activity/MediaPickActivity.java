@@ -306,10 +306,6 @@ public class MediaPickActivity extends BaseActivity {
                 mContentLayout.setPadding(0, 0, 0, SizeUtils.dp2Px(this, 16));
                 break;
             case ACTION_AUTO_SYNTHESIS_TYPE:
-            case ACTION_AUTO_VIDEO_SELECTION_TYPE:
-                mAddCardView.setText(R.string.auto_template);
-                MediaPickManager.getInstance().setMaxSelectCount(MAX_AUTO_TEMPLATE);
-                break;
             case ACTION_AI_TYPE:
                 MediaPickManager.getInstance().setMaxSelectCount(1);
                 break;
@@ -472,10 +468,6 @@ public class MediaPickActivity extends BaseActivity {
                     break;
                 case ACTION_APPEND_MEDIA_TYPE:
                     setBackResult(intent);
-                    break;
-                case ACTION_AUTO_VIDEO_SELECTION_TYPE:
-                    setResult(Constant.RESULT_CODE, intent);
-                    finish();
                     break;
                 case ACTION_AI_TYPE:
                     setResult(RESULT_OK, intent);

@@ -149,27 +149,7 @@
     <string name="add_tail" priority="translator">Add outro</string>
     <string name="tail" priority="translator">Outro</string>
     <string name="edit_tail" priority="translator">Touch to edit text</string>
-    <string name="choice_template" priority="translator">Select theme</string>
-    <string name="recommend_template" priority="translator">Recommended templates</string>
-    <string name="auto_template" priority="translator">Highlight</string>
-    <string name="auto_template_none" priority="translator">None</string>
-    <string name="auto_template_custom" priority="translator">Custom</string>
-    <string name="auto_template_landscape" priority="translator">Scenery</string>
-    <string name="auto_template_gourmet" priority="translator">Food</string>
-    <string name="auto_template_party" priority="translator">Party</string>
-    <string name="auto_template_family" priority="translator">Family</string>
-    <string name="auto_template_travel" priority="translator">Travel</string>
-    <string name="auto_template_sport" priority="translator">Sports</string>
-    <string name="auto_template_city" priority="translator">Urban</string>
-    <string name="auto_template_culture" priority="translator">Culture</string>
-    <string name="auto_template_night" priority="translator">Night</string>
-    <string name="auto_template_vintage" priority="translator">Retro</string>
-    <string name="manual_template" priority="translator">Edit</string>
-    <string name="auto_template_back_tip" priority="translator">Apply this theme?</string>
-    <string name="auto_template_back_po" priority="translator">Yes</string>
-    <string name="auto_template_back_na" priority="translator">No</string>
-    <string name="auto_template_galley" priority="translator">Gallery</string>
-    <string name="auto_template_highlight" priority="translator">Highlight</string>
+
     <string name="export_toast_tips" priority="translator">Saved to Video Editor album.</string>
     <string name="export_loading" priority="translator">Exporting…</string>
     <string name="export_fail_simple" priority="translator">Unable to export</string>
@@ -524,12 +504,8 @@
     <string name="action_41" priority="translator">Blend</string>
     <string name="action_42" priority="translator">Canvas aspect ratio</string>
     <string name="action_43" priority="LT">Replace</string>
-    <string name="action_44" priority="translator">Add keyframe</string>
     <string name="action_45" priority="translator">Cover settings</string>
     <string name="action_46" priority="translator">Order</string>
-    <string name="action_53" priority="translator">Add face masking</string>
-    <string name="action_54" priority="translator">Clear face masking</string>
-    <string name="action_56" priority="translator">Reset tracking</string>
     <string name="action_70" priority="translator">Color hair</string>
     <string name="action_71" priority="translator">Color hair</string>
 
@@ -562,33 +538,8 @@
 
     <string name="video_run_backward" priority="translator">Reversing…</string>
 
-    <string name="filter_second_menu_add_exclusive" priority="translator">AI filter</string>
-    <string name="exclusive_filter_tip_text1" priority="translator">AI filter</string>
-    <string name="exclusive_filter_tip_text2" priority="translator">Tip: Filter cloning works best when you upload both the original and filtered images.</string>
-    <string name="exclusive_filter_tip_text3" priority="translator">Touch to create a custom filter.</string>
-    <string name="exclusive_filter_tip_text4" priority="translator">Enter filter name</string>
-    <string name="exclusive_filter_tip_text5" priority="translator">Filter created.</string>
-    <string name="exclusive_filter_tip_text6" priority="translator">Touch and hold to rename or delete.</string>
-    <string name="exclusive_filter_tip_text7" priority="translator">Delete this filter?\n\nThis filter will also be removed from any unfinished draft projects.</string>
-    <string name="exclusive_filter_create" priority="LT">Add</string>
-    <string name="exclusive_filter_clone" priority="LT">Clone</string>
-    <string name="exclusive_filter_mimics" priority="LT">Extract</string>
-    <string name="exclusive_filter_original" priority="translator">Original</string>
-    <string name="exclusive_filter_rendering" priority="translator">Filtered image</string>
-    <string name="exclusive_filter_button_create" priority="translator">Create</string>
-    <string name="exclusive_filter_rename" priority="translator">Rename</string>
-    <string name="exclusive_filter_photo" priority="translator">Recent</string>
-    <string name="exclusive_filter_creating" priority="translator">Creating filter…</string>
-    <string name="exclusive_filter_tip_text11" priority="translator">Maximum of %d characters</string>
-    <string name="exclusive_filter_tip_text12" priority="translator">Unable to create item. Check your network settings.</string>
-    <string name="exclusive_filter_tip_text13" priority="translator">Unable to create item. Maximum number of items reached.</string>
-    <string name="exclusive_filter_tip_text14" priority="translator">Unable to add custom filters here.</string>
-    <string name="exclusive_filter_untitled" priority="translator">"Untitled"</string>
     <string name="save_toast" priority="translator">Saved to projects.</string>
 
-    <string name="cut_second_menu_block_face" priority="translator">Face mask</string>
-    <string name="identify_interrupts" priority="translator">Face detection canceled.</string>
-    <string name="identify_failed" priority="translator">No faces found.</string>
     <string name="clean_stickers" priority="translator">Clear stickers</string>
     <string name="face_identifying" priority="translator">Processing…</string>
     <string name="face_blocking_success" priority="translator">Face masked.</string>
@@ -596,10 +547,7 @@
     <string name="choose_face_blocking_sticker" priority="translator">Stickers</string>
     <string name="fragment_capture" priority="translator">Select segment</string>
     <string name="delete_other_sticker_first" priority="translator">Delete some imported stickers first.</string>
-    <plurals name="face_blocking_max_face">
-        <item priority="translator" quantity="one">A maximum of %d face can be masked.</item>
-        <item priority="translator" quantity="other">A maximum of %d faces can be masked.</item>
-    </plurals>
+
     <string name="ai_face_create_fail" priority="translator">Unable to create sticker. Maximum number of stickers reached.</string>
     <string name="ai_not_wifi_attention" priority="translator">No Wi-Fi connection. Currently using mobile data.</string>
     <string name="ai_download_fail" priority="translator">Download failed. Please try again.</string>
@@ -625,19 +573,6 @@
     <string name="mix_mode9" priority="translator">Linear burn</string>
     <string name="mix_mode10" priority="translator">Color burn</string>
     <string name="mix_mode11" priority="translator">Color dodge</string>
-
-    <string name="cut_second_menu_human_tracking" priority="translator">Track person</string>
-    <string name="click_the_person_to_follow" priority="translator">Select a person to track.</string>
-    <string name="swipe_to_select_frame" priority="translator">Swipe left or right to select a frame.</string>
-    <string name="intelligent_processing" priority="translator">Processing…</string>
-    <string name="no_person_selected" priority="translator">Select a person first.</string>
-    <string name="people_tracking" priority="translator">Tracking…</string>
-    <string name="tracking_cancel" priority="translator">Tracking canceled.</string>
-    <string name="tracking_success" priority="translator">Tracking enabled.</string>
-    <string name="no_person_tracked" priority="translator">Unable to track. Please try again.</string>
-    <string name="confirm_you_tracking_click" priority="translator">This will cancel the previous tracking task. Continue?</string>
-    <string name="ai_exception" priority="translator">Processing exception.</string>
-    <string name="overwrite_original_tracking_result" priority="translator">This will overwrite previous tracking effects.</string>
 
     <string name="cut_second_menu_ai_hair" priority="translator">Color hair</string>
     <string name="ai_hair_fail" priority="translator">Hair coloring failed.</string>
@@ -721,7 +656,6 @@
     <string name="cpu_limit" priority="translator">The 32-bit system does not support the AI function.</string>
     <string name="reenact_limit" priority="translator">This function supports only images.</string>
     <string name="crop_limit" priority="translator">Please select a video to trim.</string>
-    <string name="keyframe" priority="translator">Keyframe</string>
     <string name="ai_network_timeout">Network timeout</string>
     <string name="ai_generate_excess">The usage of the function in the current month exceeds the limit. Contact Operation and maintenance personnel to apply for more quotas.</string>
     <string name="ai_exceed_concurrent_number">The number of concurrent use of the function exceeds the maximum. Contact Operation and maintenance personnel to apply for more quotas.</string>
@@ -741,7 +675,7 @@
     <string name="preview" priority="LT">Preview</string>
     <string name="no_wifi" priority="translator">No Wi-Fi connection. Currently using mobile data.</string>
 
-    <!--一键动效-->
+    <!--Auto Timelapse-->
     <string name="cut_second_menu_time_lapse" priority="translator">Auto-timelapse</string>
     <string name="time_lapse_sky" priority="translator">sky</string>
     <string name="time_lapse_river" priority="translator">river</string>
@@ -761,14 +695,7 @@
 
     <string name="auto_mark_description" priority="translator">An effects package needs to be downloaded to use this feature. Continue?</string>
 
-    <!--翅膀特效-->
-    <string name="cut_second_menu_wings" priority="translator">Wings effect</string>
-    <string name="wings_cancel" priority="translator">"cancel wings effect"</string>
-    <string name="ai_wings_processing" priority="translator">"wings effect processing…"</string>
-    <string name="ai_wings_success" priority="translator">Wings effect added complete</string>
-    <string name="ai_wings_fail" priority="translator">Wings effect add exception</string>
-
-    <!--人像&头部分割-->
+    <!--Segmentation-->
     <string name="cut_second_menu_body_seg" priority="translator">Body segmentation</string>
     <string name="cut_second_menu_head_seg" priority="translator">Head segmentation</string>
     <string name="ai_body_seg" priority="translator">"Processing…"</string>
@@ -778,8 +705,10 @@
     <string name="ai_head_seg_success" priority="translator">"Head segmentation complete"</string>
     <string name="ai_body_seg_fail" priority="translator">"Body segmentation exception"</string>
     <string name="ai_head_seg_fail" priority="translator">"Head segmentation exception"</string>
+    <string name="swipe_to_select_frame" priority="translator">Swipe left or right to select a frame.</string>
+    <string name="intelligent_processing" priority="translator">Processing…</string>
+    <string name="ai_exception" priority="translator">Processing exception.</string>
 
-    <!--2022.07.04新版UI-->
     <string name="video_editor_service">Video Editor Service</string>
     <string name="video_editor">Video Editor</string>
     <string name="video_editor_tip">Quickly create short videos</string>
@@ -803,7 +732,6 @@
         <item priority="translator" quantity="other">You can only select up to %1$d media files.</item>
     </plurals>
 
-    <!--导出失败错误信息-->
     <string name="insufficient_disk_space" priority="translator">Free up some storage space on your phone and try again.</string>
 
     <plurals name="resolution_level">

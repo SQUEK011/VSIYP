@@ -17,7 +17,7 @@
 
 package com.example.vsiyp.ui.mediapick.activity;
 
-import static com.example.vsiyp.ui.mediaeditor.blockface.FaceBlockingFragment.IS_FROM_FACE_BLOCKING;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ import com.example.vsiyp.ui.common.bean.MediaData;
 import com.example.vsiyp.ui.common.listener.OnClickRepeatedListener;
 import com.example.vsiyp.ui.common.utils.SizeUtils;
 import com.example.vsiyp.ui.common.view.decoration.GridItemDividerDecoration;
-import com.example.vsiyp.ui.mediaeditor.blockface.cropimage.CropImageActivity;
+
 import com.example.vsiyp.ui.mediapick.adapter.PicturePickAdapter;
 import com.example.vsiyp.ui.mediapick.viewmodel.PickPictureViewModel;
 import com.huawei.secure.android.common.intent.SafeIntent;
@@ -65,7 +65,7 @@ public class PicturePickActivity extends BaseActivity {
         setContentView(R.layout.activity_picture_pick);
 
         SafeIntent safeIntent = new SafeIntent(getIntent());
-        isFromFaceBlocking = safeIntent.getBooleanExtra(IS_FROM_FACE_BLOCKING, false);
+        //isFromFaceBlocking = safeIntent.getBooleanExtra(IS_FROM_FACE_BLOCKING, false);
         initView();
         initObject();
         initData();
@@ -108,20 +108,21 @@ public class PicturePickActivity extends BaseActivity {
             PagedList<MediaData> mediaDataList = mMediaAdapter.getCurrentList();
             if (mediaDataList != null && mediaDataList.size() > position) {
                 MediaData mediaData = mediaDataList.get(position);
-                if (isFromFaceBlocking) {
-                    CropImageActivity.startActivityForResult(this, mediaData.getPath());
-                } else {
+                //if (isFromFaceBlocking) {
+                //    CropImageActivity.startActivityForResult(this, mediaData.getPath());
+                //} else {
                     Intent intent = new Intent();
                     if (mediaData != null && mediaData.getPath() != null) {
                         intent.putExtra(Constant.EXTRA_SELECT_RESULT, mediaData.getPath());
                         setResult(Constant.RESULT_CODE, intent);
                         finish();
-                    }
+                //    }
                 }
             }
         });
     }
 
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -137,5 +138,5 @@ public class PicturePickActivity extends BaseActivity {
                 finish();
             }
         }
-    }
+    }*/
 }

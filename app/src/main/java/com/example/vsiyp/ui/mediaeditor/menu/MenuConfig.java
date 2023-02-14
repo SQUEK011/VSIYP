@@ -85,10 +85,10 @@ public class MenuConfig {
                         Iterator<EditMenuBean> iterator = childList.iterator();
                         while (iterator.hasNext()) {
                             EditMenuBean menuBean = iterator.next();
-                            if (menuBean.getId() == MainViewState.EDIT_VIDEO_STATE_HUMAN_TRACKING) {
-                                iterator.remove();
-                                break;
-                            }
+                            //if (menuBean.getId() == MainViewState.EDIT_VIDEO_STATE_HUMAN_TRACKING) {
+                            //    iterator.remove();
+                             //   break;
+                            //}
                         }
                     }
                     break;
@@ -124,10 +124,10 @@ public class MenuConfig {
                             Iterator<EditMenuBean> iterator = operatesList.iterator();
                             while (iterator.hasNext()) {
                                 EditMenuBean menuBean = iterator.next();
-                                if (menuBean.getId() == MainViewState.EDIT_VIDEO_OPERATION_HUMAN_TRACKING) {
-                                    iterator.remove();
-                                    break;
-                                }
+                                //if (menuBean.getId() == MainViewState.EDIT_VIDEO_OPERATION_HUMAN_TRACKING) {
+                                //    iterator.remove();
+                                //    break;
+                                //}
                             }
                         }
                         break;
@@ -137,10 +137,10 @@ public class MenuConfig {
                             Iterator<EditMenuBean> iterator = operateList.iterator();
                             while (iterator.hasNext()) {
                                 EditMenuBean menuBean = iterator.next();
-                                if (menuBean.getId() == MainViewState.EDIT_PIP_OPERATION_HUMAN_TRACKING) {
-                                    iterator.remove();
-                                    break;
-                                }
+                                //if (menuBean.getId() == MainViewState.EDIT_PIP_OPERATION_HUMAN_TRACKING) {
+                                //    iterator.remove();
+                                //    break;
+                                //}
                             }
                         }
                         break;

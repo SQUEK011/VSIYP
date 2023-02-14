@@ -1,5 +1,6 @@
 package com.example.vsiyp.ui.mediaeditor.trackview.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -68,7 +69,7 @@ public class ImageTrackRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         HVEAsset asset = dataList.get(position);
 
         if (!(holder instanceof MainViewHolder)) {

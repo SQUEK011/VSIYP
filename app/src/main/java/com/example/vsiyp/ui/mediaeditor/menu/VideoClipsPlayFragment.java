@@ -26,7 +26,7 @@ import com.example.vsiyp.ui.common.utils.ToastWrapper;
 import com.example.vsiyp.ui.common.view.loading.LoadingIndicatorView;
 import com.example.vsiyp.ui.mediaeditor.VideoClipsActivity;
 import com.example.vsiyp.ui.mediaeditor.materialedit.MaterialEditViewModel;
-import com.example.vsiyp.ui.mediaeditor.persontrack.PersonTrackingViewModel;
+
 import com.example.vsiyp.ui.mediaeditor.trackview.viewmodel.EditPreviewViewModel;
 import com.huawei.hms.videoeditor.sdk.HVETimeLine;
 import com.huawei.hms.videoeditor.sdk.HuaweiVideoEditor;
@@ -59,7 +59,7 @@ public class VideoClipsPlayFragment extends BaseFragment implements HuaweiVideoE
 
     private EditPreviewViewModel mEditPreviewVieModel;
 
-    private PersonTrackingViewModel mPersonTrackingViewModel;
+    //private PersonTrackingViewModel mPersonTrackingViewModel;
 
     private long mCurrentTime = 0;
 
@@ -110,7 +110,7 @@ public class VideoClipsPlayFragment extends BaseFragment implements HuaweiVideoE
         mPlayViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(VideoClipsPlayViewModel.class);
         mEditPreviewVieModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
         mMaterialEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MaterialEditViewModel.class);
-        mPersonTrackingViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(PersonTrackingViewModel.class);
+        //mPersonTrackingViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(PersonTrackingViewModel.class);
         mDefaultPlayControlView.setVideoPlaying(false);
         mFullScreenPlayControlView.setVideoPlaying(false);
         mToastState = new ToastWrapper();
@@ -247,10 +247,12 @@ public class VideoClipsPlayFragment extends BaseFragment implements HuaweiVideoE
                     if (mVideoDuration - mCurrentTime < TIMER_PLAY_PERIOD) {
                         mCurrentTime = 0;
                     }
-                    if (mEditPreviewVieModel.isPersonTrackingStatus()) {
+                    /*if (mEditPreviewVieModel.isPersonTrackingStatus()) {
                         editor.seekTimeLine(mCurrentTime,
-                                () -> editor.playTimeLine(mCurrentTime, mPersonTrackingViewModel.getVideoEndTime()));
-                    } else {
+                                () -> editor.playTimeLine(mCurrentTime,
+                                        mPersonTrackingViewModel.getVideoEndTime()
+                                ));
+                    }*/ else {
                         editor.seekTimeLine(mCurrentTime, () -> editor.playTimeLine(mCurrentTime, mVideoDuration));
                     }
                 } else {

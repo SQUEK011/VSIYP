@@ -17,7 +17,6 @@ import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_AI_SEGMENTATION;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_BODY_SEG;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_HEAD_SEG;
-import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_HUMAN_TRACKING;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_TIME_LAPSE;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_OPERATION_AI_SEGMENTATION;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_OPERATION_HEAD_SEG;
@@ -38,7 +37,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,7 +56,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.vsiyp.R;
 import com.example.vsiyp.ui.common.BaseActivity;
@@ -68,7 +65,6 @@ import com.example.vsiyp.ui.common.bean.AudioData;
 import com.example.vsiyp.ui.common.bean.Constant;
 import com.example.vsiyp.ui.common.bean.MediaData;
 import com.example.vsiyp.ui.common.listener.OnClickRepeatedListener;
-import com.example.vsiyp.ui.common.utils.BigDecimalUtils;
 import com.example.vsiyp.ui.common.utils.CodecUtil;
 import com.example.vsiyp.ui.common.utils.FileUtil;
 import com.example.vsiyp.ui.common.utils.SharedPreferenceUtils;
@@ -83,20 +79,15 @@ import com.example.vsiyp.ui.common.utils.VolumeChangeObserver;
 import com.example.vsiyp.ui.common.view.EditorTextView;
 import com.example.vsiyp.ui.common.view.dialog.AdvanceExitDialog;
 import com.example.vsiyp.ui.common.view.dialog.CommonProgressDialog;
-import com.example.vsiyp.ui.common.view.dialog.HumanTrackingProgressDialog;
 import com.example.vsiyp.ui.common.view.dialog.LoadingDialog;
 import com.example.vsiyp.ui.common.view.dialog.ProgressDialog;
 import com.example.vsiyp.ui.mediaeditor.aibodyseg.BodySegViewModel;
 import com.example.vsiyp.ui.mediaeditor.aifun.AIBlockingHintDialog;
 import com.example.vsiyp.ui.mediaeditor.aisegmentation.SegmentationFragment;
 import com.example.vsiyp.ui.mediaeditor.aisegmentation.SegmentationViewModel;
-import com.example.vsiyp.ui.mediaeditor.blockface.FaceBlockingFragment;
-import com.example.vsiyp.ui.mediaeditor.blockface.FaceBlockingViewModel;
-import com.example.vsiyp.ui.mediaeditor.blockface.FaceProgressDialog;
 import com.example.vsiyp.ui.mediaeditor.cover.CoverImageViewModel;
 import com.example.vsiyp.ui.mediaeditor.crop.AssetCropFragment;
 import com.example.vsiyp.ui.mediaeditor.crop.CropNewActivity;
-import com.example.vsiyp.ui.mediaeditor.keyframe.KeyFrameFragment;
 import com.example.vsiyp.ui.mediaeditor.materialedit.MaterialEditData;
 import com.example.vsiyp.ui.mediaeditor.materialedit.MaterialEditViewModel;
 import com.example.vsiyp.ui.mediaeditor.menu.DefaultPlayControlView;
@@ -107,10 +98,6 @@ import com.example.vsiyp.ui.mediaeditor.menu.MenuFragment;
 import com.example.vsiyp.ui.mediaeditor.menu.MenuViewModel;
 import com.example.vsiyp.ui.mediaeditor.menu.VideoClipsPlayFragment;
 import com.example.vsiyp.ui.mediaeditor.menu.VideoClipsPlayViewModel;
-import com.example.vsiyp.ui.mediaeditor.persontrack.DrawBoxUtil;
-import com.example.vsiyp.ui.mediaeditor.persontrack.HumanTrackingConfirmDialog;
-import com.example.vsiyp.ui.mediaeditor.persontrack.PersonTrackingFragment;
-import com.example.vsiyp.ui.mediaeditor.persontrack.PersonTrackingViewModel;
 import com.example.vsiyp.ui.mediaeditor.speed.CustomCurveSpeedFragment;
 import com.example.vsiyp.ui.mediaeditor.split.AssetSplitFragment;
 import com.example.vsiyp.ui.mediaeditor.texts.fragment.EditPanelFragment;
@@ -126,7 +113,6 @@ import com.example.vsiyp.ui.mediapick.activity.MediaPickActivity;
 import com.huawei.hms.videoeditor.sdk.HVETimeLine;
 import com.huawei.hms.videoeditor.sdk.HuaweiVideoEditor;
 import com.huawei.hms.videoeditor.sdk.LicenseException;
-import com.huawei.hms.videoeditor.sdk.ai.HVEAIError;
 import com.huawei.hms.videoeditor.sdk.ai.HVEAIInitialCallback;
 import com.huawei.hms.videoeditor.sdk.ai.HVEAIProcessCallback;
 import com.huawei.hms.videoeditor.sdk.asset.HVEAsset;
@@ -149,7 +135,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class VideoClipsActivity extends BaseActivity implements DefaultPlayControlView.HideLockButton {
     private static final String TAG = "VideoClipsActivity";
@@ -232,10 +217,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
 
     private EditPreviewViewModel mEditPreviewViewModel;
 
-    private PersonTrackingViewModel mPersonTrackingViewModel;
-
-    private FaceBlockingViewModel mFaceBlockingViewModel;
-
     private SegmentationViewModel mSegmentationViewModel;
 
     private BodySegViewModel mBodySegViewModel;
@@ -302,10 +283,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
 
     private final static int MIN_PROGRESS = 2;
 
-    private FaceProgressDialog mFaceProgressDialog;
-
-    private HumanTrackingProgressDialog mPersonTrackingDialog;
-
     private boolean isAbnormalExit;
 
     private PictureStickerChangeEvent mPictureStickerChangeEvent;
@@ -355,9 +332,9 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.reSizeDialog();
         }
-        if (mFaceProgressDialog != null && mFaceProgressDialog.isShowing()) {
+        /*if (mFaceProgressDialog != null && mFaceProgressDialog.isShowing()) {
             mFaceProgressDialog.reSizeDialog();
-        }
+        }*/
         if (mCommonProgressDialog != null && mCommonProgressDialog.isShowing()) {
             mCommonProgressDialog.reSizeDialog();
         }
@@ -398,8 +375,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         mContext = this;
         mSdkPlayViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(VideoClipsPlayViewModel.class);
         mEditPreviewViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(EditPreviewViewModel.class);
-        mPersonTrackingViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(PersonTrackingViewModel.class);
-        mFaceBlockingViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) factory).get(FaceBlockingViewModel.class);
         mMaterialEditViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(MaterialEditViewModel.class);
         mEditViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(EditItemViewModel.class);
         mMenuViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(MenuViewModel.class);
@@ -515,51 +490,40 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
 
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
-        mIvBack.setOnClickListener(new OnClickRepeatedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearTextStyle();
+        mIvBack.setOnClickListener(new OnClickRepeatedListener(v -> {
+            clearTextStyle();
 
-                onBackPressed();
-            }
+            onBackPressed();
         }, 100));
 
-        mTvExport.setOnClickListener(new OnClickRepeatedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentSdk = new Intent(mContext, VideoExportActivity.class);
+        mTvExport.setOnClickListener(new OnClickRepeatedListener(v -> {
+            Intent intentSdk = new Intent(mContext, VideoExportActivity.class);
 
-                HuaweiVideoEditor editor = EditorManager.getInstance().getEditor();
-                if (editor == null) {
-                    SmartLog.e(TAG, "Export Clicked but editor is null");
-                    return;
-                }
-                HVETimeLine timeLine = editor.getTimeLine();
-                if (timeLine == null) {
-                    return;
-                }
-                if (mCoverImageViewModel != null) {
-                    mCoverImageViewModel.updateDefaultCover(editor, timeLine.getCurrentTime());
-                }
-                intentSdk.putExtra(ExportConstants.EDITOR_UUID, editor.getUuid());
-
-                SafeIntent safeIntent = new SafeIntent(getIntent());
-                intentSdk.putExtra(SOURCE, safeIntent.getStringExtra(SOURCE));
-
-                if (timeLine.getCoverImage() != null) {
-                    intentSdk.putExtra(ExportConstants.COVER_URL, timeLine.getCoverImage().getPath());
-                }
-
-                startActivityForResult(intentSdk, ACTION_EXPORT_REQUEST_CODE);
+            HuaweiVideoEditor editor = EditorManager.getInstance().getEditor();
+            if (editor == null) {
+                SmartLog.e(TAG, "Export Clicked but editor is null");
+                return;
             }
+            HVETimeLine timeLine = editor.getTimeLine();
+            if (timeLine == null) {
+                return;
+            }
+            if (mCoverImageViewModel != null) {
+                mCoverImageViewModel.updateDefaultCover(editor, timeLine.getCurrentTime());
+            }
+            intentSdk.putExtra(ExportConstants.EDITOR_UUID, editor.getUuid());
+
+            SafeIntent safeIntent = new SafeIntent(getIntent());
+            intentSdk.putExtra(SOURCE, safeIntent.getStringExtra(SOURCE));
+
+            if (timeLine.getCoverImage() != null) {
+                intentSdk.putExtra(ExportConstants.COVER_URL, timeLine.getCoverImage().getPath());
+            }
+
+            startActivityForResult(intentSdk, ACTION_EXPORT_REQUEST_CODE);
         }));
 
-        mEditPreviewViewModel.getVideoDuration().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(Long aLong) {
-                mSdkPlayViewModel.setVideoDuration(aLong);
-            }
-        });
+        mEditPreviewViewModel.getVideoDuration().observe(this, aLong -> mSdkPlayViewModel.setVideoDuration(aLong));
 
         mSdkPlayViewModel.setCurrentTime(0L);
         mSdkPlayViewModel.getCurrentTime().observe(this, time -> {
@@ -583,42 +547,39 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
             mVideoClipsPlayFragment.setSeekBarProgress(time);
         });
 
-        mSdkPlayViewModel.getFullScreenState().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isFullScreen) {
-                isFullScreenState = isFullScreen;
-                if (isFullScreenState) {
-                    guideline.setGuidelinePercent(1);
-                    mMenuFragment.showMenu(false);
-                    mIvBack.setVisibility(View.VISIBLE);
-                    mTvExport.setVisibility(View.GONE);
-                    ConstraintLayout.LayoutParams fullScreenParam = new ConstraintLayout.LayoutParams(0, 0);
-                    fullScreenParam.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-                    fullScreenParam.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-                    fullScreenParam.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-                    fullScreenParam.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-                    mSdkPlayLayout.setLayoutParams(fullScreenParam);
-                    mEditPreviewViewModel.setSelectedUUID("");
-                } else {
-                    mIvBack.setVisibility(View.VISIBLE);
-                    guideline.setGuidelinePercent(0.575f);
-                    mMenuFragment.showMenu(true);
-                    mIvExport.setVisibility(View.GONE);
-                    if (mVideoClipsNavBar.getVisibility() != View.VISIBLE) {
-                        mVideoClipsNavBar.setVisibility(View.VISIBLE);
-                    }
-                    if (Constant.IntentFrom.INTENT_WHERE_FROM != 0) {
-                        Constant.IntentFrom.INTENT_WHERE_FROM = 0;
-                        SmartLog.d(TAG, "INTENT_WHERE_FROM B" + 0);
-                    }
-                    mTvExport.setVisibility(View.VISIBLE);
-                    ConstraintLayout.LayoutParams defaultParam = new ConstraintLayout.LayoutParams(0, 0);
-                    defaultParam.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-                    defaultParam.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-                    defaultParam.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-                    defaultParam.bottomToTop = R.id.guideline;
-                    mSdkPlayLayout.setLayoutParams(defaultParam);
+        mSdkPlayViewModel.getFullScreenState().observe(this, isFullScreen -> {
+            isFullScreenState = isFullScreen;
+            if (isFullScreenState) {
+                guideline.setGuidelinePercent(1);
+                mMenuFragment.showMenu(false);
+                mIvBack.setVisibility(View.VISIBLE);
+                mTvExport.setVisibility(View.GONE);
+                ConstraintLayout.LayoutParams fullScreenParam = new ConstraintLayout.LayoutParams(0, 0);
+                fullScreenParam.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+                fullScreenParam.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+                fullScreenParam.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                fullScreenParam.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+                mSdkPlayLayout.setLayoutParams(fullScreenParam);
+                mEditPreviewViewModel.setSelectedUUID("");
+            } else {
+                mIvBack.setVisibility(View.VISIBLE);
+                guideline.setGuidelinePercent(0.575f);
+                mMenuFragment.showMenu(true);
+                mIvExport.setVisibility(View.GONE);
+                if (mVideoClipsNavBar.getVisibility() != View.VISIBLE) {
+                    mVideoClipsNavBar.setVisibility(View.VISIBLE);
                 }
+                if (Constant.IntentFrom.INTENT_WHERE_FROM != 0) {
+                    Constant.IntentFrom.INTENT_WHERE_FROM = 0;
+                    SmartLog.d(TAG, "INTENT_WHERE_FROM B" + 0);
+                }
+                mTvExport.setVisibility(View.VISIBLE);
+                ConstraintLayout.LayoutParams defaultParam = new ConstraintLayout.LayoutParams(0, 0);
+                defaultParam.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+                defaultParam.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+                defaultParam.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                defaultParam.bottomToTop = R.id.guideline;
+                mSdkPlayLayout.setLayoutParams(defaultParam);
             }
         });
 
@@ -629,23 +590,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                     seekHandler.removeCallbacksAndMessages(null);
                 }
                 isVideoPlaying = isPlaying;
-            }
-        });
-
-        mEditPreviewViewModel.getFaceDetectError().observe(this, errorCode -> {
-            switch (errorCode) {
-                case HVEAIError.AI_ERROR_CPU_NOT_SUPPORT:
-                    ToastWrapper.makeText(mContext, R.string.device_not_support, Toast.LENGTH_SHORT).show();
-                    break;
-                case HVEAIError.AI_ERROR_NETWORK:
-                case HVEAIError.AI_ERROR_TIMEOUT:
-                    ToastWrapper.makeText(mContext, R.string.result_illegal, Toast.LENGTH_SHORT).show();
-                    break;
-                case HVEAIError.AI_ERROR_UNKNOWN:
-                    ToastWrapper.makeText(mContext, R.string.identify_failed, Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
             }
         });
 
@@ -763,171 +707,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                 hideKeyboard();
             }
         }));
-        mPersonTrackingViewModel.getHumanTrackingEnter().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if (integer == -1) {
-                    return;
-                }
-                HVEAsset selectedAsset;
-                if (integer == EDIT_PIP_OPERATION_HUMAN_TRACKING) {
-                    selectedAsset = mEditPreviewViewModel.getSelectedAsset();
-                } else {
-                    selectedAsset = mEditPreviewViewModel.getMainLaneAsset();
-                }
-                if (selectedAsset != null) {
-                    mPersonTrackingViewModel.setSelectedTracking(selectedAsset);
-                }
-                if (selectedAsset == null) {
-                    SmartLog.e(TAG, "HumanTracking asset is null!");
-                    return;
-                }
-                if (selectedAsset instanceof HVEVideoAsset) {
-                    Boolean isCancel = isContainHumanTrackingEffect(selectedAsset);
-                    if (!isCancel) {
-                        initHumanTracking(integer, selectedAsset);
-                    } else {
-                        showDeleteDialog(integer, selectedAsset);
-                    }
-                }
-                mPersonTrackingViewModel.setHumanTrackingEnter(-1);
-            }
-        });
-
-        mPersonTrackingViewModel.getTrackingPoint().observe(this, pointList -> {
-            HVEAsset trackingAsset = mPersonTrackingViewModel.getSelectedTracking();
-            if (trackingAsset != null) {
-                List<HVEVideoLane> allVideoLane = mEditor.getTimeLine().getAllVideoLane();
-                HVEVideoLane videoLane = allVideoLane.get(trackingAsset.getLaneIndex());
-                if (videoLane == null) {
-                    SmartLog.e(TAG, "VideoLane is null!");
-                    return;
-                }
-                mEditor.getBitmapAtSelectedLan(trackingAsset.getLaneIndex(), mEditPreviewViewModel.getSeekTime(),
-                        new HuaweiVideoEditor.ImageCallback() {
-                            @Override
-                            public void onSuccess(Bitmap bitmap, long time) {
-                                if (bitmap == null) {
-                                    return;
-                                }
-                                int width = bitmap.getWidth();
-                                int height = bitmap.getHeight();
-                                Point point = CodecUtil.calculateEnCodeWH(width, height);
-                                float scale = BigDecimalUtils.div(width, point.x);
-
-                                HVEPosition2D position2D = new HVEPosition2D(BigDecimalUtils.div(pointList.x, scale),
-                                        BigDecimalUtils.div(pointList.y, scale));
-
-                                Bitmap dstBitmap = Bitmap.createScaledBitmap(bitmap, point.x, point.y, true);
-                                List<Float> aiHumanTracking = null;
-                                if (trackingAsset instanceof HVEVideoAsset) {
-                                    aiHumanTracking =
-                                            ((HVEVideoAsset) trackingAsset).selectHumanTrackingPerson(dstBitmap, position2D);
-                                }
-
-                                if (aiHumanTracking != null && !aiHumanTracking.isEmpty()) {
-                                    mPersonTrackingViewModel.setTrackingIsReady(true);
-                                    float minx = aiHumanTracking.get(0);
-                                    float miny = aiHumanTracking.get(1);
-                                    float maxx = aiHumanTracking.get(2);
-                                    float maxy = aiHumanTracking.get(3);
-                                    List<MaterialEditData> mMaterialEditDataList = new ArrayList<>();
-                                    MaterialEditData materialEditData = DrawBoxUtil.drawBox(
-                                            mPersonTrackingViewModel.getSelectedTracking(), mEditor.getTimeLine(),
-                                            MaterialEditData.MaterialType.PERSON, minx, miny, maxx, maxy);
-                                    mMaterialEditDataList.add(materialEditData);
-                                    mMaterialEditViewModel.addMaterialEditDataList(mMaterialEditDataList);
-                                } else {
-                                    mPersonTrackingViewModel.setTrackingIsReady(false);
-                                    runOnUiThread(() -> ToastWrapper
-                                            .makeText(VideoClipsActivity.this, R.string.no_person_selected, Toast.LENGTH_SHORT)
-                                            .show());
-                                }
-
-                                if (!bitmap.isRecycled()) {
-                                    bitmap.recycle();
-                                }
-                                if (!dstBitmap.isRecycled()) {
-                                    dstBitmap.recycle();
-                                }
-                            }
-
-                            @Override
-                            public void onFail(int errorCode) {
-                                SmartLog.e(TAG, getString(R.string.result_illegal));
-                                mPersonTrackingViewModel.setTrackingIsReady(false);
-                                ToastWrapper.makeText(VideoClipsActivity.this, R.string.result_illegal, Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        });
-            }
-        });
-
-        mPersonTrackingViewModel.getTrackingIsStart().observe(this, integer -> {
-            if (integer == -1) {
-                return;
-            }
-            if (mPersonTrackingDialog == null) {
-                mPersonTrackingDialog = new HumanTrackingProgressDialog(this, getString(R.string.people_tracking));
-                mPersonTrackingDialog.setOnProgressClick(() -> {
-                    mPersonTrackingViewModel.interruptHumanTracking();
-                    ToastWrapper.makeText(this, getString(R.string.tracking_cancel), Toast.LENGTH_SHORT).show();
-                    mPersonTrackingDialog = null;
-                });
-
-                mPersonTrackingDialog.setOnCancelListener(dialog -> {
-                    mPersonTrackingViewModel.interruptHumanTracking();
-                    ToastWrapper.makeText(this, getString(R.string.tracking_cancel), Toast.LENGTH_SHORT).show();
-                    mPersonTrackingDialog = null;
-                });
-            }
-            mPersonTrackingDialog.show(getWindowManager());
-            mPersonTrackingDialog.setStopVisble(true);
-            mPersonTrackingDialog.setCancelable(true);
-            mPersonTrackingViewModel.humanTracking(integer, new HVEAIProcessCallback() {
-                @Override
-                public void onProgress(int progress) {
-                    runOnUiThread(() -> {
-                        if (mPersonTrackingDialog != null) {
-                            mPersonTrackingDialog.setProgress(progress);
-                        }
-                    });
-                }
-
-                @Override
-                public void onSuccess() {
-                    runOnUiThread(() -> {
-                        if (mPersonTrackingDialog != null) {
-                            mPersonTrackingDialog.setProgress(0);
-                            mPersonTrackingDialog.dismiss();
-                        }
-                        if (mEditPreviewViewModel != null) {
-                            mEditPreviewViewModel.setSelectedUUID("");
-                            mEditPreviewViewModel.setCurrentTime(mCurrentTime);
-                        }
-
-                        ToastWrapper
-                                .makeText(VideoClipsActivity.this, getString(R.string.tracking_success), Toast.LENGTH_SHORT)
-                                .show();
-                    });
-                }
-
-                @Override
-                public void onError(int errorCode, String errorMessage) {
-                    runOnUiThread(() -> {
-                        if (mPersonTrackingDialog != null) {
-                            mPersonTrackingDialog.setProgress(0);
-                            mPersonTrackingDialog.dismiss();
-                        }
-                        ToastWrapper
-                                .makeText(VideoClipsActivity.this, getString(R.string.no_person_tracked),
-                                        Toast.LENGTH_SHORT)
-                                .show();
-                    });
-                }
-            });
-            mPersonTrackingViewModel.setTrackingIsStart(-1);
-        });
 
         mSegmentationViewModel.getSegmentationEnter().observe(this, integer -> {
             boolean isSegFirst = SharedPreferenceUtils.get(getApplicationContext(), AI_SEGMENTATION)
@@ -1076,13 +855,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
 
             segmentationDetect(integer);
             mSegmentationViewModel.setIsStart(-1);
-        });
-
-        mEditPreviewViewModel.getFaceBlockingEnter().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                detectFace(integer);
-            }
         });
 
         mMenuViewModel.getVideoSelectionEnter().observe(this, integer -> {
@@ -1311,171 +1083,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
             }
         }
         mBodySegViewModel.setBodySegEnter(-1);
-    }
-
-    private boolean isContainHumanTrackingEffect(HVEAsset asset) {
-        for (HVEEffect effect : asset.getEffects()) {
-            if (effect.getEffectType() == HVEEffect.HVEEffectType.HUMAN_TRACKING) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void detectFace(int operateId) {
-        HVEAsset hveAsset = mEditPreviewViewModel.getSelectedAsset();
-        if (hveAsset == null) {
-            hveAsset = mEditPreviewViewModel.getMainLaneAsset();
-        }
-        if (mFaceProgressDialog == null) {
-            mFaceProgressDialog = new FaceProgressDialog(this, getString(R.string.face_identifying));
-
-            HVEAsset finalHveAsset = hveAsset;
-            mFaceProgressDialog.setOnProgressClick(() -> {
-                mFaceBlockingViewModel.interruptFaceBlocking(finalHveAsset);
-                ToastWrapper.makeText(this, getString(R.string.identify_interrupts), Toast.LENGTH_SHORT).show();
-                mFaceProgressDialog = null;
-                MenuClickManager.getInstance().popView();
-            });
-
-            mFaceProgressDialog.setOnCancelListener(dialog -> {
-                mFaceBlockingViewModel.interruptFaceBlocking(finalHveAsset);
-                ToastWrapper.makeText(this, getString(R.string.identify_interrupts), Toast.LENGTH_SHORT).show();
-                mFaceProgressDialog = null;
-            });
-        }
-        mFaceProgressDialog.show(getWindowManager());
-        mFaceProgressDialog.setStopVisble(true);
-        mFaceProgressDialog.setCancelable(true);
-        mFaceProgressDialog.setProgress(MIN_PROGRESS);
-
-        AtomicBoolean isFirstDownloadModel = new AtomicBoolean(false);
-        long start = System.currentTimeMillis();
-        if (mEditor == null || mEditPreviewViewModel == null || mFaceBlockingViewModel == null) {
-            return;
-        }
-        if (mEditor.getTimeLine() == null) {
-            return;
-        }
-        if (hveAsset instanceof HVEVisibleAsset) {
-            HVEAsset visibleAsset = hveAsset;
-            ((HVEVisibleAsset) hveAsset).initFacePrivacyEngine(new HVEAIInitialCallback() {
-                @Override
-                public void onProgress(int progress) {
-                    if (progress < 100) {
-                        isFirstDownloadModel.set(true);
-                    }
-                    if (isFirstDownloadModel.get()) {
-                        int pr = (int) (progress * 0.1);
-                        if (pr >= MIN_PROGRESS) {
-                            runOnUiThread(() -> {
-                                if (mFaceProgressDialog != null) {
-                                    mFaceProgressDialog.setProgress(pr);
-                                }
-                            });
-                        }
-                    }
-                }
-
-                @Override
-                public void onSuccess() {
-                    ((HVEVisibleAsset) visibleAsset).startFacePrivacyDetect(new HVEAIProcessCallback() {
-                        @Override
-                        public void onProgress(int progress) {
-                            int detectProgress;
-                            if (isFirstDownloadModel.get()) {
-                                detectProgress = (int) (10 + (progress * 0.9));
-                            } else {
-                                detectProgress = progress;
-                            }
-                            if (detectProgress >= MIN_PROGRESS) {
-                                runOnUiThread(() -> {
-                                    if (mFaceProgressDialog != null) {
-                                        mFaceProgressDialog.setProgress(detectProgress);
-                                    }
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onSuccess() {
-                            long end = System.currentTimeMillis();
-                            SmartLog.i(TAG, "face block algorithm UI cost time: " + (end - start));
-                            if (mFaceBlockingViewModel == null) {
-                                return;
-                            }
-                            mFaceBlockingViewModel
-                                    .setFaceBlockingList(((HVEVisibleAsset) visibleAsset).getAIFaceTemplates());
-                            runOnUiThread(() -> {
-                                if (mFaceProgressDialog != null) {
-                                    mFaceProgressDialog.dismiss();
-                                }
-                            });
-                            showFaceBlockingFragment(operateId);
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String errorMessage) {
-                            if (mEditPreviewViewModel == null || mFaceBlockingViewModel == null) {
-                                return;
-                            }
-                            mEditPreviewViewModel.setFaceDetectError(errorCode);
-                            mFaceBlockingViewModel.setFaceBlockingList(null);
-                            runOnUiThread(() -> {
-                                if (mFaceProgressDialog != null) {
-                                    mFaceProgressDialog.dismiss();
-                                }
-                            });
-                        }
-                    });
-                }
-
-                @Override
-                public void onError(int errorCode, String errorMessage) {
-                    if (mEditPreviewViewModel != null) {
-                        mEditPreviewViewModel.setFaceDetectError(errorCode);
-                    }
-                    if (mFaceBlockingViewModel != null) {
-                        mFaceBlockingViewModel.setFaceBlockingList(null);
-                    }
-                    runOnUiThread(() -> {
-                        if (mFaceProgressDialog != null) {
-                            mFaceProgressDialog.dismiss();
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-    private void initHumanTracking(int operateId, HVEAsset selectedAsset) {
-        if (selectedAsset instanceof HVEVideoAsset) {
-            runOnUiThread(() -> mVideoClipsPlayFragment.showLoadingView());
-            ((HVEVideoAsset) selectedAsset).initHumanTrackingEngine(new HVEAIInitialCallback() {
-                @Override
-                public void onProgress(int progress) {
-                }
-
-                @Override
-                public void onSuccess() {
-                    runOnUiThread(() -> {
-                        mVideoClipsPlayFragment.hideLoadingView();
-                        showPersonTrackingFragment(operateId);
-                        ToastWrapper
-                                .makeText(VideoClipsActivity.this, R.string.click_the_person_to_follow, Toast.LENGTH_SHORT)
-                                .show();
-                    });
-                }
-
-                @Override
-                public void onError(int errorCode, String errorMessage) {
-                    SmartLog.e(TAG, errorMessage);
-                    mVideoClipsPlayFragment.hideLoadingView();
-                    mPersonTrackingViewModel.setTrackingIsReady(false);
-                    ToastWrapper.makeText(VideoClipsActivity.this, R.string.result_illegal, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
     public void initSegmentation(Integer integer) {
@@ -1750,27 +1357,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         mSegmentationDialog.show();
     }
 
-    private void showDeleteDialog(int operateId, HVEAsset selectedAsset) {
-        HumanTrackingConfirmDialog dialog = new HumanTrackingConfirmDialog(this);
-        dialog.show();
-        dialog.setOnPositiveClickListener(() -> {
-            List<HVEVideoLane> allVideoLane = mEditor.getTimeLine().getAllVideoLane();
-            HVEVideoLane videoLane = allVideoLane.get(selectedAsset.getLaneIndex());
-            if (videoLane == null) {
-                SmartLog.e(TAG, "HumanTracking VideoLane is null!");
-                return;
-            }
-            if (mEditPreviewViewModel == null) {
-                SmartLog.e(TAG, "EditPreviewViewModel is null!");
-                return;
-            }
-            if (selectedAsset instanceof HVEVideoAsset) {
-                ((HVEVideoAsset) selectedAsset).removeHumanTrackingEffect();
-                initHumanTracking(operateId, selectedAsset);
-            }
-        });
-    }
-
     public void hideKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
@@ -1988,24 +1574,12 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         return list;
     }
 
-    public void showFaceBlockingFragment(int operateId) {
-        mMenuFragment.showFragment(operateId, FaceBlockingFragment.newInstance(operateId));
-    }
-
-    public void showPersonTrackingFragment(int operateId) {
-        mMenuFragment.showFragment(operateId, PersonTrackingFragment.newInstance(operateId));
-    }
-
     public void showSegmentationFragment(int operateId) {
         mMenuFragment.showFragment(operateId, SegmentationFragment.newInstance(operateId));
     }
 
     public void showAssetSplitFragment(int operateId) {
         mMenuFragment.showFragment(operateId, AssetSplitFragment.newInstance(operateId));
-    }
-
-    public void showKeyFrameFragment(int operateId) {
-        mMenuFragment.showFragment(operateId, KeyFrameFragment.newInstance(operateId));
     }
 
     public void showAssetCropFragment(int operateId) {
@@ -2238,18 +1812,15 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                 return;
             }
 
-            EditorManager.getInstance().getEditor().seekTimeLine(duration, new HuaweiVideoEditor.SeekCallback() {
-                @Override
-                public void onSeekFinished() {
-                    if (EditorManager.getInstance().getTimeLine() == null) {
-                        return;
-                    }
-                    mCurrentTime = EditorManager.getInstance().getTimeLine().getCurrentTime();
-                    if (mSdkPlayViewModel == null) {
-                        return;
-                    }
-                    mSdkPlayViewModel.setCurrentTime(duration);
+            EditorManager.getInstance().getEditor().seekTimeLine(duration, () -> {
+                if (EditorManager.getInstance().getTimeLine() == null) {
+                    return;
                 }
+                mCurrentTime = EditorManager.getInstance().getTimeLine().getCurrentTime();
+                if (mSdkPlayViewModel == null) {
+                    return;
+                }
+                mSdkPlayViewModel.setCurrentTime(duration);
             });
             lastTimeLineTime = duration;
         } else {

@@ -12,6 +12,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -184,9 +185,11 @@ public class ExportSuccessFragment extends LazyFragment {
             return;
         }
         mActivity.setResult(RESULT_OK);
+        Uri fileUri = Uri.parse(mSettingViewModel.getVideoPath());
+        Log.d("ExportSuccess",fileUri.toString());
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, mSettingViewModel.initJumpUri(mActivity));
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
         shareIntent.setType("video/mp4");
         startActivity(Intent.createChooser(shareIntent, null));
     }
@@ -236,7 +239,7 @@ public class ExportSuccessFragment extends LazyFragment {
     }
 
     private void backHomePage() {
-        judgeGoToPhotoBrowser(new File(mSettingViewModel.getVideoPath()), mSettingViewModel.initJumpUri(mActivity));
+        //judgeGoToPhotoBrowser(new File(mSettingViewModel.getVideoPath()), mSettingViewModel.initJumpUri(mActivity));
         Intent intent = new Intent();
         mActivity.setResult(Constant.RESULT_CODE, intent);
         mActivity.finish();

@@ -63,8 +63,8 @@ public class EditPreviewFragment extends BaseFragment implements View.OnTouchLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         navigationBarColor = R.color.home_color_FF181818;
         super.onCreate(savedInstanceState);
-        mEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditItemViewModel.class);
-        playViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(VideoClipsPlayViewModel.class);
+        mEditViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(EditItemViewModel.class);
+        playViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(VideoClipsPlayViewModel.class);
     }
 
     @Override

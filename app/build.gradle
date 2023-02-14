@@ -93,6 +93,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.2'
     //implementation 'com.danikula:videocache:2.7.0'
 
+    //implementation 'com.huawei.hms:video-editor-ui:1.1.0.303'
     implementation 'com.huawei.hms:video-editor-sdk:1.8.0.301'
     implementation 'com.huawei.hms:video-editor-ai:1.8.0.300'
 

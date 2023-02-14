@@ -59,7 +59,7 @@ public class Constant {
         public static final int INTENT_FROM_IMAGE_LIB = 2;
     }
 
-    public static final String LOCAL_VIDEO_SAVE_PATH = "VideoEditor";
+    public static final String LOCAL_VIDEO_SAVE_PATH = "VSIYP";
 
     public static final String LOCAL_VIDEO_SAVE_TIME = "yyyyMMdd_HHmmss";
 

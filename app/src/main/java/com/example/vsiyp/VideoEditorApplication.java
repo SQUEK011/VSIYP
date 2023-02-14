@@ -3,7 +3,7 @@ package com.example.vsiyp;
 import android.content.Context;
 
 public class VideoEditorApplication {
-    private static VideoEditorApplication INSTANCE = new VideoEditorApplication();
+    private static final VideoEditorApplication INSTANCE = new VideoEditorApplication();
 
     private Context context;
 

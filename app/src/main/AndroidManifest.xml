@@ -12,9 +12,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <!-- Required only if your app needs to access videos
-     that other apps created. -->
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -25,18 +27,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VSIYP"
-
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.vsiyp.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths">
-            </meta-data>
-        </provider>
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true">
@@ -86,40 +79,16 @@
             android:name=".ui.mediaexport.VideoExportActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait">
-
         </activity>
-        <activity
-            android:name=".ui.mediaeditor.blockface.cropimage.CropImageActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name=".ui.mediaeditor.crop.CropNewActivity"
-            android:configChanges="uiMode|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.mediaeditor.filter.aifilter.activity.CreateFilterActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ui.template.module.activity.TemplateDetailActivity"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ui.template.module.activity.TemplateEditActivity"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.template.module.activity.VideoModuleDetailActivity"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mediaeditor.ai.ViewFileActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.mediaeditor.ai.ObjectSegActivity"
+            android:configChanges="uiMode"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.mediaeditor.crop.CropNewActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"/>
 

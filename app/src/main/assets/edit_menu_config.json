@@ -60,16 +60,6 @@
           "children": []
         },
         {
-          "id": 101224,
-          "name": "cut_second_menu_keyframe",
-          "cnName": "关键帧",
-          "drawableName": "icon_add_keyframe",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
           "id": 101218,
           "name": "first_menu_filter",
           "cnName": "滤镜",
@@ -77,26 +67,6 @@
           "parentId": 101,
           "enable": 1,
           "isAdvanced": 2,
-          "children": []
-        },
-        {
-          "id": 101219,
-          "name": "cut_second_menu_block_face",
-          "cnName": "人脸遮挡",
-          "drawableName": "edit_menu_block_face",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
-          "id": 101220,
-          "name": "cut_second_menu_human_tracking",
-          "cnName": "人物追踪",
-          "drawableName": "edit_menu_human_tracking",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
           "children": []
         },
         {
@@ -374,16 +344,6 @@
           "children": []
         },
         {
-          "id": 107203,
-          "name": "filter_second_menu_add_exclusive",
-          "cnName": "专属滤镜",
-          "drawableName": "edit_menu_exclusive",
-          "parentId": 107,
-          "enable": 1,
-          "isAdvanced": 2,
-          "children": []
-        },
-        {
           "id": 107202,
           "name": "filter_second_menu_add_adjust",
           "cnName": "添加调节",
@@ -508,16 +468,6 @@
           "children": []
         },
         {
-          "id": 201124,
-          "name": "cut_second_menu_keyframe",
-          "cnName": "关键帧",
-          "drawableName": "icon_add_keyframe",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
           "id": 201108,
           "name": "adjust",
           "cnName": "调节",
@@ -582,16 +532,6 @@
           "name": "cut_second_menu_upend",
           "cnName": "倒放",
           "drawableName": "edit_menu_upend",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
-          "id": 201119,
-          "name": "cut_second_menu_human_tracking",
-          "cnName": "人物追踪",
-          "drawableName": "edit_menu_human_tracking",
           "parentId": 101,
           "enable": 1,
           "isAdvanced": 0,
@@ -1094,16 +1034,6 @@
           "name": "cut_second_menu_upend",
           "cnName": "倒放",
           "drawableName": "edit_menu_upend",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 2,
-          "children": []
-        },
-        {
-          "id": 207119,
-          "name": "cut_second_menu_human_tracking",
-          "cnName": "人物追踪",
-          "drawableName": "edit_menu_human_tracking",
           "parentId": 101,
           "enable": 1,
           "isAdvanced": 2,

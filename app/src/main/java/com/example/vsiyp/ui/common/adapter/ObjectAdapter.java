@@ -53,7 +53,7 @@ public class ObjectAdapter extends RecyclerView.Adapter<ObjectAdapter.ObjectHold
     @NonNull
     @Override
     public ObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(context).inflate(R.layout.adapter_object_itme, parent, false);
+        View inflate = LayoutInflater.from(context).inflate(R.layout.adapter_object_item, parent, false);
         return new ObjectHolder(inflate);
     }
 

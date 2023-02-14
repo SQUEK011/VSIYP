@@ -21,7 +21,7 @@ import com.example.vsiyp.ui.common.utils.ScreenUtil;
 import com.example.vsiyp.ui.common.utils.StringUtil;
 import com.example.vsiyp.ui.common.utils.ToastWrapper;
 import com.example.vsiyp.ui.common.utils.UpdateTimesManager;
-import com.example.vsiyp.ui.mediaeditor.blockface.FaceBlockingInfo;
+
 import com.example.vsiyp.ui.mediaeditor.graffiti.GraffitiInfo;
 import com.example.vsiyp.ui.mediaeditor.trackview.bean.MainRecyclerData;
 import com.example.vsiyp.ui.mediaeditor.trackview.fragment.EditPreviewFragment;
@@ -268,13 +268,13 @@ public class EditPreviewViewModel extends AndroidViewModel {
         return toastString;
     }
 
-    public MutableLiveData<Integer> getFaceDetectError() {
+    /*public MutableLiveData<Integer> getFaceDetectError() {
         return faceDetectError;
-    }
+    }*/
 
-    public void setFaceDetectError(int errorCode) {
+    /*public void setFaceDetectError(int errorCode) {
         this.faceDetectError.postValue(errorCode);
-    }
+    }*/
 
     private MutableLiveData<HVEAsset> hveAsset = new MutableLiveData<>();
 
@@ -318,9 +318,9 @@ public class EditPreviewViewModel extends AndroidViewModel {
 
     private boolean isEditStickerStatus = false;
 
-    private boolean isPersonTrackingStatus = false;
+    //private boolean isPersonTrackingStatus = false;
 
-    private boolean isFaceBlockingStatus = false;
+    //private boolean isFaceBlockingStatus = false;
 
     private boolean isSegmentationStatus = false;
 
@@ -356,21 +356,21 @@ public class EditPreviewViewModel extends AndroidViewModel {
         this.isEditStickerStatus = isEditStickerStatus;
     }
 
-    public boolean isFaceBlockingStatus() {
+    /*public boolean isFaceBlockingStatus() {
         return isFaceBlockingStatus;
-    }
+    }*/
 
-    public void setFaceBlockingStatus(boolean isFaceBlockingStatus) {
+    /*public void setFaceBlockingStatus(boolean isFaceBlockingStatus) {
         this.isFaceBlockingStatus = isFaceBlockingStatus;
-    }
+    }*/
 
-    public boolean isPersonTrackingStatus() {
+    /*public boolean isPersonTrackingStatus() {
         return isPersonTrackingStatus;
     }
 
     public void setPersonTrackingStatus(boolean isPersonTrackingStatus) {
         this.isPersonTrackingStatus = isPersonTrackingStatus;
-    }
+    }*/
 
     public boolean isSegmentationStatus() {
         return isSegmentationStatus;
@@ -1030,7 +1030,8 @@ public class EditPreviewViewModel extends AndroidViewModel {
         return refreshCurrentMenuControl;
     }
 
-    public void startFaceBlockingTracking(HVEAsset visibleAsset, List<FaceBlockingInfo> faceBlockingInfoList) {
+    //Face Blocking/Face Mask
+    /*public void startFaceBlockingTracking(HVEAsset visibleAsset, List<FaceBlockingInfo> faceBlockingInfoList) {
         if (visibleAsset == null) {
             SmartLog.e(TAG, "HVEAsset is null! ");
             return;
@@ -1048,7 +1049,7 @@ public class EditPreviewViewModel extends AndroidViewModel {
         if (visibleAsset instanceof HVEVisibleAsset) {
             ((HVEVisibleAsset) visibleAsset).addFacePrivacyEffect(aiFaceEffectInputs);
         }
-    }
+    }*/
 
     public void updateVideoLane() {
         HuaweiVideoEditor editor = getEditor();

@@ -51,12 +51,8 @@ public class MainViewState {
 
     public final static int EDIT_VIDEO_STATE_FILTER = 101218;
 
-    public final static int EDIT_VIDEO_STATE_BLOCK_FACE = 101219;
-
-    public final static int EDIT_VIDEO_STATE_HUMAN_TRACKING = 101220;
-
     public final static int EDIT_VIDEO_STATE_AI_FUN = 101223;
-    public final static int EDIT_VIDEO_STATE_KEYFRAME = 101224;
+
     public final static int EDIT_VIDEO_STATE_AI_HAIR = 101221;
     public final static int EDIT_VIDEO_STATE_AI_SELECTION = 101227;
     public final static int EDIT_VIDEO_STATE_AI_SEGMENTATION = 101225;
@@ -86,8 +82,6 @@ public class MainViewState {
     public final static int EDIT_SPECIAL_STATE_ADD = 106201;
 
     public final static int EDIT_FILTER_STATE_ADD = 107201;
-
-    public final static int EDIT_FILTER_STATE_EXCLUSIVE = 107203;
 
     public final static int EDIT_FILTER_STATE_ADJUST = 107202;
 
@@ -129,8 +123,6 @@ public class MainViewState {
 
     public final static int EDIT_VIDEO_OPERATION_PROPORTION = 201117;
 
-    public final static int EDIT_VIDEO_OPERATION_HUMAN_TRACKING = 201119;
-
     public final static int EDIT_VIDEO_OPERATION_AI_HAIR = 201120;
 
     public final static int EDIT_VIDEO_OPERATION_AI_SELECTION = 201126;
@@ -148,8 +140,6 @@ public class MainViewState {
     public final static int EDIT_VIDEO_OPERATION_HEAD_SEG = 201130;
 
     public final static int EDIT_VIDEO_OPERATION_ROTATION = 1007;
-
-    public final static int EDIT_VIDEO_OPERATION_KEYFRAME = 201124;
 
     public final static int EDIT_AUDIO_OPERATION = 202;
 
@@ -238,8 +228,6 @@ public class MainViewState {
     public final static int EDIT_PIP_OPERATION_INVERTED = 207117;
 
     public final static int EDIT_PIP_OPERATION_ADD = 207118;
-
-    public final static int EDIT_PIP_OPERATION_HUMAN_TRACKING = 207119;
 
     public final static int EDIT_PIP_OPERATION_AI_HAIR = 207120;
 

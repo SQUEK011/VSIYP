@@ -47,7 +47,7 @@ public class BlendAdapter extends RecyclerView.Adapter<BlendAdapter.BlendHolder>
     @NonNull
     @Override
     public BlendHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(context).inflate(R.layout.adapter_object_itme, parent, false);
+        View inflate = LayoutInflater.from(context).inflate(R.layout.adapter_object_item, parent, false);
         return new BlendHolder(inflate);
     }
 

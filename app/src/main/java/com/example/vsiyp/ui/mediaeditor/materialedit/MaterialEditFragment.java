@@ -21,7 +21,7 @@ import com.example.vsiyp.ui.common.utils.StringUtil;
 import com.example.vsiyp.ui.mediaeditor.aisegmentation.SegmentationViewModel;
 import com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager;
 import com.example.vsiyp.ui.mediaeditor.menu.VideoClipsPlayViewModel;
-import com.example.vsiyp.ui.mediaeditor.persontrack.PersonTrackingViewModel;
+
 import com.example.vsiyp.ui.mediaeditor.texts.viewmodel.TextEditViewModel;
 import com.example.vsiyp.ui.mediaeditor.trackview.viewmodel.EditPreviewViewModel;
 import com.huawei.hms.videoeditor.sdk.HuaweiVideoEditor;
@@ -46,7 +46,7 @@ public class MaterialEditFragment extends BaseFragment {
 
     private EditPreviewViewModel mEditPreviewViewModel;
 
-    private PersonTrackingViewModel mPersonTrackingViewModel;
+    //private PersonTrackingViewModel mPersonTrackingViewModel;
 
     private SegmentationViewModel mSegmentationViewModel;
 
@@ -92,7 +92,7 @@ public class MaterialEditFragment extends BaseFragment {
     protected void initObject() {
         mMaterialEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MaterialEditViewModel.class);
         mEditPreviewViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
-        mPersonTrackingViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(PersonTrackingViewModel.class);
+        //mPersonTrackingViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(PersonTrackingViewModel.class);
         mSegmentationViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(SegmentationViewModel.class);
         mTextEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(TextEditViewModel.class);
         mSdkPlayViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(VideoClipsPlayViewModel.class);
@@ -122,11 +122,11 @@ public class MaterialEditFragment extends BaseFragment {
                     if (editor == null) {
                         return false;
                     }
-                    boolean isPersonTrackingEdit = mEditPreviewViewModel.isPersonTrackingStatus();
-                    if (isPersonTrackingEdit) {
+                   // boolean isPersonTrackingEdit = mEditPreviewViewModel.isPersonTrackingStatus();
+                    /*if (isPersonTrackingEdit) {
                         getPoint(event.getX(), event.getY(), false, false);
                         return false;
-                    }
+                    }*/
                     HVEAsset asset = getIEditable(position2D, mMaterialEditViewModel.getCurrentFirstMenuId());
 
                     if (asset == null) {
@@ -305,11 +305,12 @@ public class MaterialEditFragment extends BaseFragment {
         float x = posX;
         float y = posY;
         HVEAsset selectedAsset;
-        if (isSegmentation) {
+        /*Tracking Review*/
+       // if (isSegmentation) {
             selectedAsset = mSegmentationViewModel.getSelectedAsset();
-        } else {
-            selectedAsset = mPersonTrackingViewModel.getSelectedTracking();
-        }
+        //} else {
+        //   selectedAsset = mPersonTrackingViewModel.getSelectedTracking();
+        //}
         HVEVisibleAsset hveVisibleAsset = (HVEVisibleAsset) selectedAsset;
         int w = hveVisibleAsset.getWidth();
         int h = hveVisibleAsset.getHeight();
@@ -351,7 +352,7 @@ public class MaterialEditFragment extends BaseFragment {
                     mSegmentationViewModel.setDrawPoints(drawPoints);
                 }
             } else {
-                mPersonTrackingViewModel.setTrackingPoint(position2D);
+                //mPersonTrackingViewModel.setTrackingPoint(position2D);
             }
         }
     }
@@ -486,7 +487,7 @@ public class MaterialEditFragment extends BaseFragment {
                 if (editor == null) {
                     return;
                 }
-                boolean isPersonTrackingEdit = mEditPreviewViewModel.isPersonTrackingStatus();
+                /*boolean isPersonTrackingEdit = mEditPreviewViewModel.isPersonTrackingStatus();
                 if (isPersonTrackingEdit) {
                     if (position2D.xPos == 0 && position2D.yPos == 0) {
                         return;
@@ -494,7 +495,7 @@ public class MaterialEditFragment extends BaseFragment {
                     mMaterialEditViewModel.clearMaterialEditData();
                     getPoint(position2D.xPos, position2D.yPos, false, false);
                     return;
-                }
+                }*/
                 HVEAsset asset = getIEditable(position2D, mMaterialEditViewModel.getCurrentFirstMenuId());
 
                 long currentTime = System.currentTimeMillis();

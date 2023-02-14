@@ -20,7 +20,6 @@ import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_AI_SEGMENTATION;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_BODY_SEG;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_HEAD_SEG;
-import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_HUMAN_TRACKING;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_INVERTED;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_MASK;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_MOVE;
@@ -60,7 +59,7 @@ import com.example.vsiyp.ui.mediaeditor.graffiti.GraffitiManager;
 import com.example.vsiyp.ui.mediaeditor.graffiti.view.GraffitiView;
 import com.example.vsiyp.ui.mediaeditor.materialedit.MaterialEditData;
 import com.example.vsiyp.ui.mediaeditor.materialedit.MaterialEditViewModel;
-import com.example.vsiyp.ui.mediaeditor.persontrack.PersonTrackingViewModel;
+
 import com.example.vsiyp.ui.mediaeditor.preview.MaskEffectViewModel;
 import com.example.vsiyp.ui.mediaeditor.preview.view.MaskEffectContainerView;
 import com.example.vsiyp.ui.mediaeditor.sticker.fragment.StickerPanelFragment;
@@ -116,7 +115,7 @@ public class MenuFragment extends Fragment {
 
     private MaterialEditViewModel mMaterialEditViewModel;
 
-    private PersonTrackingViewModel mPersonTrackingViewModel;
+    //private PersonTrackingViewModel mPersonTrackingViewModel;
 
     private SegmentationViewModel mSegmentationViewModel;
 
@@ -193,7 +192,6 @@ public class MenuFragment extends Fragment {
         mEditPreviewViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
         mMaterialEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MaterialEditViewModel.class);
         mMenuViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MenuViewModel.class);
-        mPersonTrackingViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(PersonTrackingViewModel.class);
         mTimeLapseViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(TimeLapseViewModel.class);
         mSegmentationViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(SegmentationViewModel.class);
         mBodySegViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(BodySegViewModel.class);
@@ -208,7 +206,8 @@ public class MenuFragment extends Fragment {
         mGraffitiView = view.findViewById(R.id.graffiti_view);
         MenuClickManager.getInstance()
                 .init(mActivity, menuContentLayout, mMenuViewModel, mEditPreviewViewModel, mMaterialEditViewModel,
-                        mPersonTrackingViewModel, mTimeLapseViewModel, mSegmentationViewModel,
+                        //mPersonTrackingViewModel,
+                        mTimeLapseViewModel, mSegmentationViewModel,
                         mBodySegViewModel);
     }
 
@@ -231,7 +230,7 @@ public class MenuFragment extends Fragment {
         }
         MenuClickManager.getInstance()
                 .update(mActivity, menuContentLayout, mMenuViewModel, mEditPreviewViewModel, mMaterialEditViewModel,
-                        mPersonTrackingViewModel, mSegmentationViewModel, mBodySegViewModel);
+                        mSegmentationViewModel, mBodySegViewModel);
     }
 
     private void initEvent(View view) {
@@ -310,92 +309,77 @@ public class MenuFragment extends Fragment {
 
         fragmentContainer.setOnTouchListener((v, event) -> true);
 
-        mMaterialEditViewModel.getMaterialDelete().observe(getViewLifecycleOwner(), new Observer<MaterialEditData>() {
-            @Override
-            public void onChanged(MaterialEditData data) {
-                if (data.getAsset() != null && data.getMaterialType() == MaterialEditData.MaterialType.STICKER
-                        || data.getMaterialType() == MaterialEditData.MaterialType.WORD) {
-                    mMaterialEditViewModel.clearMaterialEditData();
-                    mEditPreviewViewModel.setNeedAddTextOrSticker(false);
-                    mMenuViewModel.deleteAsset(data.getAsset());
-                    mEditPreviewViewModel.updateTimeLine();
-                    if (getViewStack() != null && !getViewStack().isEmpty()) {
-                        MenuControlViewRouter.Panel panel = getViewStack().lastElement();
-                        if (panel.object instanceof BaseFragment) {
-                            mActivity.onBackPressed();
-                        }
-                    } else {
-                        popView();
-                    }
-
-                }
-            }
-        });
-
-        mMaterialEditViewModel.getStickerEdit().observe(getViewLifecycleOwner(), new Observer<MaterialEditData>() {
-            @Override
-            public void onChanged(MaterialEditData data) {
+        mMaterialEditViewModel.getMaterialDelete().observe(getViewLifecycleOwner(), data -> {
+            if (data.getAsset() != null && data.getMaterialType() == MaterialEditData.MaterialType.STICKER
+                    || data.getMaterialType() == MaterialEditData.MaterialType.WORD) {
+                mMaterialEditViewModel.clearMaterialEditData();
+                mEditPreviewViewModel.setNeedAddTextOrSticker(false);
+                mMenuViewModel.deleteAsset(data.getAsset());
+                mEditPreviewViewModel.updateTimeLine();
                 if (getViewStack() != null && !getViewStack().isEmpty()) {
                     MenuControlViewRouter.Panel panel = getViewStack().lastElement();
                     if (panel.object instanceof BaseFragment) {
-                        popView();
-                    }
-                }
-                MenuClickManager.getInstance().handlerClickEvent(EDIT_STICKER_OPERATION_ANIMATION);
-            }
-        });
-
-        mMaterialEditViewModel.getTextDefaultEdit().observe(getViewLifecycleOwner(), new Observer<MaterialEditData>() {
-            @Override
-            public void onChanged(MaterialEditData data) {
-                if (mEditPreviewViewModel.getTimeLine() == null) {
-                    return;
-                }
-                if (!(data.getAsset() instanceof HVEWordAsset)) {
-                    return;
-                }
-                mMaterialEditViewModel.setEditModel(true);
-
-                if (getViewStack() != null && !getViewStack().isEmpty()) {
-                    MenuControlViewRouter.Panel panel = getViewStack().lastElement();
-                    if (panel.object instanceof EditPanelFragment) {
-                        if (data.getAsset() != null) {
-                            mEditPreviewViewModel.setTableIndex(0);
-                            mEditPreviewViewModel.setEditPanelInputValue(((HVEWordAsset) data.getAsset()).getText());
-                        }
-                    } else {
                         mActivity.onBackPressed();
                     }
                 } else {
-                    mEditPreviewViewModel.setEditPanelInputValue(getResources().getString(R.string.inputtext));
-                    MenuClickManager.getInstance().handlerClickEvent(EDIT_TEXT_OPERATION_EDIT);
+                    popView();
                 }
 
             }
         });
 
-        mMaterialEditViewModel.getMaterialCopy().observe(getViewLifecycleOwner(), new Observer<MaterialEditData>() {
-            @Override
-            public void onChanged(MaterialEditData data) {
-                switch (data.getMaterialType()) {
-                    case WORD:
-                        mMenuViewModel.copyText();
-                        break;
-                    case STICKER:
-                        mMenuViewModel.copySticker();
-                        break;
-                    default:
-                        break;
+        mMaterialEditViewModel.getStickerEdit().observe(getViewLifecycleOwner(), data -> {
+            if (getViewStack() != null && !getViewStack().isEmpty()) {
+                MenuControlViewRouter.Panel panel = getViewStack().lastElement();
+                if (panel.object instanceof BaseFragment) {
+                    popView();
                 }
+            }
+            MenuClickManager.getInstance().handlerClickEvent(EDIT_STICKER_OPERATION_ANIMATION);
+        });
+
+        mMaterialEditViewModel.getTextDefaultEdit().observe(getViewLifecycleOwner(), data -> {
+            if (mEditPreviewViewModel.getTimeLine() == null) {
+                return;
+            }
+            if (!(data.getAsset() instanceof HVEWordAsset)) {
+                return;
+            }
+            mMaterialEditViewModel.setEditModel(true);
+
+            if (getViewStack() != null && !getViewStack().isEmpty()) {
+                MenuControlViewRouter.Panel panel = getViewStack().lastElement();
+                if (panel.object instanceof EditPanelFragment) {
+                    if (data.getAsset() != null) {
+                        mEditPreviewViewModel.setTableIndex(0);
+                        mEditPreviewViewModel.setEditPanelInputValue(((HVEWordAsset) data.getAsset()).getText());
+                    }
+                } else {
+                    mActivity.onBackPressed();
+                }
+            } else {
+                mEditPreviewViewModel.setEditPanelInputValue(getResources().getString(R.string.inputtext));
+                MenuClickManager.getInstance().handlerClickEvent(EDIT_TEXT_OPERATION_EDIT);
+            }
+
+        });
+
+        mMaterialEditViewModel.getMaterialCopy().observe(getViewLifecycleOwner(), data -> {
+            switch (data.getMaterialType()) {
+                case WORD:
+                    mMenuViewModel.copyText();
+                    break;
+                case STICKER:
+                    mMenuViewModel.copySticker();
+                    break;
+                default:
+                    break;
             }
         });
 
-        mEditPreviewViewModel.getClearGraffitView().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean && mGraffitiView != null) {
-                    mGraffitiView.clear();
-                }
+        mEditPreviewViewModel.getClearGraffitView().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean && mGraffitiView != null) {
+                mGraffitiView.clear();
             }
         });
 
@@ -421,7 +405,6 @@ public class MenuFragment extends Fragment {
             if (hveAsset != null) {
                 if (hveAsset instanceof HVEImageAsset) {
                     ableIds.add(EDIT_VIDEO_STATE_SPEED);
-                    ableIds.add(EDIT_VIDEO_STATE_HUMAN_TRACKING);
                     ableIds.add(EDIT_VIDEO_STATE_AI_SEGMENTATION);
                     if (menuContentLayout != null) {
                         menuContentLayout.updateUnAbleMenus(false, ableIds);
@@ -430,7 +413,6 @@ public class MenuFragment extends Fragment {
                     if (menuContentLayout != null) {
                         boolean isVideoReverse = ((HVEVideoAsset) hveAsset).isVideoReverse();
                         if (isVideoReverse) {
-                            ableIds.add(EDIT_VIDEO_STATE_HUMAN_TRACKING);
                             ableIds.add(EDIT_VIDEO_STATE_BODY_SEG);
                             ableIds.add(EDIT_VIDEO_STATE_HEAD_SEG);
                             ableIds.add(EDIT_VIDEO_STATE_WINGS);
@@ -459,8 +441,6 @@ public class MenuFragment extends Fragment {
                 if (mCurrentViewId != -1) {
                     if (mEditPreviewViewModel.isEditTextStatus() || mEditPreviewViewModel.isEditTextTemplateStatus()
                             || mEditPreviewViewModel.isEditStickerStatus() || mEditPreviewViewModel.isTrailerStatus()
-                            || mEditPreviewViewModel.isFaceBlockingStatus()
-                            || mEditPreviewViewModel.isPersonTrackingStatus()
                             || mEditPreviewViewModel.isSegmentationStatus()) {
                         menuContentLayout.hideOperateMenu();
                         return;

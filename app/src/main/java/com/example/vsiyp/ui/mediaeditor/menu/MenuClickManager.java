@@ -30,7 +30,7 @@ import com.example.vsiyp.ui.mediaeditor.audio.fragment.SoundEffectFragment;
 import com.example.vsiyp.ui.mediaeditor.effect.fragment.EffectPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.filter.FilterAdjustPanelView;
 import com.example.vsiyp.ui.mediaeditor.filter.FilterPanelFragment;
-import com.example.vsiyp.ui.mediaeditor.filter.aifilter.fragment.ExclusiveFilterPanelFragment;
+
 import com.example.vsiyp.ui.mediaeditor.fragment.AudioSpeedFragment;
 import com.example.vsiyp.ui.mediaeditor.fragment.CanvasBackgroundFragment;
 import com.example.vsiyp.ui.mediaeditor.fragment.GeneralSpeedFragment;
@@ -42,7 +42,7 @@ import com.example.vsiyp.ui.mediaeditor.fragment.TransparencyPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.fragment.VideoProportionFragment;
 import com.example.vsiyp.ui.mediaeditor.fragment.VolumePanelFragment;
 import com.example.vsiyp.ui.mediaeditor.materialedit.MaterialEditViewModel;
-import com.example.vsiyp.ui.mediaeditor.persontrack.PersonTrackingViewModel;
+
 import com.example.vsiyp.ui.mediaeditor.pip.PicInPicMixFragment;
 import com.example.vsiyp.ui.mediaeditor.sticker.fragment.StickerPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.sticker.stickeranimation.fragment.StickerAnimationPanelFragment;
@@ -73,10 +73,6 @@ public class MenuClickManager {
 
     public final static String AI_FUN_KEY = "AI_FUN_KEY";
 
-    private final static String FACE_BLOCKING = "FACE_BLOCKING";
-
-    private final static String FACE_BLOCKING_KEY = "FACE_BLOCKING_KEY";
-
     public final static String TIME_LAPSE = "TIME_LAPSE";
 
     public final static String TIME_LAPSE_KEY = "TIME_LAPSE_KEY";
@@ -84,10 +80,6 @@ public class MenuClickManager {
     public final static String VIDEO_SELECTION = "VIDEO_SELECTION";
 
     public final static String VIDEO_SELECTION_KEY = "VIDEO_SELECTION_KEY";
-
-    public final static String AI_WINGS = "AI_WINGS";
-
-    public final static String AI_WINGS_KEY = "AI_WINGS_KEY";
 
     public static final String AI_BODY_SEG = "AI_BODY_SEG";
 
@@ -113,7 +105,7 @@ public class MenuClickManager {
 
     private MaterialEditViewModel mMaterialEditViewModel;
 
-    private PersonTrackingViewModel mPersonTrackingViewModel;
+    //private PersonTrackingViewModel mPersonTrackingViewModel;
 
     private TimeLapseViewModel mTimeLapseViewModel;
 
@@ -135,13 +127,14 @@ public class MenuClickManager {
 
     public void init(VideoClipsActivity activity, EditMenuContentLayout menuContentLayout, MenuViewModel menuViewModel,
                      EditPreviewViewModel editPreviewViewModel, MaterialEditViewModel materialEditViewModel,
-                     PersonTrackingViewModel personTrackingViewModel, TimeLapseViewModel timeLapseViewModel,
+                     //PersonTrackingViewModel personTrackingViewModel,
+                     TimeLapseViewModel timeLapseViewModel,
                      SegmentationViewModel mSegmentationViewModel, BodySegViewModel bodySegViewModel) {
         this.mActivity = activity;
         this.mMenuViewModel = menuViewModel;
         this.editPreviewViewModel = editPreviewViewModel;
         this.mMaterialEditViewModel = materialEditViewModel;
-        this.mPersonTrackingViewModel = personTrackingViewModel;
+        //this.mPersonTrackingViewModel = personTrackingViewModel;
         this.mTimeLapseViewModel = timeLapseViewModel;
         this.mSegmentationViewModel = mSegmentationViewModel;
         this.mBodySegViewModel = bodySegViewModel;
@@ -153,13 +146,12 @@ public class MenuClickManager {
 
     public void update(VideoClipsActivity activity, EditMenuContentLayout menuContentLayout,
                        MenuViewModel menuViewModel, EditPreviewViewModel editPreviewViewModel,
-                       MaterialEditViewModel materialEditViewModel, PersonTrackingViewModel personTrackingViewModel,
+                       MaterialEditViewModel materialEditViewModel,
                        SegmentationViewModel mSegmentationViewModel, BodySegViewModel bodySegViewModel) {
         this.mActivity = activity;
         this.mMenuViewModel = menuViewModel;
         this.editPreviewViewModel = editPreviewViewModel;
         this.mMaterialEditViewModel = materialEditViewModel;
-        this.mPersonTrackingViewModel = personTrackingViewModel;
         this.mSegmentationViewModel = mSegmentationViewModel;
         this.mBodySegViewModel = bodySegViewModel;
         this.menuContentLayout = menuContentLayout;
@@ -211,11 +203,6 @@ public class MenuClickManager {
 
             case MainViewState.EDIT_VIDEO_STATE_SPLIT:
                 mActivity.showAssetSplitFragment(id);
-                break;
-
-            case MainViewState.EDIT_VIDEO_STATE_KEYFRAME:
-            case MainViewState.EDIT_VIDEO_OPERATION_KEYFRAME:
-                mActivity.showKeyFrameFragment(id);
                 break;
 
             case MainViewState.EDIT_VIDEO_STATE_TRIM:
@@ -444,26 +431,7 @@ public class MenuClickManager {
                 }
                 showPanelViewPrepare(id, FilterPanelFragment.newInstance(isFromAsset));
                 break;
-            case MainViewState.EDIT_FILTER_STATE_EXCLUSIVE:
-                if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
-                    return;
-                }
 
-                if (isCpu32()) {
-                    ToastWrapper.makeText(mActivity, mActivity.getResources().getString(R.string.cpu_limit)).show();
-                    return;
-                }
-
-                if (!mMenuViewModel.isCanAddEffect(false)) {
-                    ToastWrapper
-                            .makeText(mActivity, mActivity.getResources().getString(R.string.exclusive_filter_tip_text14),
-                                    Toast.LENGTH_SHORT)
-                            .show();
-                    return;
-                }
-
-                showPanelViewPrepare(id, ExclusiveFilterPanelFragment.newInstance());
-                break;
             case MainViewState.EDIT_VIDEO_OPERATION_ADJUST:
             case MainViewState.EDIT_FILTER_STATE_ADJUST:
             case MainViewState.EDIT_VIDEO_STATE_ADJUST:
@@ -596,7 +564,7 @@ public class MenuClickManager {
                     return;
                 }
                 if (effect instanceof ColorFilterEffect) {
-                    showPanelViewPrepare(id, ExclusiveFilterPanelFragment.newInstance());
+                    //showPanelViewPrepare(id, ExclusiveFilterPanelFragment.newInstance());
                 } else {
                     showPanelViewPrepare(id, FilterPanelFragment.newInstance(false));
                 }
@@ -722,58 +690,6 @@ public class MenuClickManager {
             case MainViewState.EDIT_VIDEO_STATE_PROPORTION:
             case MainViewState.EDIT_VIDEO_OPERATION_PROPORTION:
                 showPanelViewPrepare(id, new VideoProportionFragment());
-                break;
-            case MainViewState.EDIT_VIDEO_STATE_BLOCK_FACE:
-                HVEAsset aiFaceAsset = editPreviewViewModel.getSelectedAsset();
-                if (aiFaceAsset == null) {
-                    aiFaceAsset = editPreviewViewModel.getMainLaneAsset();
-                }
-
-                if (!(aiFaceAsset instanceof HVEVisibleAsset)) {
-                    return;
-                }
-                if (!isAiCanBeUsed((HVEVisibleAsset) aiFaceAsset, HVEEffect.HVEEffectType.FACEPRIVACY)) {
-                    ToastWrapper.makeText(mActivity, mActivity.getResources().getString(R.string.ai_limit)).show();
-                    return;
-                }
-
-                boolean isShowToast = SPManager.get(FACE_BLOCKING, mActivity).getBoolean(FACE_BLOCKING_KEY, false);
-                if (!isShowToast) {
-                    String maxFace =
-                            mActivity.getResources().getQuantityString(R.plurals.face_blocking_max_face, 20, 20);
-                    ToastWrapper.makeText(mActivity, maxFace, Toast.LENGTH_SHORT).show();
-                    SPManager.get(FACE_BLOCKING, mActivity).put(FACE_BLOCKING_KEY, true);
-                }
-                editPreviewViewModel.setFaceBlockingEnter(id);
-                break;
-            case MainViewState.EDIT_VIDEO_STATE_HUMAN_TRACKING:
-            case MainViewState.EDIT_VIDEO_OPERATION_HUMAN_TRACKING:
-            case MainViewState.EDIT_PIP_OPERATION_HUMAN_TRACKING:
-                if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
-                    return;
-                }
-
-                if (isCpu32()) {
-                    ToastWrapper.makeText(mActivity, mActivity.getResources().getString(R.string.cpu_limit)).show();
-                    return;
-                }
-
-                HVEAsset aiTrackAsset = editPreviewViewModel.getSelectedAsset();
-                if (aiTrackAsset == null) {
-                    aiTrackAsset = editPreviewViewModel.getMainLaneAsset();
-                }
-
-                if (!(aiTrackAsset instanceof HVEVisibleAsset)) {
-                    return;
-                }
-
-                if (!isAiCanBeUsed((HVEVisibleAsset) aiTrackAsset, HVEEffect.HVEEffectType.HUMAN_TRACKING)) {
-                    ToastWrapper.makeText(mActivity, mActivity.getResources().getString(R.string.ai_limit)).show();
-                    return;
-                }
-
-                mPersonTrackingViewModel.setHumanTrackingEnter(id);
-                mPersonTrackingViewModel.setHumanTrackingEntrance(id);
                 break;
             case MainViewState.EDIT_VIDEO_STATE_AI_HAIR:
             case MainViewState.EDIT_VIDEO_OPERATION_AI_HAIR:
@@ -996,7 +912,6 @@ public class MenuClickManager {
     private List<Integer> getCloudMaterialsIdList() {
         cloudMaterialsIdList = new ArrayList<>();
         cloudMaterialsIdList.add(MainViewState.EDIT_FILTER_STATE_ADD);
-        cloudMaterialsIdList.add(MainViewState.EDIT_FILTER_STATE_EXCLUSIVE);
         cloudMaterialsIdList.add(MainViewState.EDIT_VIDEO_STATE_FILTER);
         cloudMaterialsIdList.add(MainViewState.EDIT_PIP_OPERATION_FILTER);
         cloudMaterialsIdList.add(MainViewState.EDIT_STICKER_STATE_ADD_STICKER);
@@ -1036,7 +951,6 @@ public class MenuClickManager {
                 unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_SPEED);
                 unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_VOLUME);
                 unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_INVERTED);
-                unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_HUMAN_TRACKING);
                 unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_AI_SEGMENTATION);
                 break;
             case 3:
@@ -1060,7 +974,6 @@ public class MenuClickManager {
                 unableMenuId.add(MainViewState.EDIT_PIP_OPERATION_SPEED);
                 unableMenuId.add(MainViewState.EDIT_PIP_OPERATION_VOLUME);
                 unableMenuId.add(MainViewState.EDIT_PIP_OPERATION_INVERTED);
-                unableMenuId.add(MainViewState.EDIT_PIP_OPERATION_HUMAN_TRACKING);
                 break;
             case 5:
                 unableMenuId.add(MainViewState.EDIT_PIP_OPERATION_SPLIT);
@@ -1072,9 +985,6 @@ public class MenuClickManager {
                 unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_AI_HAIR);
                 break;
             case 8:
-                unableMenuId.add(MainViewState.EDIT_VIDEO_STATE_HUMAN_TRACKING);
-                unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_HUMAN_TRACKING);
-                unableMenuId.add(MainViewState.EDIT_PIP_OPERATION_HUMAN_TRACKING);
                 unableMenuId.add(MainViewState.EDIT_VIDEO_STATE_BODY_SEG);
                 unableMenuId.add(MainViewState.EDIT_VIDEO_OPERATION_BODY_SEG);
                 unableMenuId.add(MainViewState.EDIT_PIP_OPERATION_BODY_SEG);

@@ -1,18 +1,11 @@
 package com.example.vsiyp.fragment;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.CLIPS_VIEW_TYPE;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_HISTORY;
-import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_NORMAL;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -27,30 +20,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.example.vsiyp.HomeActivity;
 import com.example.vsiyp.CameraActivity;
 import com.example.vsiyp.HomeRecordAdapter;
-import com.example.vsiyp.MainActivity;
 import com.example.vsiyp.R;
 import com.example.vsiyp.SettingActivity;
 import com.example.vsiyp.ui.common.BaseFragment;
-import com.example.vsiyp.ui.common.bean.Constant;
 import com.example.vsiyp.ui.common.bean.MediaData;
 import com.example.vsiyp.ui.common.listener.OnClickRepeatedListener;
 import com.example.vsiyp.ui.common.utils.SharedPreferencesUtils;
 import com.example.vsiyp.ui.common.utils.SizeUtils;
-import com.example.vsiyp.ui.common.utils.ToastWrapper;
 import com.example.vsiyp.ui.common.view.EditorTextView;
 import com.example.vsiyp.ui.common.view.decoration.RecyclerViewDivider;
 import com.example.vsiyp.ui.mediaeditor.VideoClipsActivity;
@@ -61,23 +47,19 @@ import com.example.vsiyp.view.ClipDeleteDialog;
 import com.example.vsiyp.view.ClipRenameDialog;
 import com.example.vsiyp.view.HomeClipPopWindow;
 import com.example.vsiyp.viewmodel.MainViewModel;
-import com.huawei.hms.videoeditor.ai.p.M;
 import com.huawei.hms.videoeditor.sdk.HVEProject;
 import com.huawei.hms.videoeditor.sdk.HVEProjectManager;
 import com.huawei.hms.videoeditor.sdk.bean.HVEWordStyle;
 import com.huawei.secure.android.common.intent.SafeIntent;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ClipFragment extends BaseFragment {
     private static final String TAG = "ClipFragment";
-    //private TextView homeSelectNum;
 
     private EditorTextView mDraftClip;
 
@@ -105,20 +87,9 @@ public class ClipFragment extends BaseFragment {
 
     private TextEditViewModel mTextEditViewModel;
 
-    //private ImageView back;
-
     private ImageView mSettings;
 
     private boolean isFromHome = false;
-
-    //Variables for Camera Usage
-    private Uri videoUri;
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
-    public static final int VIEW_CAMERA = 2;
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-    private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
-    String imageFilePath;
 
     @Override
     protected void initViewModelObserve() {
@@ -132,7 +103,6 @@ public class ClipFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        //homeSelectNum = view.findViewById(R.id.home_select_num);
         mDraftClip = view.findViewById(R.id.home_draft_clip);
         mRecyclerView = view.findViewById(R.id.content_list);
         mAddCardView = view.findViewById(R.id.card_upload);
@@ -140,14 +110,11 @@ public class ClipFragment extends BaseFragment {
         homeSelectDelete = view.findViewById(R.id.home_select_delete);
         homeSelectAll = view.findViewById(R.id.home_select_all);
         homeDraftNoText = view.findViewById(R.id.home_draft_no_text);
-        //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, 0, 0));
-        //back = view.findViewById(R.id.iv_back);
         mAddCameraCardView = view.findViewById(R.id.card_upload_2);
         mSettings = view.findViewById(R.id.setting);
         Activity activity = getActivity();
         if (activity != null) {
             isFromHome = activity.getIntent().getBooleanExtra("fromHome", false);
-            //back.setVisibility(isFromHome ? View.VISIBLE : View.GONE);
         }
         mTextEditViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(TextEditViewModel.class);
     }
@@ -198,15 +165,6 @@ public class ClipFragment extends BaseFragment {
 
     @Override
     protected void initEvent() {
-        /*back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    activity.onBackPressed();
-                }
-            }
-        });*/
         mSettings.setOnClickListener(new OnClickRepeatedListener((v -> {
             this.startActivity(new Intent(this.mActivity, SettingActivity.class));
         })));
@@ -216,17 +174,6 @@ public class ClipFragment extends BaseFragment {
             mDraftClip.setTextColor(context.getColor(R.color.white));
             initData();
         }));
-
-        /*homeSelectNum.setOnClickListener(new OnClickRepeatedListener(v -> {
-            if (mHomeRecordAdapter.getIsEditStatus()) {
-                hideEditStatus();
-                homeSelectAll.setSelected(false);
-                homeSelectDelete.setSelected(false);
-            } else {
-                showEditStatus();
-            }
-
-        }));*/
 
         homeSelectDelete.setOnClickListener(new OnClickRepeatedListener(v -> {
             if (homeSelectDelete.isSelected()) {
@@ -244,14 +191,11 @@ public class ClipFragment extends BaseFragment {
                 homeSelectAll.setSelected(false);
                 homeSelectDelete.setSelected(false);
                 mHomeRecordAdapter.setSelectList(new ArrayList<>());
-                //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3,new ArrayList<>().size(), new ArrayList<>().size()));
             } else {
                 homeSelectAll.setText(R.string.home_select_all_deselect);
                 homeSelectAll.setSelected(true);
                 homeSelectDelete.setSelected(true);
                 mHomeRecordAdapter.setSelectList(mDraftList);
-                //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, mDraftList.size(), mDraftList.size()));
-
             }
             mHomeRecordAdapter.notifyDataSetChanged();
         }));
@@ -295,7 +239,6 @@ public class ClipFragment extends BaseFragment {
                 }
                 homeSelectDelete.setSelected(selectList.size() != 0);
                 mHomeRecordAdapter.notifyItemChanged(position);
-                //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, selectList.size(), selectList.size()));
             }
 
             @Override
@@ -313,8 +256,6 @@ public class ClipFragment extends BaseFragment {
         }));
     }
 
-
-
     @Override
     protected int setViewLayoutEvent() {
         return NOMERA_HEIGHT;
@@ -330,54 +271,6 @@ public class ClipFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
     }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // Image captured and saved to fileUri specified in the Intent
-                Toast.makeText(this.context, "Image saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
-                //Intent returnIntent = new Intent(this.mActivity, HomeActivity.class);
-                //startActivity(returnIntent);
-            } else if (resultCode == RESULT_CANCELED) {
-                // User cancelled the image capture
-            } else {
-                // Image capture failed, advise user
-            }
-        }
-
-        if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // Video captured and saved to fileUri specified in the Intent
-                Toast.makeText(this.context, "Video saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
-                Log.d("Video Saved to:", data.getDataString());
-
-                Intent returnIntent = new Intent(this.context, VideoClipsActivity.class);
-                ArrayList<MediaData> mSelectList = new ArrayList<>();
-                MediaData mediaDataFromCam = new MediaData();
-                mediaDataFromCam.setUri(data.getData());
-
-                mSelectList.add(mediaDataFromCam);
-
-                File videoFilePath = new File(videoUri.getPath());
-                String outputUri = videoFilePath.getPath();
-
-                returnIntent.putParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT, mSelectList);
-                returnIntent.putExtra(CLIPS_VIEW_TYPE, VIEW_CAMERA);
-                returnIntent.putExtra("videoFileUri",outputUri);
-                returnIntent.putExtra(VideoClipsActivity.EXTRA_FROM_SELF_MODE, true);
-                startActivity(returnIntent);
-
-            } else if (resultCode == RESULT_CANCELED) {
-                // User cancelled the video capture
-                Toast.makeText(this.context, "Video Capture Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                // Video capture failed, advise user
-            }
-        }
-    }*/
 
     private void showActionPopWindow(View view, HVEProject item, int pos) {
         int width;
@@ -500,10 +393,7 @@ public class ClipFragment extends BaseFragment {
         homeSelectAll.setSelected(false);
         homeSelectDelete.setSelected(false);
         mHomeRecordAdapter.setSelectList(new ArrayList<>());
-        //homeSelectNum.setText(getResources().getQuantityString(R.plurals.home_select_num3, new ArrayList<>().size(),new ArrayList<>().size()));
-        //homeSelectNum.setVisibility(View.INVISIBLE);
         homeSelectLayout.setVisibility(View.INVISIBLE);
-        //back.setVisibility(isFromHome ? View.VISIBLE : View.GONE);
         mHomeRecordAdapter.setIsEditStatus(false);
     }
 
@@ -511,9 +401,7 @@ public class ClipFragment extends BaseFragment {
         homeSelectAll.setText(R.string.home_select_all);
         homeSelectAll.setSelected(false);
         homeSelectDelete.setSelected(false);
-        //homeSelectNum.setVisibility(View.VISIBLE);
         homeSelectLayout.setVisibility(View.VISIBLE);
-        //back.setVisibility(View.GONE);
         mHomeRecordAdapter.setIsEditStatus(true);
     }
 
@@ -521,115 +409,5 @@ public class ClipFragment extends BaseFragment {
         WindowManager.LayoutParams lp = mActivity.getWindow().getAttributes();
         lp.alpha = bgAlpha; // 0.0-1.0
         mActivity.getWindow().setAttributes(lp);
-    }
-
-    /** Create a file Uri for saving an image or video */
-    private Uri getOutputMediaFileUri(int type){
-        return FileProvider.getUriForFile(this.context,"com.example.vsiyp.fileprovider", getOutputMediaFile(type));
-    }
-
-    /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "VSIYP");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("VSIYP", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-        } else if(type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
-
-    private MediaData getVideoMediaData(Uri fileUri) {
-        List<MediaData> mediaDataList = new ArrayList<>();
-        MediaData returnData = new MediaData();
-
-        //1. Find the captured video from the uri
-        final String[] videoProjection =
-                {MediaStore.Video.Media.DATA, MediaStore.Video.Media.DURATION, MediaStore.Video.Media.DATE_MODIFIED};
-
-        try {
-            Cursor cursor = this.getActivity().getApplication().getContentResolver()
-                    .query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoProjection, null, null,
-                            MediaStore.Video.Media.DATE_MODIFIED + " DESC ");
-            if (cursor != null) {
-                cursor.moveToFirst();
-                try {
-                    String videoPath = cursor.getString(cursor.getColumnIndexOrThrow(videoProjection[0]));
-                    long videoDuration = cursor.getInt(cursor.getColumnIndexOrThrow(videoProjection[1]));
-                    long videoAddTime = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[2]));
-                    int videoHeight = cursor.getInt(cursor.getColumnIndexOrThrow(videoProjection[3]));
-                    long mimeType = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[4]));
-                    long displayName = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[5]));
-                    long videoSize = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[6]));
-                    long videoWidth = cursor.getLong(cursor.getColumnIndexOrThrow(videoProjection[7]));
-
-                    if (videoDuration < 500) {
-                        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)) {
-                            if (!TextUtils.isEmpty(videoPath)) {
-                                File file = new File(videoPath);
-                                if (!file.exists() || file.length() <= 0) {
-                                    MediaData tempStore = new MediaData();
-                                    tempStore.setAddTime(videoAddTime);
-                                    tempStore.setDuration(videoDuration);
-                                    tempStore.setHeight(videoHeight);
-                                    tempStore.setMimeType(String.valueOf(mimeType));
-                                    tempStore.setName(String.valueOf(displayName));
-                                    tempStore.setPath(file.getPath());
-                                    tempStore.setSize(videoSize);
-                                    tempStore.setUri(fileUri);
-                                    tempStore.setWidth((int) videoWidth);
-                                }
-                            }
-                        }
-                    }
-
-                } catch (SecurityException e) {
-                    SmartLog.e(TAG, e.getMessage());
-                }
-            }
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }catch (SecurityException e){
-            SmartLog.e(TAG, e.getMessage());
-        }
-        //2. Store Data into the temp MediaData Variable
-        for (MediaData data: mediaDataList){
-            returnData.setAddTime(data.getAddTime());
-            returnData.setDuration(data.getDuration());
-            returnData.setHeight(data.getHeight());
-            returnData.setMimeType(data.getMimeType());
-            returnData.setName(data.getName());
-            returnData.setPath(data.getPath());
-            returnData.setSize(data.getSize());
-            returnData.setUri(data.getUri());
-            returnData.setWidth(data.getWidth());
-        }
-
-        //3. Return the MediaData Item
-        return returnData;
     }
 }

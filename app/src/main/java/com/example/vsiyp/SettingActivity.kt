@@ -3,7 +3,6 @@ package com.example.vsiyp
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -17,7 +16,7 @@ class SettingActivity : AppCompatActivity() {
     }
 
     private fun initEvent() {
-        mBack!!.setOnClickListener { v: View? -> finish() }
+        mBack!!.setOnClickListener { finish() }
     }
 
     private fun initView() {
@@ -31,7 +30,7 @@ class SettingActivity : AppCompatActivity() {
      *
      * @return version name
      */
-    val versionName: String
+    private val versionName: String
         get() {
             val packageManager = this.packageManager
             try {
