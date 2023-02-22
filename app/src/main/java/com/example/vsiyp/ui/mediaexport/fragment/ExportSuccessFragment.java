@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,15 +23,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
-
 import com.example.vsiyp.R;
 import com.example.vsiyp.ui.common.LazyFragment;
 import com.example.vsiyp.ui.common.bean.Constant;
@@ -105,8 +105,8 @@ public class ExportSuccessFragment extends LazyFragment {
     }
 
     private void initViewModel() {
-        mSettingViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(SettingViewModel.class);
-        mPreviewViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(ExportPreviewViewModel.class);
+        mSettingViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(SettingViewModel.class);
+        mPreviewViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(ExportPreviewViewModel.class);
     }
 
     private void initObj() {
@@ -185,13 +185,14 @@ public class ExportSuccessFragment extends LazyFragment {
             return;
         }
         mActivity.setResult(RESULT_OK);
-        Uri fileUri = Uri.parse(mSettingViewModel.getVideoPath());
-        Log.d("ExportSuccess",fileUri.toString());
+        Log.d("Export File Path",mSettingViewModel.getVideoPath());
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        Uri videoUri = FileProvider.getUriForFile(mContext,"com.example.vsiyp.fileprovider",new File(mSettingViewModel.getVideoPath()));
+        shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri);
         shareIntent.setType("video/mp4");
-        startActivity(Intent.createChooser(shareIntent, null));
+        startActivity(Intent.createChooser(shareIntent, "Share video using"));
     }
 
     private void initViewModelObserve() {
@@ -234,6 +235,8 @@ public class ExportSuccessFragment extends LazyFragment {
         if (mActivity == null) {
             return;
         }
+        Log.d("Export File Path",mSettingViewModel.getVideoPath());
+        Log.d("iniUri",mSettingViewModel.initJumpUri(mActivity).toString());
         mActivity.setResult(RESULT_OK);
         backHomePage();
     }
