@@ -21,7 +21,6 @@ import com.example.vsiyp.ui.common.utils.ScreenUtil;
 import com.example.vsiyp.ui.common.utils.StringUtil;
 import com.example.vsiyp.ui.common.utils.ToastWrapper;
 import com.example.vsiyp.ui.common.utils.UpdateTimesManager;
-
 import com.example.vsiyp.ui.mediaeditor.graffiti.GraffitiInfo;
 import com.example.vsiyp.ui.mediaeditor.trackview.bean.MainRecyclerData;
 import com.example.vsiyp.ui.mediaeditor.trackview.fragment.EditPreviewFragment;
@@ -31,8 +30,6 @@ import com.huawei.hms.videoeditor.sdk.asset.HVEAsset;
 import com.huawei.hms.videoeditor.sdk.asset.HVEAudioAsset;
 import com.huawei.hms.videoeditor.sdk.asset.HVEVideoAsset;
 import com.huawei.hms.videoeditor.sdk.asset.HVEVideoReverseCallback;
-import com.huawei.hms.videoeditor.sdk.asset.HVEVisibleAsset;
-import com.huawei.hms.videoeditor.sdk.bean.HVEAIFaceStickerInput;
 import com.huawei.hms.videoeditor.sdk.bean.HVESpeedCurvePoint;
 import com.huawei.hms.videoeditor.sdk.effect.HVEEffect;
 import com.huawei.hms.videoeditor.sdk.effect.impl.ScriptableFilterEffect;

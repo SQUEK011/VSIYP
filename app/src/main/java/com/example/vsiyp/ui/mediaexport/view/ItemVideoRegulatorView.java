@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
- */
 
 package com.example.vsiyp.ui.mediaexport.view;
 
@@ -30,10 +27,6 @@ public class ItemVideoRegulatorView extends LinearLayout {
 
     private static final int RESOLUTION_1080P = 1080;
 
-    private static final int RESOLUTION_2K = 2;
-
-    private static final int RESOLUTION_4K = 4;
-
     private static final int FRAME_RATE_24 = 24;
 
     private static final int FRAME_RATE_25 = 25;
@@ -43,8 +36,6 @@ public class ItemVideoRegulatorView extends LinearLayout {
     private static final int FRAME_RATE_50 = 50;
 
     private static final int FRAME_RATE_60 = 60;
-
-    private static final int TYPE_RESOLUTION = 1;
 
     private LinearLayout mMax5View;
 

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
- */
 
 package com.example.vsiyp.ui.mediaexport.fragment;
 
@@ -220,12 +217,7 @@ public class ExportFragment extends LazyFragment {
         mExportCancel.setOnClickListener(new OnClickRepeatedListener(v -> mActivity.finish()));
     }
 
-    OnClickRepeatedListener onClickRepeatedListener = new OnClickRepeatedListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startExport();
-        }
-    });
+    OnClickRepeatedListener onClickRepeatedListener = new OnClickRepeatedListener(v -> startExport());
 
     SettingView.SettingViewChangeListener settingViewChangeListener = new SettingView.SettingViewChangeListener() {
         @Override

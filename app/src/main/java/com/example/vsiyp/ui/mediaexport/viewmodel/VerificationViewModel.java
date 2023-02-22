@@ -1,10 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
- */
 
 package com.example.vsiyp.ui.mediaexport.viewmodel;
-
-
 
 import static com.example.vsiyp.ui.mediaexport.model.ExportConstants.FRAME_RATE_MAX_PROGRESS;
 import static com.example.vsiyp.ui.mediaexport.model.ExportConstants.LOW_FRAME_RATE_MAX_PROGRESS;

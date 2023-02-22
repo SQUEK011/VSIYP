@@ -1,18 +1,3 @@
-/*
- *   Copyright 2022. Huawei Technologies Co., Ltd. All rights reserved.
- *
- *      Licensed under the Apache License, Version 2.0 (the "License");
- *      you may not use this file except in compliance with the License.
- *      You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *      Unless required by applicable law or agreed to in writing, software
- *      distributed under the License is distributed on an "AS IS" BASIS,
- *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *      See the License for the specific language governing permissions and
- *      limitations under the License.
- */
 
 package com.example.vsiyp.ui.mediaexport.config;
 
@@ -33,18 +18,6 @@ import java.util.List;
 @KeepOriginal
 public class DeviceProfile {
     private static final String TAG = "DeviceProfile";
-
-    public static final int MAX_PIP_LOW_PROFILE = 3;
-
-    public static final int MAX_PIP_HIGH_PROFILE = 6;
-
-    public static final String RESOLUTION_1080P = "1080p";
-
-    public static final String RESOLUTION_4K = "4k";
-
-    private int mMaxPipNum = MAX_PIP_HIGH_PROFILE;
-
-    private int exportThreadNum = 2;
 
     private boolean isUseSoftEncoder = false;
 
@@ -76,8 +49,6 @@ public class DeviceProfile {
         for (DeviceProfileCfg.ProfileItem item : items) {
             if (StringUtil.match(item.cpus, cpu) && isBetween(item.memorySizeFrom, item.memorySizeTo, sizeG)) {
                 SmartLog.i(TAG, cpu + " matched profile " + item);
-                mMaxPipNum = item.maxPipNum;
-                exportThreadNum = item.exportThreadNum;
                 isUseSoftEncoder = item.useSoftEncoder;
                 return;
             }
@@ -86,31 +57,13 @@ public class DeviceProfile {
     }
 
     private static boolean isBetween(int from, int to, int current) {
-        if (from <= current && current <= to) {
-            return true;
-        }
-        return false;
+        return from <= current && current <= to;
     }
 
-    public int getMaxPipNum() {
-        if (MemoryInfoUtil.isLowMemoryDevice() && MAX_PIP_LOW_PROFILE < mMaxPipNum) {
-            return MAX_PIP_LOW_PROFILE;
-        }
-        return mMaxPipNum;
-    }
-
-    public int getExportThreadNum() {
-        if (MemoryInfoUtil.isLowMemoryDevice()) {
-            return 1;
-        }
-        return exportThreadNum;
-    }
 
     public boolean isUseSoftEncoder() {
         return isUseSoftEncoder;
     }
 
-    public static boolean isSupportCuvaHdr() {
-        return false;
-    }
+
 }

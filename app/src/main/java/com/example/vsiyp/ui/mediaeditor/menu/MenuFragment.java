@@ -420,8 +420,8 @@ public class MenuFragment extends Fragment {
                         boolean isHumanTracking = isContainHumanTrackingEffect(hveAsset);
                         boolean isSegmentation = isSegmentationEnabled(hveAsset);
                         boolean isBodySegmentation = isContainBodySegmentationEffect(hveAsset);
-                        boolean isWings = isContainWingsEffect(hveAsset);
-                        if (isHumanTracking || isSegmentation || isBodySegmentation || isWings) {
+
+                        if (isHumanTracking || isSegmentation || isBodySegmentation) {
                             ableIds.add(EDIT_VIDEO_STATE_INVERTED);
                         }
                         menuContentLayout.updateUnAbleMenus(false, ableIds);
@@ -531,8 +531,8 @@ public class MenuFragment extends Fragment {
                             boolean isHumanTracking = isContainHumanTrackingEffect(selectedHveAsset);
                             boolean isSegmentation = isSegmentationEnabled(selectedHveAsset);
                             boolean isBodySegmentation = isContainBodySegmentationEffect(selectedHveAsset);
-                            boolean isWings = isContainWingsEffect(selectedHveAsset);
-                            if (isHumanTracking || isSegmentation || isBodySegmentation || isWings) {
+
+                            if (isHumanTracking || isSegmentation || isBodySegmentation ) {
                                 unableIds.addAll(MenuClickManager.getInstance().getUnableOperateIds(9));
                             }
                         }
@@ -553,8 +553,8 @@ public class MenuFragment extends Fragment {
                             boolean isHumanTracking = isContainHumanTrackingEffect(selectedHveAsset);
                             boolean isSegmentation = isSegmentationEnabled(selectedHveAsset);
                             boolean isBodySegmentation = isContainBodySegmentationEffect(selectedHveAsset);
-                            boolean isWings = isContainWingsEffect(selectedHveAsset);
-                            if (isHumanTracking || isSegmentation || isBodySegmentation || isWings) {
+
+                            if (isHumanTracking || isSegmentation || isBodySegmentation) {
                                 unableIds.addAll(MenuClickManager.getInstance().getUnableOperateIds(9));
                             }
                         }
@@ -672,10 +672,7 @@ public class MenuFragment extends Fragment {
         return !effects.isEmpty();
     }
 
-    private boolean isContainWingsEffect(HVEAsset asset) {
-        List<HVEEffect> effects = asset.getEffectsWithType(HVEEffect.HVEEffectType.WINGS);
-        return !effects.isEmpty();
-    }
+
 
     private boolean isContainHumanTrackingEffect(HVEAsset asset) {
         for (HVEEffect effect : asset.getEffects()) {

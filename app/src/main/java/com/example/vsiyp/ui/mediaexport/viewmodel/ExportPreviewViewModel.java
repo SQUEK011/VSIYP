@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
- */
 
 package com.example.vsiyp.ui.mediaexport.viewmodel;
 
@@ -64,7 +61,7 @@ public class ExportPreviewViewModel extends AndroidViewModel
         playEditor.setDisplay(layout);
         playEditor.setPlayCallback(this);
         playEditor.setSurfaceCallback(this);
-        HVEColor color = new HVEColor(20, 20, 20, 00);
+        HVEColor color = new HVEColor(20, 20, 20, 0);
         playEditor.setBackgroundColor(color);
     }
 

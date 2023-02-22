@@ -16,7 +16,6 @@
 
 package com.example.vsiyp.ui.mediapick.activity;
 
-import static com.example.vsiyp.ui.common.bean.Constant.MAX_AUTO_TEMPLATE;
 import static com.example.vsiyp.ui.common.bean.Constant.MAX_PICK_NUM;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.CLIPS_VIEW_TYPE;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_NORMAL;
@@ -24,9 +23,7 @@ import static com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager.DOWN_SAMPLIN
 import static com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager.NEED_DOWN_SAMPLING;
 import static com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager.NO_NEED_DOWN_SAMPLING;
 
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -53,7 +50,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -90,7 +86,6 @@ import com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager;
 import com.huawei.hms.videoeditor.sdk.bean.HVEVisibleFormatBean;
 import com.huawei.hms.videoeditor.sdk.util.HVEUtil;
 import com.huawei.hms.videoeditor.sdk.util.SmartLog;
-
 import com.huawei.secure.android.common.intent.SafeBundle;
 import com.huawei.secure.android.common.intent.SafeIntent;
 
@@ -157,10 +152,6 @@ public class MediaPickActivity extends BaseActivity {
 
     private TextView mTvSelectPictureNum;
 
-    private TextView mTvPressText;
-
-    private TextView mTvPressCopy;
-
     private TextView mAddCardView;
 
     private Context mContext;
@@ -199,8 +190,6 @@ public class MediaPickActivity extends BaseActivity {
 
     private MediaPickSelectAdapter mSelectAdapter;
 
-    private ArrayList<MediaData> completesList;
-
     private List<Fragment> fragments;
 
     private static final int GALLERY_FRAGMENT = 0;
@@ -210,15 +199,6 @@ public class MediaPickActivity extends BaseActivity {
     private int mCurrentFragment = GALLERY_FRAGMENT;
 
     private OnClickRepeatedListener galleryListener;
-
-    private TextView mSelectSrc;
-
-    public static void startActivityForResult(Activity activity, int mediaType, int requestCode) {
-        Intent intent = new Intent(activity, MediaPickActivity.class);
-        intent.putExtra(SHOW_MEDIA_TYPE, mediaType);
-        intent.putExtra(ACTION_TYPE, ACTION_AI_TYPE);
-        activity.startActivityForResult(intent, requestCode);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,12 +225,12 @@ public class MediaPickActivity extends BaseActivity {
         mTvTotalTime = findViewById(R.id.tv_total_time);
         mTvSelectVideoNum = findViewById(R.id.tv_select_video_num);
         mTvSelectPictureNum = findViewById(R.id.tv_select_picture_num);
-        mTvPressText = findViewById(R.id.tv_press_drag);
-        mTvPressCopy = findViewById(R.id.tv_press_drag_copy);
+        TextView mTvPressText = findViewById(R.id.tv_press_drag);
+        TextView mTvPressCopy = findViewById(R.id.tv_press_drag_copy);
         mQualityIcon = findViewById(R.id.iv_choice_quality);
         mQualityText = findViewById(R.id.tv_choice_quality);
         mQualityLayout = findViewById(R.id.layout_choice_quality);
-        mSelectSrc = findViewById(R.id.select_src);
+        TextView mSelectSrc = findViewById(R.id.select_src);
         mAddCardView = findViewById(R.id.card_add);
         mAddCardView.setEnabled(false);
 
@@ -385,9 +365,7 @@ public class MediaPickActivity extends BaseActivity {
             mMediaFolderAdapter.notifyDataSetChanged();
         });
 
-        mMediaFolderViewModel.getImageMediaData().observe(this, mediaFolders -> {
-            mImageMediaFolders.addAll(mediaFolders);
-        });
+        mMediaFolderViewModel.getImageMediaData().observe(this, mediaFolders -> mImageMediaFolders.addAll(mediaFolders));
     }
 
     @Override
@@ -500,12 +478,7 @@ public class MediaPickActivity extends BaseActivity {
         mMediaPickManager.addOnSelectItemChangeListener(item -> {
             int selectItemCount = mMediaPickManager.getSelectItemList().size();
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mChoiceContentLayout.setVisibility(selectItemCount > 0 ? View.VISIBLE : View.GONE);
-                }
-            }, 100);
+            new Handler().postDelayed(() -> mChoiceContentLayout.setVisibility(selectItemCount > 0 ? View.VISIBLE : View.GONE), 100);
 
             if (item.getIndex() > 0) {
                 addMediaToSelectList(item);
@@ -806,7 +779,7 @@ public class MediaPickActivity extends BaseActivity {
         }
 
         if (isNeedCompress == DOWN_SAMPLING_DONE || isNeedCompress == NEED_DOWN_SAMPLING) {
-            completesList = new ArrayList<>();
+            ArrayList<MediaData> completesList = new ArrayList<>();
             completesList.add(item);
             new MediaDataDownSampleManager(this).downSampleList(completesList,
                 new MediaDataDownSampleManager.DownSampleCallBack() {
@@ -859,23 +832,20 @@ public class MediaPickActivity extends BaseActivity {
         if (mDownSamplingList == null) {
             return;
         }
-        switch (mActionType) {
-            case ACTION_ADD_MEDIA_TYPE:
-                if (mDownSamplingList.size() > 0) {
-                    Intent intent = new Intent();
-                    intent.putParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT, mDownSamplingList);
-                    intent.setClass(MediaPickActivity.this, VideoClipsActivity.class);
-                    intent.putExtra(VideoClipsActivity.EXTRA_FROM_SELF_MODE, true);
-                    startActivity(intent);
-                    finish();
-                }
-                break;
-            default:
-                Intent intent2 = new Intent();
-                intent2.putParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT, mDownSamplingList);
-                setResult(Constant.RESULT_CODE, intent2);
+        if (mActionType == ACTION_ADD_MEDIA_TYPE) {
+            if (mDownSamplingList.size() > 0) {
+                Intent intent = new Intent();
+                intent.putParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT, mDownSamplingList);
+                intent.setClass(MediaPickActivity.this, VideoClipsActivity.class);
+                intent.putExtra(VideoClipsActivity.EXTRA_FROM_SELF_MODE, true);
+                startActivity(intent);
                 finish();
-                break;
+            }
+        } else {
+            Intent intent2 = new Intent();
+            intent2.putParcelableArrayListExtra(Constant.EXTRA_SELECT_RESULT, mDownSamplingList);
+            setResult(Constant.RESULT_CODE, intent2);
+            finish();
         }
     }
 
@@ -900,7 +870,7 @@ public class MediaPickActivity extends BaseActivity {
         boolean onTouch(MotionEvent ev);
     }
 
-    private final ArrayList<TimeOutOnTouchListener> onTouchListeners = new ArrayList<TimeOutOnTouchListener>(10);
+    private final ArrayList<TimeOutOnTouchListener> onTouchListeners = new ArrayList<>(10);
 
     public void registerMyOnTouchListener(TimeOutOnTouchListener onTouchListener) {
         onTouchListeners.add(onTouchListener);

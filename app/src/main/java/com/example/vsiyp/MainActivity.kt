@@ -2,7 +2,6 @@ package com.example.vsiyp
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,8 @@ import com.example.vsiyp.ui.mediaexport.utils.InfoStateUtil
 import com.example.vsiyp.utils.SmartLog
 import com.example.vsiyp.view.NoScrollViewPager
 import com.huawei.hms.videoeditor.sdk.MediaApplication
-import com.huawei.secure.android.common.intent.SafeIntent
 import java.util.*
+
 
 class MainActivity : BaseActivity() {
     private val mPermissions = arrayOf(

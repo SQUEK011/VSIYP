@@ -82,40 +82,6 @@ public class MediaData implements Parcelable {
 
     private long validDuration = 0;
 
-    public float getTemplateScaleWidth() {
-        return templateScaleWidth;
-    }
-
-    public void setTemplateScaleWidth(float templateScaleWidth) {
-        this.templateScaleWidth = templateScaleWidth;
-    }
-
-    public float getTemplateScaleHeight() {
-        return templateScaleHeight;
-    }
-
-    public void setTemplateScaleHeight(float templateScaleHeight) {
-        this.templateScaleHeight = templateScaleHeight;
-    }
-
-    public float getTemplateCenterX() {
-        return templateCenterX;
-    }
-
-    public void setTemplateCenterX(float templateCenterX) {
-        this.templateCenterX = templateCenterX;
-    }
-    public void setVerticalMirrorStatus(boolean verticalMirrorStatus) {
-        this.verticalMirrorStatus = verticalMirrorStatus;
-    }
-    public float getTemplateCenterY() {
-        return templateCenterY;
-    }
-
-    public void setTemplateCenterY(float templateCenterY) {
-        this.templateCenterY = templateCenterY;
-    }
-
     protected float templateScaleWidth;
 
     protected float templateScaleHeight;
@@ -127,14 +93,6 @@ public class MediaData implements Parcelable {
     public MediaData setUri(Uri uri) {
         this.uri = uri;
         return this;
-    }
-
-    public long getValidDuration() {
-        return validDuration;
-    }
-
-    public void setValidDuration(long validDuration) {
-        this.validDuration = validDuration;
     }
 
     public void setAddTime(long addTime) {
@@ -189,10 +147,6 @@ public class MediaData implements Parcelable {
         return coverUrl;
     }
 
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
-    }
-
     public long getSize() {
         return size;
     }
@@ -207,10 +161,6 @@ public class MediaData implements Parcelable {
 
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
-    }
-
-    public long getAddTime() {
-        return addTime;
     }
 
     public int getIndex() {
@@ -281,16 +231,8 @@ public class MediaData implements Parcelable {
         this.glRightTopY = glRightTopY;
     }
 
-    public float getScaleX() {
-        return scaleX;
-    }
-
     public void setScaleX(float scaleX) {
         this.scaleX = scaleX;
-    }
-
-    public float getScaleY() {
-        return scaleY;
     }
 
     public void setScaleY(float scaleY) {
@@ -315,14 +257,6 @@ public class MediaData implements Parcelable {
 
     public float getRotation() {
         return rotation;
-    }
-
-    public float getHVEWidth() {
-        return hVEWidth;
-    }
-
-    public float getHVEHeight() {
-        return hVEHeight;
     }
 
     public void setRotation(float rotation) {

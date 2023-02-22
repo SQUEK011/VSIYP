@@ -18,11 +18,16 @@
 package com.example.vsiyp.ui.mediapick.activity;
 
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vsiyp.R;
 import com.example.vsiyp.ui.common.BaseActivity;
@@ -31,20 +36,8 @@ import com.example.vsiyp.ui.common.bean.MediaData;
 import com.example.vsiyp.ui.common.listener.OnClickRepeatedListener;
 import com.example.vsiyp.ui.common.utils.SizeUtils;
 import com.example.vsiyp.ui.common.view.decoration.GridItemDividerDecoration;
-
 import com.example.vsiyp.ui.mediapick.adapter.PicturePickAdapter;
 import com.example.vsiyp.ui.mediapick.viewmodel.PickPictureViewModel;
-import com.huawei.secure.android.common.intent.SafeIntent;
-
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.paging.PagedList;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 
 
 public class PicturePickActivity extends BaseActivity {
@@ -57,15 +50,11 @@ public class PicturePickActivity extends BaseActivity {
 
     private PickPictureViewModel mMediaViewModel;
 
-    private boolean isFromFaceBlocking = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture_pick);
-
-        SafeIntent safeIntent = new SafeIntent(getIntent());
-        //isFromFaceBlocking = safeIntent.getBooleanExtra(IS_FROM_FACE_BLOCKING, false);
+        
         initView();
         initObject();
         initData();
@@ -78,7 +67,7 @@ public class PicturePickActivity extends BaseActivity {
     }
 
     private void initObject() {
-        mMediaViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) factory).get(PickPictureViewModel.class);
+        mMediaViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(PickPictureViewModel.class);
         mRecyclerView.setHasFixedSize(true);
         DefaultItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setSupportsChangeAnimations(false);
@@ -108,35 +97,14 @@ public class PicturePickActivity extends BaseActivity {
             PagedList<MediaData> mediaDataList = mMediaAdapter.getCurrentList();
             if (mediaDataList != null && mediaDataList.size() > position) {
                 MediaData mediaData = mediaDataList.get(position);
-                //if (isFromFaceBlocking) {
-                //    CropImageActivity.startActivityForResult(this, mediaData.getPath());
-                //} else {
                     Intent intent = new Intent();
                     if (mediaData != null && mediaData.getPath() != null) {
                         intent.putExtra(Constant.EXTRA_SELECT_RESULT, mediaData.getPath());
                         setResult(Constant.RESULT_CODE, intent);
                         finish();
-                //    }
                 }
             }
         });
     }
 
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            return;
-        }
-        if (requestCode == CropImageActivity.REQUEST_CODE_OFF_CROP) {
-            if (resultCode == RESULT_OK) {
-                String imgPath = data.getStringExtra(CropImageActivity.CROP_IMAGE_RESULT);
-                Intent intent = new Intent();
-                intent.putExtra(Constant.EXTRA_SELECT_RESULT, imgPath);
-                setResult(Constant.RESULT_CODE, intent);
-                finish();
-            }
-        }
-    }*/
 }

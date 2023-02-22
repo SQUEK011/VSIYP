@@ -5,12 +5,6 @@ import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_HISTORY;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -22,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,7 +26,6 @@ import com.example.vsiyp.HomeRecordAdapter;
 import com.example.vsiyp.R;
 import com.example.vsiyp.SettingActivity;
 import com.example.vsiyp.ui.common.BaseFragment;
-import com.example.vsiyp.ui.common.bean.MediaData;
 import com.example.vsiyp.ui.common.listener.OnClickRepeatedListener;
 import com.example.vsiyp.ui.common.utils.SharedPreferencesUtils;
 import com.example.vsiyp.ui.common.utils.SizeUtils;
@@ -42,7 +34,6 @@ import com.example.vsiyp.ui.common.view.decoration.RecyclerViewDivider;
 import com.example.vsiyp.ui.mediaeditor.VideoClipsActivity;
 import com.example.vsiyp.ui.mediaeditor.texts.viewmodel.TextEditViewModel;
 import com.example.vsiyp.ui.mediapick.activity.MediaPickActivity;
-import com.example.vsiyp.utils.SmartLog;
 import com.example.vsiyp.view.ClipDeleteDialog;
 import com.example.vsiyp.view.ClipRenameDialog;
 import com.example.vsiyp.view.HomeClipPopWindow;
@@ -52,10 +43,7 @@ import com.huawei.hms.videoeditor.sdk.HVEProjectManager;
 import com.huawei.hms.videoeditor.sdk.bean.HVEWordStyle;
 import com.huawei.secure.android.common.intent.SafeIntent;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ClipFragment extends BaseFragment {
@@ -89,8 +77,6 @@ public class ClipFragment extends BaseFragment {
 
     private ImageView mSettings;
 
-    private boolean isFromHome = false;
-
     @Override
     protected void initViewModelObserve() {
 
@@ -114,7 +100,7 @@ public class ClipFragment extends BaseFragment {
         mSettings = view.findViewById(R.id.setting);
         Activity activity = getActivity();
         if (activity != null) {
-            isFromHome = activity.getIntent().getBooleanExtra("fromHome", false);
+            boolean isFromHome = activity.getIntent().getBooleanExtra("fromHome", false);
         }
         mTextEditViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(TextEditViewModel.class);
     }
@@ -147,9 +133,7 @@ public class ClipFragment extends BaseFragment {
         mainViewModel.getDraftProjects().observe(getViewLifecycleOwner(), draftProjects -> {
             if (draftProjects.size() > 0) {
                 mDraftList.clear();
-                for (HVEProject project : draftProjects) {
-                    mDraftList.add(project);
-                }
+                mDraftList.addAll(draftProjects);
                 mHomeRecordAdapter.notifyDataSetChanged();
                 homeDraftNoText.setVisibility(View.GONE);
                 mDraftClip.setVisibility(View.VISIBLE);
@@ -165,9 +149,7 @@ public class ClipFragment extends BaseFragment {
 
     @Override
     protected void initEvent() {
-        mSettings.setOnClickListener(new OnClickRepeatedListener((v -> {
-            this.startActivity(new Intent(this.mActivity, SettingActivity.class));
-        })));
+        mSettings.setOnClickListener(new OnClickRepeatedListener((v -> this.startActivity(new Intent(this.mActivity, SettingActivity.class)))));
 
         mDraftClip.setOnClickListener(new OnClickRepeatedListener(v -> {
             mDraftClip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -249,7 +231,7 @@ public class ClipFragment extends BaseFragment {
         });
 
         mAddCameraCardView.setOnClickListener(new OnClickRepeatedListener(v -> {
-            Log.d("ClipFragment", "Camera Selected");
+            Log.d(TAG, "Camera Selected");
             //create new Intent
             Intent intent = new Intent(mActivity,CameraActivity.class);
             startActivity(intent);
@@ -333,9 +315,7 @@ public class ClipFragment extends BaseFragment {
             mActionPopWindow.showAsDropDown(view, -width + view.getWidth(), -height - view.getHeight() - off);
         }
 
-        mActionPopWindow.setOnDismissListener(() -> {
-            backgroundAlpha(1.0f);
-        });
+        mActionPopWindow.setOnDismissListener(() -> backgroundAlpha(1.0f));
     }
 
     private void showDeleteDialog(List<HVEProject> mSelectProjectId) {

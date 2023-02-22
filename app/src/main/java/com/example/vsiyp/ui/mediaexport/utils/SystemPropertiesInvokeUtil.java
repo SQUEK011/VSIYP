@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2016-2019. All rights reserved.
- */
 
 package com.example.vsiyp.ui.mediaexport.utils;
 
@@ -15,7 +12,7 @@ public class SystemPropertiesInvokeUtil {
             ReflectionUtils.getMethod("android.os.SystemProperties", "getBoolean", String.class, boolean.class);
         Object object = ReflectionUtils.invoke(getMethod, null, key, def);
         if (object instanceof Boolean) {
-            return ((Boolean) object).booleanValue();
+            return (Boolean) object;
         }
 
         return def;
@@ -26,7 +23,7 @@ public class SystemPropertiesInvokeUtil {
             ReflectionUtils.getMethod("android.os.SystemProperties", "getInt", String.class, int.class);
         Object object = ReflectionUtils.invoke(getIntMethod, null, key, def);
         if (object instanceof Integer) {
-            return ((Integer) object).intValue();
+            return (Integer) object;
         }
 
         return def;

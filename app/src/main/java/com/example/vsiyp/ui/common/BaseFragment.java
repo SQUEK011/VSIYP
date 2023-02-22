@@ -113,7 +113,7 @@ public abstract class BaseFragment extends Fragment {
         if (mActivity != null) {
             setStatusBarColor(mActivity);
             mFactory = new ViewModelProvider.AndroidViewModelFactory(mActivity.getApplication());
-            viewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
+            viewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
         }
     }
 
