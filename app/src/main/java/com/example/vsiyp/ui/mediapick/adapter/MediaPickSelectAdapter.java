@@ -111,12 +111,7 @@ public class MediaPickSelectAdapter extends RecyclerView.Adapter<MediaPickSelect
             }
         }));
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return true;
-            }
-        });
+        holder.itemView.setOnLongClickListener(view -> true);
     }
 
     @Override

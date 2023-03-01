@@ -157,8 +157,8 @@ public class TimeLapseFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     protected void initObject() {
-        mEditPreviewViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
-        mTimeLapseViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(TimeLapseViewModel.class);
+        mEditPreviewViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
+        mTimeLapseViewModel = new ViewModelProvider(mActivity, (ViewModelProvider.Factory) mFactory).get(TimeLapseViewModel.class);
         SafeBundle safeBundle = new SafeBundle(getArguments());
         mOperationId = safeBundle.getInt(OPERATE_ID, 0);
 

@@ -332,9 +332,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.reSizeDialog();
         }
-        /*if (mFaceProgressDialog != null && mFaceProgressDialog.isShowing()) {
-            mFaceProgressDialog.reSizeDialog();
-        }*/
         if (mCommonProgressDialog != null && mCommonProgressDialog.isShowing()) {
             mCommonProgressDialog.reSizeDialog();
         }

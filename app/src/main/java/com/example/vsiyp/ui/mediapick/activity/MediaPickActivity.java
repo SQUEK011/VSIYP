@@ -16,14 +16,12 @@
 
 package com.example.vsiyp.ui.mediapick.activity;
 
-import static com.example.vsiyp.ui.common.bean.Constant.MAX_AUTO_TEMPLATE;
 import static com.example.vsiyp.ui.common.bean.Constant.MAX_PICK_NUM;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.CLIPS_VIEW_TYPE;
 import static com.example.vsiyp.ui.mediaeditor.VideoClipsActivity.VIEW_NORMAL;
 import static com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager.DOWN_SAMPLING_DONE;
 import static com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager.NEED_DOWN_SAMPLING;
 import static com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager.NO_NEED_DOWN_SAMPLING;
-
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -53,7 +51,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -90,7 +87,6 @@ import com.huawei.hms.videoeditor.sdk.HVEDownSamplingManager;
 import com.huawei.hms.videoeditor.sdk.bean.HVEVisibleFormatBean;
 import com.huawei.hms.videoeditor.sdk.util.HVEUtil;
 import com.huawei.hms.videoeditor.sdk.util.SmartLog;
-
 import com.huawei.secure.android.common.intent.SafeBundle;
 import com.huawei.secure.android.common.intent.SafeIntent;
 

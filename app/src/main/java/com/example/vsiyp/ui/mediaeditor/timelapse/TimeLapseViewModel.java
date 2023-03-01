@@ -23,12 +23,6 @@ public class TimeLapseViewModel extends AndroidViewModel {
 
     public static final int STATE_NO_SKY_WATER = 0;
 
-    public static final int STATE_ONLY_SKY = 1;
-
-    public static final int STATE_ONLY_WATER = 2;
-
-    public static final int STATE_SKY_WATER = 3;
-
     private int skyRiverType;
 
     private int scaleSky = 0;

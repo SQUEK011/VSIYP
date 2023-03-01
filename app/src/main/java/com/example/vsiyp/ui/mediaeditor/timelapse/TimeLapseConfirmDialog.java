@@ -49,23 +49,17 @@ public class TimeLapseConfirmDialog extends Dialog {
     }
 
     private void initEvent() {
-        mDeleteConfirmTv.setOnClickListener(new OnClickRepeatedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDeletePositiveClickListener != null) {
-                    mDeletePositiveClickListener.onPositiveClick();
-                }
-                dismiss();
+        mDeleteConfirmTv.setOnClickListener(new OnClickRepeatedListener(v -> {
+            if (mDeletePositiveClickListener != null) {
+                mDeletePositiveClickListener.onPositiveClick();
             }
+            dismiss();
         }));
-        mDeleteCancelTv.setOnClickListener(new OnClickRepeatedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDeleteCancelClickListener != null) {
-                    mDeleteCancelClickListener.onCancelClick();
-                }
-                dismiss();
+        mDeleteCancelTv.setOnClickListener(new OnClickRepeatedListener(v -> {
+            if (mDeleteCancelClickListener != null) {
+                mDeleteCancelClickListener.onCancelClick();
             }
+            dismiss();
         }));
     }
 

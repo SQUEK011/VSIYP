@@ -128,29 +128,23 @@ public class ClipRenameDialog extends Dialog {
             }
         });
 
-        mRenameCancelTv.setOnClickListener(new OnClickRepeatedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mRenameCancelClickListener != null) {
-                    mRenameCancelClickListener.onCancelClick();
-                }
-                dismiss();
+        mRenameCancelTv.setOnClickListener(new OnClickRepeatedListener(v -> {
+            if (mRenameCancelClickListener != null) {
+                mRenameCancelClickListener.onCancelClick();
             }
+            dismiss();
         }));
 
-        mRenameConfirmTv.setOnClickListener(new OnClickRepeatedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mRenamePositiveClickListener != null) {
-                    if (TextUtils.isEmpty(mNameTv.getText().toString().trim())) {
-                        ToastWrapper.makeText(mActivity, mActivity.getString(R.string.name_can_not_be_empty)).show();
-                        return;
-                    } else {
-                        mRenamePositiveClickListener.onPositiveClick(mNameTv.getText().toString().trim());
-                    }
+        mRenameConfirmTv.setOnClickListener(new OnClickRepeatedListener(v -> {
+            if (mRenamePositiveClickListener != null) {
+                if (TextUtils.isEmpty(mNameTv.getText().toString().trim())) {
+                    ToastWrapper.makeText(mActivity, mActivity.getString(R.string.name_can_not_be_empty)).show();
+                    return;
+                } else {
+                    mRenamePositiveClickListener.onPositiveClick(mNameTv.getText().toString().trim());
                 }
-                dismiss();
             }
+            dismiss();
         }));
     }
 

@@ -16,8 +16,6 @@
 
 package com.example.vsiyp.ui.mediapick.fragment;
 
-
-
 import static com.example.vsiyp.ui.mediapick.activity.MediaPickActivity.DURATION;
 import static com.example.vsiyp.ui.mediapick.fragment.GalleryFragment.SHOW_MEDIA_TYPE;
 
