@@ -69,17 +69,6 @@ public class MaterialData implements Parcelable {
         return mMimeType;
     }
 
-    public void setMimeType(String mimeType) {
-        this.mMimeType = mimeType;
-    }
-
-    public long getAddTime() {
-        return addTime;
-    }
-
-    public void setAddTime(long addTime) {
-        this.addTime = addTime;
-    }
 
     public long getDuration() {
         return mDuration;
@@ -115,22 +104,6 @@ public class MaterialData implements Parcelable {
 
     public void setHeight(int height) {
         this.mHeight = height;
-    }
-
-    public long getValidDuration() {
-        return mValidDuration;
-    }
-
-    public void setValidDuration(long validDuration) {
-        this.mValidDuration = validDuration;
-    }
-
-    public int getTypeAsset() {
-        return mTypeAsset;
-    }
-
-    public void setTypeAsset(int typeAsset) {
-        this.mTypeAsset = typeAsset;
     }
 
     @Override

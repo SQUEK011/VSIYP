@@ -33,53 +33,50 @@ public class Utils {
     }
 
     public static void getThumbnails(String path, long spaceTime, int width, int height, ThumbnailCallback callback) {
-        new Thread() {
-            @Override
-            public void run() {
-                Thread.currentThread().setName("UtilThumbnail");
-                MediaMetadataRetriever media = new MediaMetadataRetriever();
+        new Thread(() -> {
+            Thread.currentThread().setName("UtilThumbnail");
+            MediaMetadataRetriever media = new MediaMetadataRetriever();
+            try {
+                media.setDataSource(path);
+                String durationStr = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                if (durationStr == null) {
+                    if (callback != null) {
+                        callback.onFail("1", "Illegal Video");
+                    }
+                    return;
+                }
+                long duration = Long.parseLong(durationStr);
+                long time = 0L;
+                while (time < duration) {
+                    Bitmap bitmap = media.getFrameAtTime(time * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                    Bitmap result = scaleAndCutBitmap(bitmap, width, height);
+                    if (bitmap != null) {
+                        bitmap.recycle();
+                    }
+                    if (callback != null) {
+                        callback.onBitmap(result);
+                    }
+                    time = time + spaceTime;
+                }
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (IllegalArgumentException e) {
+                SmartLog.e(TAG, "getThumbnail error");
+                if (callback != null) {
+                    callback.onFail("IllegalArgumentException", "");
+                }
+            } finally {
                 try {
-                    media.setDataSource(path);
-                    String durationStr = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                    if (durationStr == null) {
-                        if (callback != null) {
-                            callback.onFail("1", "Illegal Video");
-                        }
-                        return;
-                    }
-                    long duration = Long.parseLong(durationStr);
-                    long time = 0L;
-                    while (time < duration) {
-                        Bitmap bitmap = media.getFrameAtTime(time * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-                        Bitmap result = scaleAndCutBitmap(bitmap, width, height, 0);
-                        if (bitmap != null) {
-                            bitmap.recycle();
-                        }
-                        if (callback != null) {
-                            callback.onBitmap(result);
-                        }
-                        time = time + spaceTime;
-                    }
-                    if (callback != null) {
-                        callback.onSuccess();
-                    }
-                } catch (IllegalArgumentException e) {
-                    SmartLog.e(TAG, "getThumbnail error");
-                    if (callback != null) {
-                        callback.onFail("IllegalArgumentException", "");
-                    }
-                } finally {
-                    try {
-                        media.release();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    media.release();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        }.start();
+        }).start();
     }
 
-    private static Bitmap scaleAndCutBitmap(Bitmap bitmap, int width, int height, int rotation) {
+    private static Bitmap scaleAndCutBitmap(Bitmap bitmap, int width, int height) {
         if (bitmap == null) {
             return null;
         }
@@ -87,7 +84,7 @@ public class Utils {
         double scale = getScale(bitmap.getWidth(), bitmap.getHeight(), width, height);
 
         matrix.postScale((float) scale, (float) scale);
-        matrix.postRotate(rotation);
+        matrix.postRotate(0);
         Bitmap bitmap1;
         int space;
         if (bitmap.getHeight() > bitmap.getWidth()) {
@@ -101,7 +98,7 @@ public class Utils {
     }
 
     private static double getScale(int oriWidth, int oriHeight, int targetWidth, int targetHeight) {
-        double scale = 0;
+        double scale;
         if (oriHeight <= oriWidth) {
             scale = 1.0 * targetHeight / oriHeight;
         } else {

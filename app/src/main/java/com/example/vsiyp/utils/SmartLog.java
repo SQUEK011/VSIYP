@@ -4,6 +4,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import androidx.annotation.NonNull;
+
 import com.huawei.videoeditor.BuildConfig;
 
 import java.util.regex.Pattern;
@@ -11,15 +13,7 @@ import java.util.regex.Pattern;
 public class SmartLog {
     private static final Pattern M_PATTERN = Pattern.compile("[0-9]*[a-z|A-Z]*[一-龥]*");
 
-    private static final char STAR = '*';
-
-    private static final int LEN_CONST = 2;
-
     public SmartLog() {
-    }
-
-    public static boolean isDebuggable() {
-        return "debug".equalsIgnoreCase(BuildConfig.BUILD_TYPE);
     }
 
     private static String getLogMsg(String msg, boolean isNeedProguard) {
@@ -300,6 +294,7 @@ public class SmartLog {
             this.message = message;
         }
 
+        @NonNull
         public String toString() {
             if (this.ownerThrowable == null) {
                 return "";

@@ -40,11 +40,7 @@ public class EditorManager {
         if (videoEditor == null) {
             return null;
         }
-        HVETimeLine timeline = videoEditor.getTimeLine();
-        if (timeline == null) {
-            return null;
-        }
-        return timeline;
+        return videoEditor.getTimeLine();
     }
 
     public HVEVideoLane getMainLane() {

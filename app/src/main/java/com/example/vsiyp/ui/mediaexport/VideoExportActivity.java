@@ -1,10 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
- */
 
 package com.example.vsiyp.ui.mediaexport;
-
-
 
 import static com.example.vsiyp.ui.mediaexport.fragment.ExportSuccessFragment.SOURCE;
 import static com.example.vsiyp.ui.mediaexport.model.ExportConstants.EDITOR_UUID;
@@ -35,11 +30,6 @@ import com.example.vsiyp.ui.mediaexport.viewmodel.SettingViewModel;
 import com.example.vsiyp.utils.SmartLog;
 import com.huawei.secure.android.common.intent.SafeIntent;
 
-/**
- * 导出 Activity
- *
- * @since 2022.04.26
- */
 public class VideoExportActivity extends BaseActivity {
     private static final String TAG = "ExportActivity";
 

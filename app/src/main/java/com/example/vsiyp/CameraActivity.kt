@@ -31,22 +31,6 @@ class CameraActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
-
-        /*// create and start a new recording session
-        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
-            .format(System.currentTimeMillis())
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CameraX-Video")
-            }
-        }*/
-    }
-
-    private fun hasCamera(): Boolean {
-        return packageManager.hasSystemFeature(
-            PackageManager.FEATURE_CAMERA_ANY)
     }
 
     private fun startCamera(){
@@ -73,32 +57,36 @@ class CameraActivity : AppCompatActivity() {
         val videoUri = data?.data
 
         if (requestCode == VIDEO_CAPTURE) {
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "Video saved to:\n"
-                        + videoUri, Toast.LENGTH_LONG).show()
-                val editIntent = Intent(this, VideoClipsActivity::class.java)
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    Toast.makeText(this, "Video saved to:\n"
+                            + videoUri, Toast.LENGTH_LONG).show()
+                    val editIntent = Intent(this, VideoClipsActivity::class.java)
 
-                val filePath = videoUri?.let { getRealPathFromURI(it) }
-                Log.d(TAG,filePath.toString())
-                editIntent.putExtra("videoPath",filePath)
-                editIntent.putExtra(CLIPS_VIEW_TYPE, VIEW_CAMERA)
-                startActivity(editIntent)
-                finish()
+                    val filePath = videoUri?.let { getRealPathFromURI(it) }
+                    Log.d(TAG,filePath.toString())
+                    editIntent.putExtra("videoPath",filePath)
+                    editIntent.putExtra(CLIPS_VIEW_TYPE, VIEW_CAMERA)
+                    startActivity(editIntent)
+                    finish()
 
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(this, "Video recording cancelled.",
-                    Toast.LENGTH_LONG).show()
-                val returnIntent = Intent(this, MainActivity::class.java)
-                startActivity(returnIntent)
-                finish()
+                }
+                Activity.RESULT_CANCELED -> {
+                    Toast.makeText(this, "Video recording cancelled.",
+                        Toast.LENGTH_LONG).show()
+                    val returnIntent = Intent(this, MainActivity::class.java)
+                    startActivity(returnIntent)
+                    finish()
 
-            } else {
-                Toast.makeText(this, "Failed to record video",
-                    Toast.LENGTH_LONG).show()
-                val returnIntent = Intent(this, MainActivity::class.java)
-                startActivity(returnIntent)
-                finish()
+                }
+                else -> {
+                    Toast.makeText(this, "Failed to record video",
+                        Toast.LENGTH_LONG).show()
+                    val returnIntent = Intent(this, MainActivity::class.java)
+                    startActivity(returnIntent)
+                    finish()
 
+                }
             }
         }
     }

@@ -1,18 +1,3 @@
-/*
- *   Copyright 2022. Huawei Technologies Co., Ltd. All rights reserved.
- *
- *      Licensed under the Apache License, Version 2.0 (the "License");
- *      you may not use this file except in compliance with the License.
- *      You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *      Unless required by applicable law or agreed to in writing, software
- *      distributed under the License is distributed on an "AS IS" BASIS,
- *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *      See the License for the specific language governing permissions and
- *      limitations under the License.
- */
 
 package com.example.vsiyp.ui.mediaexport.utils;
 
@@ -26,6 +11,7 @@ import com.example.vsiyp.utils.SmartLog;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,10 +33,6 @@ public class SystemUtils {
     public static final String ROM_VIVO = "VIVO";
 
     public static final String ROM_QIKU = "QIKU";
-
-    public static final String ROM_HUAWEI = "HUAWEI";
-
-    public static final String ROM_HONOR = "HONOR";
 
     private static final String KEY_VERSION_MIUI = "ro.miui.ui.version.name";
 
@@ -112,11 +94,11 @@ public class SystemUtils {
     }
 
     public static String getProp(String name) {
-        String line = null;
+        String line;
         BufferedReader input = null;
         try {
             Process p = Runtime.getRuntime().exec("getprop " + name);
-            input = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"), 1024);
+            input = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8), 1024);
             line = input.readLine();
             input.close();
         } catch (IOException ex) {
@@ -169,7 +151,7 @@ public class SystemUtils {
             SmartLog.i(TAG, "modelForDeviceType==" + modelForDeviceType);
 
             List<String> mDeviceModelList = new ArrayList<>(Arrays.asList(modelForDeviceType.split(",")));
-            SmartLog.i(TAG, "mDeviceModelList==" + mDeviceModelList.toString());
+            SmartLog.i(TAG, "mDeviceModelList==" + mDeviceModelList);
 
             if (mDeviceModelList.isEmpty()) {
                 SmartLog.i(TAG, "unsupported device:" + deviceModel);

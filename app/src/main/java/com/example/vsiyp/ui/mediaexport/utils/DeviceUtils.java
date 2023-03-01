@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2016-2020. All rights reserved.
- */
 
 package com.example.vsiyp.ui.mediaexport.utils;
 

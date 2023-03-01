@@ -28,28 +28,8 @@ public class FilterData {
         this.mStrength = strength;
     }
 
-    public String getEffectName() {
-        return effectName;
-    }
-
-    public void setEffectName(String effectName) {
-        this.effectName = effectName;
-    }
-
-    public String getEffectPath() {
-        return effectPath;
-    }
-
-    public void setEffectPath(String effectPath) {
-        this.effectPath = effectPath;
-    }
-
     public String getEffectId() {
         return mEffectId;
-    }
-
-    public void setEffectId(String effectId) {
-        this.mEffectId = effectId;
     }
 
     public HVEEffect getEffect() {
@@ -78,10 +58,6 @@ public class FilterData {
 
     public float getStrength() {
         return mStrength;
-    }
-
-    public void setStrength(float strength) {
-        this.mStrength = strength;
     }
 
     @Override
