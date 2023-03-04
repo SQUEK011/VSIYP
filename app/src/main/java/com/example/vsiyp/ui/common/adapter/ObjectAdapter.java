@@ -1,5 +1,6 @@
 package com.example.vsiyp.ui.common.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -58,7 +59,7 @@ public class ObjectAdapter extends RecyclerView.Adapter<ObjectAdapter.ObjectHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ObjectHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ObjectHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.mSelectView.setVisibility(mSelectPosition == position ? View.VISIBLE : View.INVISIBLE);
         HVEAsset asset = bitmapList.get(position);
         if (asset instanceof HVEVideoAsset) {
@@ -95,13 +96,11 @@ public class ObjectAdapter extends RecyclerView.Adapter<ObjectAdapter.ObjectHold
         return new HuaweiVideoEditor.ImageCallback() {
             @Override
             public void onSuccess(Bitmap bitmap, long timeStamp) {
-                context.runOnUiThread(() -> {
-                    Glide.with(context)
-                            .load(bitmap)
-                            .apply(new RequestOptions().transform(new MultiTransformation<>(new CenterInside(),
-                                    new RoundedCorners(SizeUtils.dp2Px(context, 4)))))
-                            .into(holder.image);
-                });
+                context.runOnUiThread(() -> Glide.with(context)
+                        .load(bitmap)
+                        .apply(new RequestOptions().transform(new MultiTransformation<>(new CenterInside(),
+                                new RoundedCorners(SizeUtils.dp2Px(context, 4)))))
+                        .into(holder.image));
             }
 
             @Override

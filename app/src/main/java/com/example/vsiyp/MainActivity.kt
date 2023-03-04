@@ -15,6 +15,7 @@ import com.example.vsiyp.ui.mediaeditor.menu.MenuConfig
 import com.example.vsiyp.ui.mediaexport.utils.InfoStateUtil
 import com.example.vsiyp.utils.SmartLog
 import com.example.vsiyp.view.NoScrollViewPager
+import com.huawei.agconnect.AGConnectInstance
 import com.huawei.hms.videoeditor.sdk.MediaApplication
 import java.util.*
 
@@ -52,7 +53,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initData() {
-        //String apiKey = AGConnectInstance.getInstance().getOptions().getString("client/api_key");
+        val apiKey = AGConnectInstance.getInstance().getOptions().getString("client/api_key");
         MediaApplication.getInstance()
             .setApiKey("DAEDAPIVpsDTzvZB856dCzx04h9YnVxNJnm27mm+NIFiDVwnItB2RkU/KPyzbeO+KpIzPNF4AX9a4ghyzh1vFzfhUAIhJCs1Q/NYJg==")
         val uuid = UUID.randomUUID()

@@ -109,7 +109,7 @@ public class LocalAudioViewModel extends AndroidViewModel {
         try {
             Cursor cursor = context.getContentResolver()
                     .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, videoProjection, null, null,
-                            videoProjection[4] + " DESC LIMIT " + page * pageSize + " , " + pageSize);
+                            videoProjection[4] + " DESC " );
             while (cursor != null && cursor.moveToNext()) {
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(videoProjection[1]));
                 String path = cursor.getString(cursor.getColumnIndexOrThrow(videoProjection[2]));

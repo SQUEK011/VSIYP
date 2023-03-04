@@ -1,7 +1,5 @@
 package com.example.vsiyp.ui.common.tools;
 
-
-
 import com.example.vsiyp.ui.common.utils.ReflectionUtils;
 
 import java.lang.reflect.Method;

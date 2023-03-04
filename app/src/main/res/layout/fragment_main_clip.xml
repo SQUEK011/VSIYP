@@ -50,8 +50,8 @@
         android:background="@drawable/start_create">
 
         <ImageView
-            android:layout_width="@dimen/dp_23"
-            android:layout_height="@dimen/dp_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_17"
             android:layout_marginTop="@dimen/dp_47"
             android:src="@drawable/edit" />
@@ -64,7 +64,7 @@
             android:gravity="center"
             android:text="@string/start_tv"
             android:textColor="@color/white"
-            android:textSize="@dimen/dp_17" />
+            android:textSize="@dimen/dp_18" />
     </LinearLayout>
 
     <LinearLayout
@@ -80,8 +80,8 @@
         android:background="@drawable/ic_main_bg">
 
         <ImageView
-            android:layout_width="@dimen/dp_23"
-            android:layout_height="@dimen/dp_23"
+            android:layout_width="44dp"
+            android:layout_height="47dp"
             android:layout_marginStart="@dimen/dp_17"
             android:layout_marginTop="@dimen/dp_47"
             android:src="@drawable/icon_camera" />
@@ -94,7 +94,7 @@
             android:gravity="center"
             android:text="Camera"
             android:textColor="@color/white"
-            android:textSize="@dimen/dp_17" />
+            android:textSize="@dimen/dp_18" />
     </LinearLayout>
 
 

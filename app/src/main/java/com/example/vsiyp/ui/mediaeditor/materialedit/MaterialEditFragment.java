@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
@@ -21,7 +20,6 @@ import com.example.vsiyp.ui.common.utils.StringUtil;
 import com.example.vsiyp.ui.mediaeditor.aisegmentation.SegmentationViewModel;
 import com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager;
 import com.example.vsiyp.ui.mediaeditor.menu.VideoClipsPlayViewModel;
-
 import com.example.vsiyp.ui.mediaeditor.texts.viewmodel.TextEditViewModel;
 import com.example.vsiyp.ui.mediaeditor.trackview.viewmodel.EditPreviewViewModel;
 import com.huawei.hms.videoeditor.sdk.HuaweiVideoEditor;
@@ -45,8 +43,6 @@ public class MaterialEditFragment extends BaseFragment {
     private MaterialEditViewModel mMaterialEditViewModel;
 
     private EditPreviewViewModel mEditPreviewViewModel;
-
-    //private PersonTrackingViewModel mPersonTrackingViewModel;
 
     private SegmentationViewModel mSegmentationViewModel;
 
@@ -92,7 +88,6 @@ public class MaterialEditFragment extends BaseFragment {
     protected void initObject() {
         mMaterialEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MaterialEditViewModel.class);
         mEditPreviewViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
-        //mPersonTrackingViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(PersonTrackingViewModel.class);
         mSegmentationViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(SegmentationViewModel.class);
         mTextEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(TextEditViewModel.class);
         mSdkPlayViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(VideoClipsPlayViewModel.class);
@@ -111,38 +106,30 @@ public class MaterialEditFragment extends BaseFragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void initEvent() {
-        mContentLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!isFullScreenState && event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mLastSelectWordUUID = "";
-                    mLastSelectWordTime = 0;
-                    HVEPosition2D position2D = new HVEPosition2D(event.getX(), event.getY());
-                    HuaweiVideoEditor editor = EditorManager.getInstance().getEditor();
-                    if (editor == null) {
-                        return false;
-                    }
-                   // boolean isPersonTrackingEdit = mEditPreviewViewModel.isPersonTrackingStatus();
-                    /*if (isPersonTrackingEdit) {
-                        getPoint(event.getX(), event.getY(), false, false);
-                        return false;
-                    }*/
-                    HVEAsset asset = getIEditable(position2D, mMaterialEditViewModel.getCurrentFirstMenuId());
-
-                    if (asset == null) {
-                        mEditPreviewViewModel.setChoiceAsset(null);
-                        return false;
-                    }
-
-                    mEditPreviewViewModel.setChoiceAsset((HVEAsset) asset);
-                    if (asset instanceof HVEWordAsset) {
-                        HVEWordAsset wordAsset = (HVEWordAsset) asset;
-                        mLastSelectWordUUID = wordAsset.getUuid();
-                        mLastSelectWordTime = System.currentTimeMillis();
-                    }
+        mContentLayout.setOnTouchListener((v, event) -> {
+            if (!isFullScreenState && event.getAction() == MotionEvent.ACTION_DOWN) {
+                mLastSelectWordUUID = "";
+                mLastSelectWordTime = 0;
+                HVEPosition2D position2D = new HVEPosition2D(event.getX(), event.getY());
+                HuaweiVideoEditor editor = EditorManager.getInstance().getEditor();
+                if (editor == null) {
+                    return false;
                 }
-                return false;
+                HVEAsset asset = getIEditable(position2D, mMaterialEditViewModel.getCurrentFirstMenuId());
+
+                if (asset == null) {
+                    mEditPreviewViewModel.setChoiceAsset(null);
+                    return false;
+                }
+
+                mEditPreviewViewModel.setChoiceAsset((HVEAsset) asset);
+                if (asset instanceof HVEWordAsset) {
+                    HVEWordAsset wordAsset = (HVEWordAsset) asset;
+                    mLastSelectWordUUID = wordAsset.getUuid();
+                    mLastSelectWordTime = System.currentTimeMillis();
+                }
             }
+            return false;
         });
 
         mEditPreviewViewModel.getCurrentTime().observe(this, time -> {
@@ -174,129 +161,106 @@ public class MaterialEditFragment extends BaseFragment {
             }
         });
 
-        mSdkPlayViewModel.getFullScreenState().observe(this, new Observer<Boolean>() {
+        mSdkPlayViewModel.getFullScreenState().observe(this, isFullScreen -> {
+            isFullScreenState = isFullScreen;
+            mContentLayout.setVisibility(isFullScreen ? View.GONE : View.VISIBLE);
+        });
 
-            @Override
-            public void onChanged(Boolean isFullScreen) {
-                isFullScreenState = isFullScreen;
-                mContentLayout.setVisibility(isFullScreen ? View.GONE : View.VISIBLE);
+        mMaterialEditViewModel.getIsMaterialEditShow().observe(this, aBoolean -> mContentLayout.setVisibility(aBoolean ? View.VISIBLE : View.GONE));
+
+        mMaterialEditViewModel.getRefreshState().observe(this, aBoolean -> refreshMaterialList());
+
+        mMaterialEditViewModel.getIsStickerEditState().observe(this, aBoolean -> {
+            HVEAsset selectedAsset = mEditPreviewViewModel.getSelectedAsset();
+            if (!(selectedAsset instanceof HVEVisibleAsset)) {
+                SmartLog.e(TAG, "selectedAsset is unValid");
+                return;
+            }
+            HVEVisibleAsset hveVisibleAsset = (HVEVisibleAsset) selectedAsset;
+            String uuid = selectedAsset.getUuid();
+            for (int i = 0; i < mContentLayout.getChildCount(); i++) {
+                View view = mContentLayout.getChildAt(i);
+                if (!(view instanceof StickerView)) {
+                    continue;
+                }
+                StickerView transformView = (StickerView) view;
+                if (!StringUtil.isEmpty((String) transformView.getTag()) && uuid.equals(transformView.getTag())) {
+                    transformView.setDrawIconStatus(true, !aBoolean, !aBoolean, true);
+                    transformView.setTag(uuid);
+                    transformView.setRectangularPoints(hveVisibleAsset.getRect(), hveVisibleAsset.getSize(),
+                            hveVisibleAsset.getRotation());
+                    break;
+                }
             }
         });
 
-        mMaterialEditViewModel.getIsMaterialEditShow().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                mContentLayout.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
+        mMaterialEditViewModel.getIsTextEditState().observe(this, aBoolean -> {
+            HVEAsset selectedAsset = mEditPreviewViewModel.getSelectedAsset();
+            if (selectedAsset == null && mEditPreviewViewModel.isAddCoverTextStatus()) {
+                selectedAsset = mMaterialEditViewModel.getSelectAsset();
             }
-        });
-
-        mMaterialEditViewModel.getRefreshState().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                refreshMaterialList();
-            }
-        });
-
-        mMaterialEditViewModel.getIsStickerEditState().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                HVEAsset selectedAsset = mEditPreviewViewModel.getSelectedAsset();
-                if (!(selectedAsset instanceof HVEVisibleAsset)) {
-                    SmartLog.e(TAG, "selectedAsset is unValid");
+            if (!aBoolean && selectedAsset == null) {
+                if (mMaterialEditViewModel.getText().getValue() == null
+                        || StringUtil.isEmpty(mMaterialEditViewModel.getText().getValue())) {
+                    mMaterialEditViewModel.clearMaterialEditData();
                     return;
                 }
-                HVEVisibleAsset hveVisibleAsset = (HVEVisibleAsset) selectedAsset;
-                String uuid = selectedAsset.getUuid();
-                for (int i = 0; i < mContentLayout.getChildCount(); i++) {
-                    View view = mContentLayout.getChildAt(i);
-                    if (!(view instanceof StickerView)) {
-                        continue;
-                    }
-                    StickerView transformView = (StickerView) view;
-                    if (!StringUtil.isEmpty((String) transformView.getTag()) && uuid.equals(transformView.getTag())) {
-                        transformView.setDrawIconStatus(true, !aBoolean, !aBoolean, true);
-                        transformView.setTag(uuid);
-                        transformView.setRectangularPoints(hveVisibleAsset.getRect(), hveVisibleAsset.getSize(),
-                                hveVisibleAsset.getRotation());
-                        break;
-                    }
+            }
+            if (!(selectedAsset instanceof HVEVisibleAsset)) {
+                SmartLog.e(TAG, "selectedAsset is unValid");
+                return;
+            }
+            HVEVisibleAsset hveVisibleAsset = (HVEVisibleAsset) selectedAsset;
+            String uuid = hveVisibleAsset.getUuid();
+            for (int i = 0; i < mContentLayout.getChildCount(); i++) {
+                View view = mContentLayout.getChildAt(i);
+                if (!(view instanceof TextDefaultView)) {
+                    continue;
+                }
+                TextDefaultView transformView = (TextDefaultView) view;
+                if (!StringUtil.isEmpty((String) transformView.getTag()) && uuid.equals(transformView.getTag())) {
+                    transformView.setDrawIconStatus(true, !aBoolean, !aBoolean, true);
+                    transformView.setTag(hveVisibleAsset.getUuid());
+                    transformView.setRectangularPoints(hveVisibleAsset.getRect(), hveVisibleAsset.getSize(),
+                            hveVisibleAsset.getRotation());
+                    break;
                 }
             }
         });
 
-        mMaterialEditViewModel.getIsTextEditState().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                HVEAsset selectedAsset = mEditPreviewViewModel.getSelectedAsset();
-                if (selectedAsset == null && mEditPreviewViewModel.isAddCoverTextStatus()) {
-                    selectedAsset = mMaterialEditViewModel.getSelectAsset();
-                }
-                if (!aBoolean && selectedAsset == null) {
-                    if (mMaterialEditViewModel.getText().getValue() == null
-                            || StringUtil.isEmpty(mMaterialEditViewModel.getText().getValue())) {
-                        mMaterialEditViewModel.clearMaterialEditData();
-                        return;
-                    }
-                }
-                if (!(selectedAsset instanceof HVEVisibleAsset)) {
-                    SmartLog.e(TAG, "selectedAsset is unValid");
-                    return;
-                }
+        mMaterialEditViewModel.getText().observe(this, string -> {
+            HVEAsset selectedAsset = mEditPreviewViewModel.getSelectedAsset();
+            if (selectedAsset == null && mEditPreviewViewModel.isAddCoverTextStatus()) {
+                selectedAsset = mMaterialEditViewModel.getSelectAsset();
+            }
+            if (selectedAsset instanceof HVEVisibleAsset) {
                 HVEVisibleAsset hveVisibleAsset = (HVEVisibleAsset) selectedAsset;
                 String uuid = hveVisibleAsset.getUuid();
-                for (int i = 0; i < mContentLayout.getChildCount(); i++) {
-                    View view = mContentLayout.getChildAt(i);
-                    if (!(view instanceof TextDefaultView)) {
-                        continue;
-                    }
-                    TextDefaultView transformView = (TextDefaultView) view;
-                    if (!StringUtil.isEmpty((String) transformView.getTag()) && uuid.equals(transformView.getTag())) {
-                        transformView.setDrawIconStatus(true, !aBoolean, !aBoolean, true);
-                        transformView.setTag(hveVisibleAsset.getUuid());
-                        transformView.setRectangularPoints(hveVisibleAsset.getRect(), hveVisibleAsset.getSize(),
-                                hveVisibleAsset.getRotation());
-                        break;
-                    }
+                ((HVEWordAsset) hveVisibleAsset).setText(string);
+                if (EditorManager.getInstance().getEditor() == null
+                        || EditorManager.getInstance().getTimeLine() == null) {
+                    return;
                 }
-            }
-        });
+                EditorManager.getInstance()
+                        .getEditor()
+                        .seekTimeLine(EditorManager.getInstance().getTimeLine().getCurrentTime(),
+                                () -> mActivity.runOnUiThread(() -> {
 
-        mMaterialEditViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String string) {
-                HVEAsset selectedAsset = mEditPreviewViewModel.getSelectedAsset();
-                if (selectedAsset == null && mEditPreviewViewModel.isAddCoverTextStatus()) {
-                    selectedAsset = mMaterialEditViewModel.getSelectAsset();
-                }
-                if (selectedAsset instanceof HVEVisibleAsset) {
-                    HVEVisibleAsset hveVisibleAsset = (HVEVisibleAsset) selectedAsset;
-                    String uuid = hveVisibleAsset.getUuid();
-                    ((HVEWordAsset) hveVisibleAsset).setText(string);
-                    if (EditorManager.getInstance().getEditor() == null
-                            || EditorManager.getInstance().getTimeLine() == null) {
-                        return;
-                    }
-                    EditorManager.getInstance()
-                            .getEditor()
-                            .seekTimeLine(EditorManager.getInstance().getTimeLine().getCurrentTime(),
-                                    () -> mActivity.runOnUiThread(() -> {
-
-                                        for (int i = 0; i < mContentLayout.getChildCount(); i++) {
-                                            View view = mContentLayout.getChildAt(i);
-                                            if (view instanceof TextDefaultView) {
-                                                TextDefaultView transformView = (TextDefaultView) view;
-                                                if (!StringUtil.isEmpty((String) transformView.getTag())
-                                                        && uuid.equals(transformView.getTag())) {
-                                                    transformView.setDrawIconStatus(true, false, false, true);
-                                                    transformView.setTag(hveVisibleAsset.getUuid());
-                                                    transformView.setRectangularPoints(hveVisibleAsset.getRect(),
-                                                            hveVisibleAsset.getSize(), hveVisibleAsset.getRotation());
-                                                    break;
-                                                }
+                                    for (int i = 0; i < mContentLayout.getChildCount(); i++) {
+                                        View view = mContentLayout.getChildAt(i);
+                                        if (view instanceof TextDefaultView) {
+                                            TextDefaultView transformView = (TextDefaultView) view;
+                                            if (!StringUtil.isEmpty((String) transformView.getTag())
+                                                    && uuid.equals(transformView.getTag())) {
+                                                transformView.setDrawIconStatus(true, false, false, true);
+                                                transformView.setTag(hveVisibleAsset.getUuid());
+                                                transformView.setRectangularPoints(hveVisibleAsset.getRect(),
+                                                        hveVisibleAsset.getSize(), hveVisibleAsset.getRotation());
+                                                break;
                                             }
                                         }
-                                    }));
-                }
+                                    }
+                                }));
             }
         });
     }
@@ -305,12 +269,7 @@ public class MaterialEditFragment extends BaseFragment {
         float x = posX;
         float y = posY;
         HVEAsset selectedAsset;
-        /*Tracking Review*/
-       // if (isSegmentation) {
-            selectedAsset = mSegmentationViewModel.getSelectedAsset();
-        //} else {
-        //   selectedAsset = mPersonTrackingViewModel.getSelectedTracking();
-        //}
+        selectedAsset = mSegmentationViewModel.getSelectedAsset();
         HVEVisibleAsset hveVisibleAsset = (HVEVisibleAsset) selectedAsset;
         int w = hveVisibleAsset.getWidth();
         int h = hveVisibleAsset.getHeight();
@@ -351,8 +310,6 @@ public class MaterialEditFragment extends BaseFragment {
                     mSegmentationViewModel.setPoints(points);
                     mSegmentationViewModel.setDrawPoints(drawPoints);
                 }
-            } else {
-                //mPersonTrackingViewModel.setTrackingPoint(position2D);
             }
         }
     }
@@ -487,15 +444,6 @@ public class MaterialEditFragment extends BaseFragment {
                 if (editor == null) {
                     return;
                 }
-                /*boolean isPersonTrackingEdit = mEditPreviewViewModel.isPersonTrackingStatus();
-                if (isPersonTrackingEdit) {
-                    if (position2D.xPos == 0 && position2D.yPos == 0) {
-                        return;
-                    }
-                    mMaterialEditViewModel.clearMaterialEditData();
-                    getPoint(position2D.xPos, position2D.yPos, false, false);
-                    return;
-                }*/
                 HVEAsset asset = getIEditable(position2D, mMaterialEditViewModel.getCurrentFirstMenuId());
 
                 long currentTime = System.currentTimeMillis();
@@ -606,18 +554,11 @@ public class MaterialEditFragment extends BaseFragment {
                 data.getAsset().setSize((int) (size.width * scale), (int) (size.width * scale * rate));
                 data.getAsset().setRotation(angle);
                 mEditPreviewViewModel.getEditor()
-                        .seekTimeLine(editor.getTimeLine().getCurrentTime(), new HuaweiVideoEditor.SeekCallback() {
-                            @Override
-                            public void onSeekFinished() {
-                                mActivity.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        transformView.setRectangularPoints(data.getAsset().getRect(),
-                                                data.getAsset().getSize(), data.getAsset().getRotation());
-                                    }
-                                });
-                            }
-                        });
+                        .seekTimeLine(
+                                editor.getTimeLine().getCurrentTime(), () ->
+                                        mActivity.runOnUiThread(() ->
+                                                transformView.setRectangularPoints(data.getAsset().getRect(),
+                                data.getAsset().getSize(), data.getAsset().getRotation())));
             }
 
             @Override
