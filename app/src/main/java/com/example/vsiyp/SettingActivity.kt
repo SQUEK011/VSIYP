@@ -23,11 +23,21 @@ class SettingActivity : AppCompatActivity() {
     private fun initEvent() {
         mBack!!.setOnClickListener { finish() }
         mPrivacyBtn!!.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://developer.huawei.com/consumer/en/doc/development/Media-Guides/sdk-data-security-0000001147828303")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://developer.huawei.com/consumer/en/doc/development/Media-Guides/sdk-data-security-0000001147828303")
+                )
+            )
         }
 
         mAbtBtn!!.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://developer.huawei.com/consumer/en/hms/huawei-video-editor/")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://developer.huawei.com/consumer/en/hms/huawei-video-editor/")
+                )
+            )
 
         }
     }

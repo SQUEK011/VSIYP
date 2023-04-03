@@ -80,36 +80,6 @@
           "children": []
         },
         {
-          "id": 101226,
-          "name": "cut_second_menu_time_lapse",
-          "cnName": "一键动效",
-          "drawableName": "edit_menu_time_lapse",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
-          "id": 101221,
-          "name": "cut_second_menu_ai_hair",
-          "cnName": "一键美发",
-          "drawableName": "edit_menu_ai_hair",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
-          "id": 101227,
-          "name": "cut_second_menu_ai_selection",
-          "cnName": "精彩片段",
-          "drawableName": "edit_menu_adjust",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
           "id": 101229,
           "name": "cut_second_menu_body_seg",
           "cnName": "人像分割",
@@ -548,26 +518,6 @@
           "children": []
         },
         {
-          "id": 201125,
-          "name": "cut_second_menu_time_lapse",
-          "cnName": "一键动效",
-          "drawableName": "edit_menu_time_lapse",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 0,
-          "children": []
-        },
-        {
-          "id": 201120,
-          "name": "cut_second_menu_ai_hair",
-          "cnName": "一键美发",
-          "drawableName": "edit_menu_ai_hair",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 2,
-          "children": []
-        },
-        {
           "id": 201126,
           "name": "cut_second_menu_ai_selection",
           "cnName": "精彩片段",
@@ -1000,16 +950,6 @@
           "children": []
         },
         {
-          "id": 207125,
-          "name": "cut_second_menu_time_lapse",
-          "cnName": "一键动效",
-          "drawableName": "edit_menu_time_lapse",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 2,
-          "children": []
-        },
-        {
           "id": 207114,
           "name": "cut_second_menu_mirror",
           "cnName": "镜像",
@@ -1034,16 +974,6 @@
           "name": "cut_second_menu_upend",
           "cnName": "倒放",
           "drawableName": "edit_menu_upend",
-          "parentId": 101,
-          "enable": 1,
-          "isAdvanced": 2,
-          "children": []
-        },
-        {
-          "id": 207120,
-          "name": "cut_second_menu_ai_hair",
-          "cnName": "一键美发",
-          "drawableName": "edit_menu_ai_hair",
           "parentId": 101,
           "enable": 1,
           "isAdvanced": 2,
