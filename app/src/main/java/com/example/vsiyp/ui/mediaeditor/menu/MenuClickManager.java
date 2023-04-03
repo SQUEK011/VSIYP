@@ -22,7 +22,6 @@ import com.example.vsiyp.ui.mediaeditor.VideoClipsActivity;
 import com.example.vsiyp.ui.mediaeditor.aibodyseg.BodySegViewModel;
 import com.example.vsiyp.ui.mediaeditor.aifun.AIBlockingHintDialog;
 import com.example.vsiyp.ui.mediaeditor.aifun.fragment.AiFunFragment;
-import com.example.vsiyp.ui.mediaeditor.aihair.fragment.AiHairFragment;
 import com.example.vsiyp.ui.mediaeditor.aisegmentation.SegmentationViewModel;
 import com.example.vsiyp.ui.mediaeditor.animation.videoanimation.fragment.AnimationPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.audio.activity.AudioPickActivity;
@@ -42,16 +41,13 @@ import com.example.vsiyp.ui.mediaeditor.fragment.TransparencyPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.fragment.VideoProportionFragment;
 import com.example.vsiyp.ui.mediaeditor.fragment.VolumePanelFragment;
 import com.example.vsiyp.ui.mediaeditor.materialedit.MaterialEditViewModel;
-
 import com.example.vsiyp.ui.mediaeditor.pip.PicInPicMixFragment;
 import com.example.vsiyp.ui.mediaeditor.sticker.fragment.StickerPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.sticker.stickeranimation.fragment.StickerAnimationPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.texts.fragment.EditPanelFragment;
-import com.example.vsiyp.ui.mediaeditor.timelapse.TimeLapseViewModel;
 import com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState;
 import com.example.vsiyp.ui.mediaeditor.trackview.viewmodel.EditPreviewViewModel;
 import com.example.vsiyp.ui.mediapick.activity.MediaPickActivity;
-import com.huawei.hms.videoeditor.sdk.ai.HVEAIInitialCallback;
 import com.huawei.hms.videoeditor.sdk.asset.HVEAsset;
 import com.huawei.hms.videoeditor.sdk.asset.HVEAudioAsset;
 import com.huawei.hms.videoeditor.sdk.asset.HVEImageAsset;
@@ -105,10 +101,6 @@ public class MenuClickManager {
 
     private MaterialEditViewModel mMaterialEditViewModel;
 
-    //private PersonTrackingViewModel mPersonTrackingViewModel;
-
-    private TimeLapseViewModel mTimeLapseViewModel;
-
     private SegmentationViewModel mSegmentationViewModel;
 
     private BodySegViewModel mBodySegViewModel;
@@ -127,15 +119,11 @@ public class MenuClickManager {
 
     public void init(VideoClipsActivity activity, EditMenuContentLayout menuContentLayout, MenuViewModel menuViewModel,
                      EditPreviewViewModel editPreviewViewModel, MaterialEditViewModel materialEditViewModel,
-                     //PersonTrackingViewModel personTrackingViewModel,
-                     TimeLapseViewModel timeLapseViewModel,
                      SegmentationViewModel mSegmentationViewModel, BodySegViewModel bodySegViewModel) {
         this.mActivity = activity;
         this.mMenuViewModel = menuViewModel;
         this.editPreviewViewModel = editPreviewViewModel;
         this.mMaterialEditViewModel = materialEditViewModel;
-        //this.mPersonTrackingViewModel = personTrackingViewModel;
-        this.mTimeLapseViewModel = timeLapseViewModel;
         this.mSegmentationViewModel = mSegmentationViewModel;
         this.mBodySegViewModel = bodySegViewModel;
         this.menuContentLayout = menuContentLayout;
@@ -722,40 +710,6 @@ public class MenuClickManager {
                             .builder(mActivity, mActivity.getLifecycle())
                             .show(mActivity.getString(R.string.intelligent_processing), true);
                 });
-                ((HVEVisibleAsset) aiHairAsset).initHairDyeingEngine(new HVEAIInitialCallback() {
-                    @Override
-                    public void onProgress(int progress) {
-
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
-                            return;
-                        }
-
-                        mActivity.runOnUiThread(() -> {
-                            LoadingDialogUtils.getInstance().dismiss();
-                            AiHairFragment aiHairFragment = AiHairFragment.newInstance();
-                            MenuClickManager.getInstance()
-                                    .showPanelViewPrepare(MainViewState.EDIT_VIDEO_STATE_AI_HAIR, aiHairFragment);
-                        });
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String errorMessage) {
-                        if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
-                            return;
-                        }
-
-                        mActivity.runOnUiThread(() -> {
-                            LoadingDialogUtils.getInstance().dismiss();
-                            ToastWrapper
-                                    .makeText(mActivity, mActivity.getString(R.string.result_illegal), Toast.LENGTH_SHORT)
-                                    .show();
-                        });
-                    }
-                });
                 break;
 
             case MainViewState.EDIT_PIP_OPERATION_AI_SELECTION:
@@ -775,10 +729,6 @@ public class MenuClickManager {
                 }
                 if (selectedAsset == null) {
                     return;
-                }
-                if (mTimeLapseViewModel != null) {
-                    mTimeLapseViewModel.setSelectedAsset(selectedAsset);
-                    mTimeLapseViewModel.setTimeLapseEnter(id);
                 }
                 break;
             case MainViewState.EDIT_VIDEO_STATE_AI_FUN:

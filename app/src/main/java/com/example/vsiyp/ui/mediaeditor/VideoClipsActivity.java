@@ -7,17 +7,12 @@ import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.AI_HEAD_SEG
 import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.AI_HEAD_SEG_KEY;
 import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.AI_SEGMENTATION;
 import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.AI_SEGMENTATION_KEY;
-import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.TIME_LAPSE;
-import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.TIME_LAPSE_KEY;
 import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.VIDEO_SELECTION;
 import static com.example.vsiyp.ui.mediaeditor.menu.MenuClickManager.VIDEO_SELECTION_KEY;
-import static com.example.vsiyp.ui.mediaeditor.timelapse.TimeLapseViewModel.STATE_ERROR;
-import static com.example.vsiyp.ui.mediaeditor.timelapse.TimeLapseViewModel.STATE_NO_SKY_WATER;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_AUDIO_CUSTOM_CURVESPEED;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_AI_SEGMENTATION;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_BODY_SEG;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_HEAD_SEG;
-import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_PIP_OPERATION_TIME_LAPSE;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_OPERATION_AI_SEGMENTATION;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_OPERATION_HEAD_SEG;
 import static com.example.vsiyp.ui.mediaeditor.trackview.bean.MainViewState.EDIT_VIDEO_STATE_AI_SEGMENTATION;
@@ -102,9 +97,6 @@ import com.example.vsiyp.ui.mediaeditor.speed.CustomCurveSpeedFragment;
 import com.example.vsiyp.ui.mediaeditor.split.AssetSplitFragment;
 import com.example.vsiyp.ui.mediaeditor.texts.fragment.EditPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.texts.fragment.TrailerFragment;
-import com.example.vsiyp.ui.mediaeditor.timelapse.TimeLapseConfirmDialog;
-import com.example.vsiyp.ui.mediaeditor.timelapse.TimeLapseFragment;
-import com.example.vsiyp.ui.mediaeditor.timelapse.TimeLapseViewModel;
 import com.example.vsiyp.ui.mediaeditor.trackview.fragment.EditPreviewFragment;
 import com.example.vsiyp.ui.mediaeditor.trackview.viewmodel.EditPreviewViewModel;
 import com.example.vsiyp.ui.mediaexport.VideoExportActivity;
@@ -289,8 +281,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
 
     private HuaweiVideoEditor mEditor;
 
-    private TimeLapseViewModel mTimeLapseViewModel;
-
     private CommonProgressDialog mCommonProgressDialog;
 
     private long segTime = 0;
@@ -375,7 +365,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         mMaterialEditViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(MaterialEditViewModel.class);
         mEditViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(EditItemViewModel.class);
         mMenuViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(MenuViewModel.class);
-        mTimeLapseViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(TimeLapseViewModel.class);
         mSegmentationViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(SegmentationViewModel.class);
         mCoverImageViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(CoverImageViewModel.class);
         mBodySegViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(BodySegViewModel.class);
@@ -461,8 +450,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                         }
                     }
                 }
-                break;
-            case VIEW_HISTORY:
                 break;
             case VIEW_CAMERA:
                 EditorManager.getInstance().getTimeLine().appendVideoLane();
@@ -762,7 +749,7 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                     return;
                 }
 
-                if (dialog != null && !dialog.isShowing()) {
+                if (!dialog.isShowing()) {
                     dialog.show();
                 }
 
@@ -770,16 +757,14 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
                         new HuaweiVideoEditor.ImageCallback() {
                             @Override
                             public void onSuccess(Bitmap bitmap, long time) {
-                                if (handler != null) {
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (dialog != null && dialog.isShowing()) {
-                                                dialog.dismiss();
-                                            }
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (dialog.isShowing()) {
+                                            dialog.dismiss();
                                         }
-                                    }, 1000);
-                                }
+                                    }
+                                }, 1000);
 
                                 if (bitmap == null) {
                                     return;
@@ -808,16 +793,14 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
 
                             @Override
                             public void onFail(int errorCode) {
-                                if (handler != null) {
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (dialog != null && dialog.isShowing()) {
-                                                dialog.dismiss();
-                                            }
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (dialog.isShowing()) {
+                                            dialog.dismiss();
                                         }
-                                    }, 1000);
-                                }
+                                    }
+                                }, 1000);
                                 SmartLog.e(TAG, getString(R.string.result_illegal));
                                 mSegmentationViewModel.setIsReady(false);
                                 ToastWrapper.makeText(VideoClipsActivity.this, R.string.result_illegal, Toast.LENGTH_SHORT)
@@ -877,104 +860,15 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         Handler selectionHandler = new Handler(getMainLooper());
 
         mMenuViewModel.getVideoSelectionFinish().observe(this, integer -> {
-            if (integer == 0 && (selectionDialog != null && !selectionDialog.isShowing())) {
+            if (integer == 0 && !selectionDialog.isShowing()) {
                 selectionDialog.show();
             } else {
                 selectionHandler.postDelayed(() -> {
-                    if (selectionDialog != null && selectionDialog.isShowing()) {
+                    if (selectionDialog.isShowing()) {
                         selectionDialog.dismiss();
                     }
                 }, 500);
             }
-        });
-
-        mTimeLapseViewModel.getTimeLapseEnter().observe(this, integer -> {
-            boolean isFirstShowDialog =
-                    SharedPreferenceUtils.get(getApplicationContext(), TIME_LAPSE).getBoolean(TIME_LAPSE_KEY, true);
-            if (isFirstShowDialog) {
-                AIBlockingHintDialog aiFunDialog = new AIBlockingHintDialog(VideoClipsActivity.this,
-                        getString(R.string.cut_second_menu_time_lapse), getString(R.string.auto_mark_description));
-                aiFunDialog.setOnPositiveClickListener(() -> {
-                    SharedPreferenceUtils.get(getApplicationContext(), TIME_LAPSE).put(TIME_LAPSE_KEY, false);
-                    preDetectAsset(integer);
-                });
-                aiFunDialog.setOnCancelClickListener(
-                        () -> SharedPreferenceUtils.get(getApplicationContext(), TIME_LAPSE).put(TIME_LAPSE_KEY, true));
-                aiFunDialog.show();
-            } else {
-                preDetectAsset(integer);
-            }
-        });
-
-        mTimeLapseViewModel.getTimeLapseStart().observe(this, integer -> {
-            if (integer == -1) {
-                return;
-            }
-            mCommonProgressDialog = new CommonProgressDialog(VideoClipsActivity.this, () -> {
-                if (!isValidActivity()) {
-                    SmartLog.e(TAG, "Activity is valid!");
-                    return;
-                }
-                ToastWrapper.makeText(VideoClipsActivity.this, getString(R.string.time_lapse_cancel)).show();
-                new Thread(() -> mTimeLapseViewModel.stopTimeLapse()).start();
-                mCommonProgressDialog.dismiss();
-                mCommonProgressDialog = null;
-            });
-            mCommonProgressDialog.setTitleValue(getString(R.string.time_lapse_process));
-            mCommonProgressDialog.setCanceledOnTouchOutside(false);
-            mCommonProgressDialog.setCancelable(false);
-            mCommonProgressDialog.show();
-            mTimeLapseViewModel.addTimeLapseEffect(mTimeLapseViewModel.getSkyRiverType(),
-                    (float) mTimeLapseViewModel.getSpeedSky() / 3, mTimeLapseViewModel.getScaleSky(),
-                    (float) mTimeLapseViewModel.getSpeedRiver() / 3, mTimeLapseViewModel.getScaleRiver(),
-                    new HVEAIProcessCallback() {
-                        @Override
-                        public void onProgress(int progress) {
-                            if (!isValidActivity()) {
-                                return;
-                            }
-                            runOnUiThread(() -> {
-                                if (mCommonProgressDialog != null) {
-                                    if (!mCommonProgressDialog.isShowing()) {
-                                        mCommonProgressDialog.show();
-                                    }
-                                    mCommonProgressDialog.updateProgress(progress);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onSuccess() {
-                            if (!isValidActivity()) {
-                                return;
-                            }
-                            runOnUiThread(() -> {
-                                ToastWrapper.makeText(VideoClipsActivity.this, getString(R.string.time_lapse_complete))
-                                        .show();
-                                if (mCommonProgressDialog != null) {
-                                    mCommonProgressDialog.updateProgress(0);
-                                    mCommonProgressDialog.dismiss();
-                                }
-                                if (mEditPreviewViewModel != null) {
-                                    mEditPreviewViewModel.updateVideoLane();
-                                    mEditPreviewViewModel.refreshMenuState();
-                                }
-                                mTimeLapseViewModel.stopTimeLapse();
-                            });
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String errorMsg) {
-                            if (!isValidActivity()) {
-                                return;
-                            }
-                            runOnUiThread(() -> {
-                                ToastWrapper.makeText(VideoClipsActivity.this, getString(R.string.ai_exception)).show();
-                            });
-                            mTimeLapseViewModel.stopTimeLapse();
-                        }
-                    });
-            mTimeLapseViewModel.setTimeLapseStart(-1);
         });
 
         mBodySegViewModel.getBodySegEnter().observe(this, integer -> {
@@ -1650,9 +1544,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         }
     }
 
-    public void showTimeLapseFragment(int operateId) {
-        mMenuFragment.showFragment(operateId, TimeLapseFragment.newInstance(operateId));
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -2018,104 +1909,6 @@ public class VideoClipsActivity extends BaseActivity implements DefaultPlayContr
         boolean onTouch(MotionEvent ev);
     }
 
-    private void preDetectAsset(Integer integer) {
-        if (integer == -1) {
-            return;
-        }
-        HVEAsset imageAsset;
-        if (integer == EDIT_PIP_OPERATION_TIME_LAPSE) {
-            imageAsset = mEditPreviewViewModel.getSelectedAsset();
-        } else {
-            imageAsset = mEditPreviewViewModel.getMainLaneAsset();
-        }
-        if (imageAsset != null) {
-            mTimeLapseViewModel.setSelectedAsset(imageAsset);
-        }
-        if (imageAsset == null) {
-            SmartLog.e(TAG, "TimeLapse asset is null!");
-            return;
-        }
-        if (imageAsset instanceof HVEImageAsset) {
-            boolean isContainTimeLapseEffect = false;
-            for (HVEEffect effect : imageAsset.getEffects()) {
-                if (effect.getEffectType() == HVEEffect.HVEEffectType.TIMELAPSE) {
-                    isContainTimeLapseEffect = true;
-                }
-            }
-            SmartLog.i(TAG, "isContainEffect:" + isContainTimeLapseEffect);
-            if (!isContainTimeLapseEffect) {
-                initTimeLapse(integer);
-            } else {
-                showDeleteConfirmDialog(integer, (HVEImageAsset) imageAsset);
-            }
-        } else {
-            ToastUtils.getInstance()
-                    .showToast(this, getString(R.string.time_lapse_resource_not_support), Toast.LENGTH_SHORT);
-        }
-    }
-
-    private void showDeleteConfirmDialog(int operateId, HVEImageAsset imageAsset) {
-        TimeLapseConfirmDialog lapseConfirmDialog = new TimeLapseConfirmDialog(this);
-        lapseConfirmDialog.show();
-        lapseConfirmDialog.setOnPositiveClickListener(() -> {
-            imageAsset.removeTimeLapseEffect();
-            initTimeLapse(operateId);
-        });
-    }
-
-    private void initTimeLapse(int operateId) {
-        if (!isValidActivity()) {
-            return;
-        }
-        runOnUiThread(() -> {
-            if (mVideoClipsPlayFragment != null) {
-                mVideoClipsPlayFragment.showLoadingView();
-            }
-        });
-        mTimeLapseViewModel.initTimeLapse(new HVEAIInitialCallback() {
-            @Override
-            public void onProgress(int progress) {
-            }
-
-            @Override
-            public void onSuccess() {
-                if (!isValidActivity()) {
-                    return;
-                }
-                runOnUiThread(() -> {
-                    if (mVideoClipsPlayFragment != null) {
-                        mVideoClipsPlayFragment.hideLoadingView();
-                    }
-                    mTimeLapseViewModel.firstDetectTimeLapse((result) -> {
-                        runOnUiThread(() -> {
-                            if (STATE_NO_SKY_WATER == result || STATE_ERROR == result) {
-                                ToastWrapper.makeText(VideoClipsActivity.this, getString(R.string.time_lapse_exception))
-                                        .show();
-                                mTimeLapseViewModel.stopTimeLapse();
-                            } else {
-                                mTimeLapseViewModel.setTimeLapseResult(result);
-                                showTimeLapseFragment(operateId);
-                            }
-                        });
-                    });
-                });
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-                SmartLog.e(TAG, errorMsg);
-                if (!isValidActivity()) {
-                    return;
-                }
-                runOnUiThread(() -> {
-                    if (mVideoClipsPlayFragment != null) {
-                        mVideoClipsPlayFragment.hideLoadingView();
-                    }
-                    ToastWrapper.makeText(VideoClipsActivity.this, R.string.result_illegal, Toast.LENGTH_SHORT).show();
-                });
-            }
-        });
-    }
 
     private void initVideoSelection(int operateId) {
         if (!isValidActivity()) {

@@ -65,7 +65,6 @@ import com.example.vsiyp.ui.mediaeditor.preview.view.MaskEffectContainerView;
 import com.example.vsiyp.ui.mediaeditor.sticker.fragment.StickerPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.texts.fragment.EditPanelFragment;
 import com.example.vsiyp.ui.mediaeditor.texts.viewmodel.TextEditViewModel;
-import com.example.vsiyp.ui.mediaeditor.timelapse.TimeLapseViewModel;
 import com.example.vsiyp.ui.mediaeditor.trackview.viewmodel.EditPreviewViewModel;
 import com.huawei.hms.videoeditor.sdk.HVETimeLine;
 import com.huawei.hms.videoeditor.sdk.HuaweiVideoEditor;
@@ -120,8 +119,6 @@ public class MenuFragment extends Fragment {
     private SegmentationViewModel mSegmentationViewModel;
 
     private MenuViewModel mMenuViewModel;
-
-    private TimeLapseViewModel mTimeLapseViewModel;
 
     private BodySegViewModel mBodySegViewModel;
 
@@ -192,7 +189,6 @@ public class MenuFragment extends Fragment {
         mEditPreviewViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(EditPreviewViewModel.class);
         mMaterialEditViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MaterialEditViewModel.class);
         mMenuViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(MenuViewModel.class);
-        mTimeLapseViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(TimeLapseViewModel.class);
         mSegmentationViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(SegmentationViewModel.class);
         mBodySegViewModel = new ViewModelProvider((ViewModelStoreOwner) mActivity, (ViewModelProvider.Factory) mFactory).get(BodySegViewModel.class);
     }
@@ -205,9 +201,7 @@ public class MenuFragment extends Fragment {
         mask_container_view = view.findViewById(R.id.mask_container_view);
         mGraffitiView = view.findViewById(R.id.graffiti_view);
         MenuClickManager.getInstance()
-                .init(mActivity, menuContentLayout, mMenuViewModel, mEditPreviewViewModel, mMaterialEditViewModel,
-                        //mPersonTrackingViewModel,
-                        mTimeLapseViewModel, mSegmentationViewModel,
+                .init(mActivity, menuContentLayout, mMenuViewModel, mEditPreviewViewModel, mMaterialEditViewModel, mSegmentationViewModel,
                         mBodySegViewModel);
     }
 
