@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="#readme-top">
-    <img src="app/src/main/res/drawable/vsiyp_logo" alt="Logo" width="80px" height="80px">
+    <img src="/app/src/main/res/drawable/vsiyp_logo" alt="Logo" width="80px" height="80px">
   </a>
 
   <h3 align="center">VSIYP</h3>
