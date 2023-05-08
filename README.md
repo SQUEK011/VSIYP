@@ -4,13 +4,13 @@
 <br />
 <div align="center">
   <a href="#readme-top">
-    <img src="assets/logo_crop.png" alt="Logo" width="80px" height="80px">
+    <img src="app/src/main/res/drawable/vsiyp_logo" alt="Logo" width="80px" height="80px">
   </a>
 
   <h3 align="center">VSIYP</h3>
 
   <p align="center">
-    Providing You The Best Credit Services
+    Video Sharing in Your Pocket~ Have the power to quickly process your videos and share your memories to your love ones! 
     <br />
     <br />
   </p>
@@ -38,7 +38,6 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-	<li><a href="#about-cs2024">About CS2024</a></li>
   </ol>
 </details>
 
@@ -46,11 +45,7 @@
 
 ## About The Project
 
-SG Money Lender is a fictional a professional moneylending / credit company specializing in Personal Loans, Business Loans, Foreigner Loans, Education Loans, Medical Loans, Wedding Loans, Vacation Loans, and Renovations packages. The company was established with a vision of providing competitive credit services to the public. We pride ourselves as an alternative for loans from the banks. Customer satisfaction is our main priority and service excellence is what we believe in. With our beliefs, we are confident that we will be able to assist you professionally in providing a suitable loan solution which specially caters to your needs
-
-This website serves to generate more leads for the company.
-
-For this website, the requirement is to produce 3 pages.
+VSIYP is a video processing application based on Android, with the intention of creating a good UI/UX design, so that users will be able to quickly do special image or video processing features. Utlizing the Huawei Video Editor Kit SDK, the app will allow users to preview a live camera feed of the smartphone’s built-in camera, take a snap-shot photo or short video clip, perform image processing, photo or video editing features with the 27 video processing tools provided, before saving or sharing the final photo/video through social networks via WhatsApp, WeChat, Telegram, Instagram, Facebook, etc. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -58,20 +53,50 @@ For this website, the requirement is to produce 3 pages.
 
 ```
 |-- home
-	|--html        Store HTML related files
-	|--css         Store CSS related files
-	|--assets      Stores the favicon, logo, and website images
-	|--index.html  Home Page of Aestica Medical Aesthetics Clinic
+	|-- MainActivity: video creation page, which can be switched to the editing screen (**ClipFragment**) and template home screen (**TemplateHomeFragment**).
+	|-- MediaPickActivity: material selection screen. When there is a need to select materials from the album, this screen will be launched.
+	|-- VideoClipsActivity: video editing screen, which can be entered via material import for creation or a draft. The upper part of the screen is the preview area, the middle part contains playback operations and the timeline, and the lower part is the two-level menu area.
+	|-- MaterialEditFragment: preview area, where a material can be edited. It is the entry to the zooming in or out using two fingers, dragging, rotating, and other operations on the material selected on the preview area.
+	|-- MenuClickManager: manager for menu clicks. The menu click event on the video editing screen is processed in the **handlerClickEvent** method. Each click event launches a corresponding fragment. All fragments inherit the **BaseFragment** abstract class, implementing the following methods: **initView**, **initObject**, **initData**, and **initEvent**. **initView** initializes the layout and component. The listener for the component is created in the **initEvent** method, to respond to the click event in each fragment and conduct relevant service logic processing.
+
+	|-- Editing-related functions:
+		|-- AssetCropFragment: cropping
+		|-- AssetSplitFragment: splitting
+		|-- GeneralSpeedFragment: video playback speed adjustment
+		|-- AnimationPanelFragment: animation
+		|-- StickerPanelFragment: sticker
+		|-- EditPanelFragment: text
+		|-- EditTextStyleFragment: text style
+		|-- EditTextAnimateFragment: text animation
+		|-- EditTextBubblesFragment: text bubble
+		|-- EditTextFlowerFragment: artistic font
+		|-- FilterPanelFragment: filter
+		|-- EffectPanelFragment: special effect
+		|-- FilterAdjustPanelView: adjustment
+		|-- TransparencyPanelFragment: transparency
+		|-- VideoProportionFragment: canvas ratio
+		|-- CanvasBackgroundFragment: canvas background
+		|-- AudioPickActivity and MusicLocalFragment: adding music
+		|-- SoundEffectFragment: adding a sound effect
+		|-- AudioSpeedFragment: audio playback speed adjustment
+		|-- VolumePanelFragment: volume
+		|-- CropNewActivity: cropping
+		
+	|-- Export-related functions:
+		|--VideoExportActivity: main screen for export
+		|--ExportFragment: parameter configuration before export, export progress, and export failure
+		|--ExportSuccessFragment: export success
 ```
 
 ### Built With
 
 This project is built by using these frameworks/libraries:
 
-- [![HTML][html.com]][html-url]
-- [![CSS][w3.org]][css-url]
-- [![Bootstrap][bootstrap.com]][bootstrap-url]
-- FontAwesome
+- Android Studio 
+- Java
+- Kotlin
+- XML 
+- Huawei Video Editor Kit SDK 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -84,7 +109,9 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 ```sh
--
+1. Create a Huawei Developer Account
+2. Create a new application
+3. Download the API key file, agconnect-services.json.
 ```
 
 ### Installation
@@ -94,7 +121,7 @@ To get a local copy up and running follow these simple example steps.
    git clone https://github.com/SQUEK011/cs2024-sg-money-lender.git
    ```
 2. Open the repo using Android Studio
-3. Insert your API Key file at the root of your file 
+3. Insert your agconnect-services.json file at the root of your file 
 4. Change the API key to your file's API key under MainActivity.kt
 5. Run the application 
 
@@ -139,18 +166,6 @@ For any questions or bugs encountered in the codes, please send an email to shen
 This project was created by Shen An for Final Year Project in Nanyang Technological University (NTU).
 
 Logo and Image Assets was created using [![Canva][canva.com]][canva-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## About CS2024
-
-This Course aims to provide its Students With and knowledge Of the
-wide web and gives a broad overview of technologies used in Web design Students will be
-taught how to design. implernent and maintain Web-based Sites using authoring and
-scripting languages, content management and digital media
-Students will learn how to the latest strategies to develop third generatbn
-Websites. evaluate design tools, discuss future technobgy standards and expbre the
-incompatibility issues surrounding current.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
